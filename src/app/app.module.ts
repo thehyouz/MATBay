@@ -10,6 +10,8 @@ import { MatButtonModule } from "@angular/material/button";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -25,7 +27,9 @@ const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    ProfileBadgeComponent
+    ProfileBadgeComponent,
+    ProfilePageComponent,
+    WelcomePageComponent
   ],
   imports: [
     BrowserModule,
