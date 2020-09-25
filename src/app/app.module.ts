@@ -2,16 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
-import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.component';
 import { MatButtonModule } from "@angular/material/button";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -27,9 +29,9 @@ const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    ProfileBadgeComponent,
     ProfilePageComponent,
-    WelcomePageComponent
+    WelcomePageComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +41,7 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatButtonModule,
+    MDBBootstrapModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
