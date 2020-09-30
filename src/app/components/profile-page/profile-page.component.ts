@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CurrentSection } from 'src/app/types/current-section.enum';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -7,7 +7,6 @@ import { CurrentSection } from 'src/app/types/current-section.enum';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent {
-  constructor() { }
+  constructor(public auth: AuthService) { }
 
-  SelectionType: typeof CurrentSection = CurrentSection;
 }

@@ -1,0 +1,19 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+#user-info {
+    order: 0;
+    flex-shrink: 0.5;
+}
+
+.picture {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.picture { border-radius: 50%; }
