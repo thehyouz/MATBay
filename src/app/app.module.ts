@@ -11,6 +11,8 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 
 // Material
 import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from "@angular/material/input";
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -20,6 +22,7 @@ import { AppComponent } from './app.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -42,11 +45,15 @@ const firebaseConfig = {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
     MDBBootstrapModule.forRoot()
   ],
   providers: [],

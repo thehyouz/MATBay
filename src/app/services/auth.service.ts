@@ -6,7 +6,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { auth } from 'firebase/app';
 import * as firebase from 'firebase';
 
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap } from "rxjs/operators";
 
 import { User } from "src/app/types/user";
@@ -16,7 +16,8 @@ import { User } from "src/app/types/user";
 })
 export class AuthService {
 
-  user$: Observable<User>;
+  private userObservable: Observable<User>;
+  user$: BehaviorSubject<User>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -24,7 +25,7 @@ export class AuthService {
     private router: Router
   ) {
     // Get the auth state, then fetch the FireDatabase user file or return null
-    this.user$ = this.afAuth.authState.pipe(
+    this.userObservable = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
           // user is defined, so we are logged in!
@@ -34,7 +35,9 @@ export class AuthService {
           return of(null);
         }
       })
-    )
+    );
+    this.user$ = new BehaviorSubject(null);
+    this.userObservable.subscribe(this.user$);
   }
 
   public updateUserData(user: User): Promise<void> {

@@ -50,6 +50,26 @@
     border-radius: 50%;
 }
 
+form {
+    width: 100%;
+    text-align: center;
+}
+
+mat-form-field {
+    width: 35%;
+}
+
+::ng-deep {
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+       color: whitesmoke;
+    }
+    mat-form-field {
+        .mat-hint, input, ::placeholder, .mat-form-field-label {
+            color: whitesmoke;
+        }
+    }
+}
+
 button {
     margin: 1%;
 }

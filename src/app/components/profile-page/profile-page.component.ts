@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../types/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface Status {
   error: boolean;
@@ -16,19 +17,31 @@ interface Status {
 export class ProfilePageComponent {
 
   public currentStatus: Status;
-  private userValue: User;
+  public profileForm: FormGroup;
+  private currentUser: User;
 
-  constructor(public auth: AuthService) {
+  constructor(
+    public auth: AuthService,
+    private fb: FormBuilder) {
     this.currentStatus = {
       error: false,
       hidden: true,
       message: "",
     }
-    this.auth.user$.subscribe(newUser => this.userValue = newUser);
+
+    this.currentUser = auth.user$.getValue();
+    auth.user$.subscribe(newUser => this.currentUser = newUser)
+
+    this.profileForm = fb.group({
+      displayName: [this.currentUser.displayName, Validators.required],
+      photoURL: [this.currentUser.photoURL, Validators.required]
+    })
   }
 
   testUpdate(): void {
-    this.auth.updateUserData(this.userValue).then(
+    this.currentUser.displayName = this.profileForm.get('displayName').value;
+    this.currentUser.photoURL = this.profileForm.get('photoURL').value;
+    this.auth.updateUserData(this.currentUser).then(
       () => this.notifySuccess(),
       reason => this.notifyFailure(reason)
     )

@@ -5,7 +5,20 @@
             {{ currentStatus.message }}</div>
     </div>
     <div *ngIf="auth.user$ | async as user; else error" id="user-info">
+        <h2>Bonjour {{ user.displayName }}. Voici votre profil:</h2>
         <img class="picture" [src]="user.photoURL" [alt]="user.displayName">
+        <form [formGroup]="profileForm">
+            <br>
+            <mat-form-field appearance="outline" [floatLabel]="true">
+                <mat-label>Nom d'utilisateur</mat-label>
+                <input matInput formControlName="displayName">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline" [floatLabel]="true">
+                <mat-label>URL de la photo de profil</mat-label>
+                <input matInput formControlName="photoURL">
+            </mat-form-field>
+        </form>
         <button mat-raised-button color="primary" (click)="testUpdate()">update</button>
     </div>
     <ng-template #error class="picture">
