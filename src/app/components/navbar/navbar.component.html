@@ -1,5 +1,5 @@
-<!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark purple lighten-1" [containerInside]="false">
+<!--Navbar https://mdbootstrap.com/docs/angular/navigation/navbar/ -->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
 
     <!-- Navbar brand -->
     <mdb-navbar-brand><a class="navbar-brand" routerLink="/">MATBay!</a></mdb-navbar-brand>
@@ -10,11 +10,19 @@
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
             <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Home}">
-                <a class="nav-link waves-light" routerLink="/" mdbWavesEffect>Acceuil</a>
+                <a class="nav-link waves-light" routerLink="/" mdbWavesEffect>Accueil</a>
             </li>
-            <li [ngClass]="{'nav-item':true, 'active': currentSection === SelectionType.Constitutions}">
-                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light"
-                    mdbWavesEffect>Constitutions</a>
+            <!-- Dropdown -->
+            <li class="nav-item dropdown" [ngClass]="{'nav-item':true, 'active': currentSection === SelectionType.Constitutions}" dropdown>
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                Constitutions<span class="caret"></span></a>
+                <div *dropdownMenu class="dropdown-menu dropdown elegant-color dropdown-primary" role="menu">
+                    <a class="dropdown-item waves-dark" mdbWavesEffect href="#" id="content"> Créer une Constitution </a>
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="#" id="content" > Joindre une Constitution </a>
+                    <div id="divider "class="divider dark dropdown-divider"></div>
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="#" id="content"> Voir les Constitutions en cours </a>
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="#" id="content"> Voir toute les Constitutions </a>
+                </div>
             </li>
         </ul>
 
@@ -30,7 +38,7 @@
 
 <!-- User is NOT logged in -->
 <ng-template #guest>
-    <a class="nav-link waves-light" (click)="auth.googleSignIn()">Connexion</a>
+    <a class="nav-link elegant-color waves-light" id="content" (click)="auth.googleSignIn()">Connexion</a>
 </ng-template>
 
 <!-- User is logged in -->
@@ -42,9 +50,9 @@
                     [alt]="user.displayName">
             </span>
         </a>
-        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
-            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/profile">Profil</a>
-            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/" (click)="auth.signOut();">Déconnexion</a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right elegant-color dropdown dropdown-primary" role="menu">
+            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/profile" id="content">Profil</a>
+            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/" id="content" (click)="auth.signOut();">Déconnexion</a>
         </div>
     </li>
 </ng-template>

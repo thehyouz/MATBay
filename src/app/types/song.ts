@@ -9,3 +9,10 @@ export interface Song {
     author?: string;
     modifiers?: string[];
 }
+
+export const EMPTY_SONG: Song = {
+    shortTitle: '',
+    platform: SongPlatform.Youtube,
+    url: '',
+    patron: null,
+}
