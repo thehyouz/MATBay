@@ -1,1 +1,9 @@
-TEST
+<div id="container">
+    <div id="user-info">
+        <img *ngIf="auth.user$ | async as user; else error" class="picture" [src]="user.photoURL"
+            [alt]="user.displayName">
+        <ng-template #error class="picture">
+            ERREUR: Les informations utilisateur n'ont pas pu être récupérée. Ceci peut-être dû à un rate-limiting.
+        </ng-template>
+    </div>
+</div>

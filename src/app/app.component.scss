@@ -1,16 +1,16 @@
 .main-container {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     height: 100%;
 }
 
 #navbar {
-    order: 0;
+    flex: 0 0 auto;
 }
 
 #content {
-    order: 1;
-    flex-grow: 1;
+    flex: 1 1 auto;
+    position: relative;
+    overflow-y: auto;
     color: whitesmoke;
 }
