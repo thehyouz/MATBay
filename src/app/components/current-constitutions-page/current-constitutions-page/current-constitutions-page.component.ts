@@ -16,6 +16,7 @@ export class CurrentConstitutionsPageComponent {
     this.initConstitution();
   }
 
+  // Debug only
   initConstitution(): void {
     let constitution7: Constitution = {
       season: 2,
@@ -26,25 +27,14 @@ export class CurrentConstitutionsPageComponent {
       users: [],
       songs: [],
       winnerSong: EMPTY_SONG,
-      youtubePlaylistID: '',
-      numberOfSongsPerUser: 25,
-      numberOfSongsMax: MAX_LIMIT
-    } 
-    let constitution5: Constitution ={
-      season: 2,
-      round: 5,
-      name: "Les Démons de minuits",
-      president: null,
-      winnerUser: null,
-      users: [],
-      songs: [],
-      winnerSong: EMPTY_SONG,
-      youtubePlaylistID: '',
+      youtubePlaylistID: "https://www.youtube.com/playlist?list=PLrOgnGStT8Gj1pC2y0sZf8wDgoKRF0J-z",
       numberOfSongsPerUser: 25,
       numberOfSongsMax: MAX_LIMIT
     }
 
-    this.currentConstitutions.push(constitution5, constitution7);
+    for (let i = 0; i < 60; i++) {
+      this.currentConstitutions.push(constitution7); 
+    }
   }
 
 }

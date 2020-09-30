@@ -3,7 +3,24 @@
     <h4> CONSTITUTIONS EN COURS </h4>
     <span class="custom-br"></span>
 </div>
-
-<div *ngFor="let constitution of currentConstitutions">
-    {{constitution.season}} {{constitution.name}}
+<hr>
+<div class="title">
+    <table id="t01">
+        <tr>
+            <th> Saison </th>
+            <th> Partie </th>
+            <th> Nom </th>
+            <th> Président </th>
+            <th> Youtube Playlist </th>
+            <th> Status </th>
+        </tr>
+        <tr *ngFor="let constitution of currentConstitutions">
+            <td> {{constitution.season}} </td>
+            <td> {{constitution.round}} </td>
+            <td> {{constitution.name}} </td>
+            <td> </td>
+            <td> <a href=constitution.youtubePlaylistID> {{constitution.youtubePlaylistID}} </a> </td>
+            <button mat-button> Rejoindre </button>
+        </tr>
+    </table>
 </div>
