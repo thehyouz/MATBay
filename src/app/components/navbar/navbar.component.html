@@ -1,5 +1,5 @@
-<!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark purple lighten-1" [containerInside]="false">
+<!--Navbar https://mdbootstrap.com/docs/angular/navigation/navbar/ -->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
 
     <!-- Navbar brand -->
     <mdb-navbar-brand><a class="navbar-brand" routerLink="/">MATBay!</a></mdb-navbar-brand>
@@ -10,11 +10,19 @@
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
             <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Home}">
-                <a class="nav-link waves-light" routerLink="/" mdbWavesEffect>Acceuil</a>
+                <a class="nav-link waves-light" routerLink="/" mdbWavesEffect>Accueil</a>
             </li>
-            <li [ngClass]="{'nav-item':true, 'active': currentSection === SelectionType.Constitutions}">
-                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light"
-                    mdbWavesEffect>Constitutions</a>
+            <!-- Dropdown -->
+            <li class="nav-item dropdown" [ngClass]="{'nav-item':true, 'active': currentSection === SelectionType.Constitutions}" dropdown>
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                Constitutions<span class="caret"></span></a>
+                <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                <a class="dropdown-item waves-light" mdbWavesEffect href="#"> Create Constitution </a>
+                <a class="dropdown-item waves-light" mdbWavesEffect href="#"> Join Constitution </a>
+                <div class="divider dropdown-divider"></div>
+                <a class="dropdown-item waves-light" mdbWavesEffect href="#"> Current Constitutions </a>
+                <a class="dropdown-item waves-light" mdbWavesEffect href="#"> All Constitutions </a>
+                </div>
             </li>
         </ul>
 

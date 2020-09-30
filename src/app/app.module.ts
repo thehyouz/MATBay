@@ -1,15 +1,21 @@
+// Angular
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
 
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
-
+// Fire
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+
+// Material
 import { MatButtonModule } from "@angular/material/button";
 
-import { AppRoutingModule } from './app-routing.module';
+// MDB
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
+// Component
 import { AppComponent } from './app.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
