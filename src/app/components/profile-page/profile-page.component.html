@@ -1,9 +1,13 @@
 <div id="container">
-    <div id="user-info">
-        <img *ngIf="auth.user$ | async as user; else error" class="picture" [src]="user.photoURL"
-            [alt]="user.displayName">
-        <ng-template #error class="picture">
-            ERREUR: Les informations utilisateur n'ont pas pu être récupérée. Ceci peut-être dû à un rate-limiting.
-        </ng-template>
+    <div *ngIf="!currentStatus.hidden" id="status"
+        [ngClass]="{'error': currentStatus.error, 'success': !currentStatus.error, 'hidden': currentStatus.hidden,'visible': !currentStatus.hidden}">
+        {{ currentStatus.message }}
     </div>
+    <div *ngIf="auth.user$ | async as user; else error" id="user-info">
+        <img class="picture" [src]="user.photoURL" [alt]="user.displayName">
+        <button mat-raised-button color="primary" (click)="testUpdate()">update</button>
+    </div>
+    <ng-template #error class="picture">
+        ERREUR: Les informations utilisateur n'ont pas pu être récupérée.
+    </ng-template>
 </div>

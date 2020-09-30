@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { auth } from 'firebase/app';
+import * as firebase from 'firebase';
 
 import { Observable, of } from 'rxjs';
 import { switchMap } from "rxjs/operators";
@@ -36,14 +37,15 @@ export class AuthService {
     )
   }
 
-  private updateUserData(user: User): Promise<void> {
+  public updateUserData(user: User): Promise<void> {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc<User>(`users/${user.uid}`);
 
     const data: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
-      photoURL: user.photoURL
+      photoURL: user.photoURL,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
     return userRef.set(data, { merge: true });
   }
@@ -51,7 +53,11 @@ export class AuthService {
   async googleSignIn(): Promise<void> {
     const provider: auth.GoogleAuthProvider = new auth.GoogleAuthProvider();
     const credentials: auth.UserCredential = await this.afAuth.signInWithPopup(provider);
-    return this.updateUserData(credentials.user)
+    const newUser: User = {
+      ...credentials.user,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    return this.updateUserData(newUser);
   }
 
   async signOut(): Promise<void> {
