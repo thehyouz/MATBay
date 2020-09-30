@@ -1,7 +1,8 @@
 <div id="container">
     <div *ngIf="!currentStatus.hidden" id="status"
-        [ngClass]="{'error': currentStatus.error, 'success': !currentStatus.error, 'hidden': currentStatus.hidden,'visible': !currentStatus.hidden}">
-        {{ currentStatus.message }}
+        [ngClass]="{'hidden': currentStatus.hidden,'visible': !currentStatus.hidden}">
+        <div id="status-message" [ngClass]="{'error': currentStatus.error, 'success': !currentStatus.error}">
+            {{ currentStatus.message }}</div>
     </div>
     <div *ngIf="auth.user$ | async as user; else error" id="user-info">
         <img class="picture" [src]="user.photoURL" [alt]="user.displayName">

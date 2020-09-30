@@ -15,9 +15,13 @@
     justify-self: center;
     display: flex;
     align-items: center;
+}
+
+#status-message {
     box-sizing: border-box;
     padding: 10px;
     border-radius: 15px;
+    text-align: center;
 }
 
 .error {
