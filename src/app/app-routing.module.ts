@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ConstitutionsHistoryPageComponent } from './components/constitution-history-page/constitution-history-page/constitutions-history-page.component';
+import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page/constitutions-history-page.component';
 import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page/current-constitutions-page.component';
 
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
