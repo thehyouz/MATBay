@@ -7,6 +7,7 @@ service cloud.firestore {
     match /users/{userid} {
     	allow read;
       allow write: if
+      	resource == null ||
       	isConnected() &&
         belongsTo(userid) &&
         isNotTimeLimited();
