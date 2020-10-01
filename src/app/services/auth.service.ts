@@ -60,7 +60,12 @@ export class AuthService {
       ...credentials.user,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
-    return this.updateUserData(newUser);
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc<User>(`users/${newUser.uid}`);
+    userRef.get().subscribe(doc => {
+      // user already has an account in the database
+      if (doc.exists) return;
+      return this.updateUserData(newUser);
+    }, () => console.log("Sorry, a fatal error occured during login"))
   }
 
   async signOut(): Promise<void> {
