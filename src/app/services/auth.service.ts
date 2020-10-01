@@ -65,7 +65,7 @@ export class AuthService {
       // user already has an account in the database
       if (doc.exists) return;
       return this.updateUserData(newUser);
-    }, () => console.log("Sorry, a fatal error occured during login"))
+    }, (err) => console.log("Sorry, a fatal error occured during login:", err))
   }
 
   async signOut(): Promise<void> {
