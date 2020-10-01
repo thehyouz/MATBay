@@ -14,6 +14,7 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from "@angular/material/input";
+import { MatDialogModule } from "@angular/material/dialog"
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -25,6 +26,7 @@ import { WelcomePageComponent } from './components/welcome-page/welcome-page.com
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page/current-constitutions-page.component';
 import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page/constitutions-history-page.component';
+import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window/new-constitution-window.component';
 
 
 const firebaseConfig = {
@@ -45,7 +47,8 @@ const firebaseConfig = {
     WelcomePageComponent,
     NavbarComponent,
     CurrentConstitutionsPageComponent,
-    ConstitutionsHistoryPageComponent
+    ConstitutionsHistoryPageComponent,
+    NewConstitutionWindowComponent
   ],
   imports: [
     BrowserModule,
@@ -57,11 +60,13 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatButtonModule,
+    MatDialogModule,
     MatInputModule,
     MatFormFieldModule,
     MDBBootstrapModule.forRoot()
   ],
   providers: [],
+  entryComponents: [NewConstitutionWindowComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

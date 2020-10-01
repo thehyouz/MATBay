@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Constitution, MAX_LIMIT } from 'src/app/types/constitution';
 import { EMPTY_SONG } from 'src/app/types/song';
+import { NewConstitutionWindowComponent } from '../../new-constitution-window/new-constitution-window/new-constitution-window.component';
 
 @Component({
   selector: 'app-current-constitutions-page',
@@ -11,9 +13,14 @@ export class CurrentConstitutionsPageComponent {
 
   currentConstitutions: Constitution[];
 
-  constructor() {
+  constructor(private dialog: MatDialog) {
     this.currentConstitutions = [];
     this.initConstitution();
+  }
+
+  openDialog(): void {
+    console.log("hello");
+    this.dialog.open(NewConstitutionWindowComponent);
   }
 
   // Debug only
