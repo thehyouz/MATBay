@@ -3,16 +3,16 @@ import { Constitution, MAX_LIMIT } from 'src/app/types/constitution';
 import { EMPTY_SONG } from 'src/app/types/song';
 
 @Component({
-  selector: 'app-current-constitutions-page',
-  templateUrl: './current-constitutions-page.component.html',
-  styleUrls: ['./current-constitutions-page.component.scss']
+  selector: 'app-constitutions-history-page',
+  templateUrl: './constitutions-history-page.component.html',
+  styleUrls: ['./constitutions-history-page.component.scss']
 })
-export class CurrentConstitutionsPageComponent {
+export class ConstitutionsHistoryPageComponent {
 
-  currentConstitutions: Constitution[];
+  constitutionHistory: Constitution[];
 
   constructor() {
-    this.currentConstitutions = [];
+    this.constitutionHistory = [];
     this.initConstitution();
   }
 
@@ -32,10 +32,7 @@ export class CurrentConstitutionsPageComponent {
       numberOfSongsPerUser: 25,
       numberOfSongsMax: MAX_LIMIT
     }
-
-    for (let i = 0; i < 60; i++) {
-      this.currentConstitutions.push(constitution7); 
-    }
+    this.constitutionHistory.push(constitution7); 
   }
 
 }

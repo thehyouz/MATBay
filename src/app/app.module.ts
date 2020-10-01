@@ -21,6 +21,7 @@ import { ProfilePageComponent } from './components/profile-page/profile-page.com
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page/current-constitutions-page.component';
+import { ConstitutionsHistoryPageComponent } from './components/constitution-history-page/constitution-history-page/constitutions-history-page.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -39,7 +40,8 @@ const firebaseConfig = {
     ProfilePageComponent,
     WelcomePageComponent,
     NavbarComponent,
-    CurrentConstitutionsPageComponent
+    CurrentConstitutionsPageComponent,
+    ConstitutionsHistoryPageComponent
   ],
   imports: [
     BrowserModule,
