@@ -1,0 +1,26 @@
+<hr>
+<div class="title">
+    <h4> CONSTITUTIONS EN COURS </h4>
+    <span class="custom-br"></span>
+</div>
+<hr>
+<div class="title">
+    <table id="t01">
+        <tr>
+            <th> Saison </th>
+            <th> Partie </th>
+            <th> Nom </th>
+            <th> Président </th>
+            <th> Youtube Playlist </th>
+            <th> Status </th>
+        </tr>
+        <tr *ngFor="let constitution of currentConstitutions">
+            <td *ngIf="constitution.isPublic === true"> {{constitution.season}} </td>
+            <td *ngIf="constitution.isPublic === true"> {{constitution.round}} </td>
+            <td *ngIf="constitution.isPublic === true"> {{constitution.name}} </td>
+            <td *ngIf="constitution.isPublic === true"> </td>
+            <td *ngIf="constitution.isPublic === true"> <a href="constitution.youtubePlaylistID"> {{constitution.youtubePlaylistID}} </a> </td>
+            <button mat-button *ngIf="constitution.isPublic === true"> Rejoindre </button>
+        </tr>
+    </table>
+</div>
