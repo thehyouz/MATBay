@@ -7,6 +7,7 @@ export interface Constitution {
     season: number;
     round: number;
     name: string;
+    isPublic: boolean;
 
     // Users
     president: User;
