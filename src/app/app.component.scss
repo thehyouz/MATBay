@@ -1,16 +1,21 @@
 .main-container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "navbar"
+        "content";
     height: 100%;
 }
 
 #navbar {
-    flex: 0 0 auto;
+    grid-area: navbar;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 #content {
-    flex: 1 1 auto;
-    position: relative;
-    overflow-y: auto;
+    grid-area: content;
     color: whitesmoke;
 }

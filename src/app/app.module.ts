@@ -2,6 +2,7 @@
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 // Fire
@@ -11,6 +12,8 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 
 // Material
 import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from "@angular/material/input";
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -22,6 +25,7 @@ import { WelcomePageComponent } from './components/welcome-page/welcome-page.com
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page/current-constitutions-page.component';
 import { ConstitutionsHistoryPageComponent } from './components/constitution-history-page/constitution-history-page/constitutions-history-page.component';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -46,11 +50,15 @@ const firebaseConfig = {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
     MDBBootstrapModule.forRoot()
   ],
   providers: [],

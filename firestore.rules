@@ -1,9 +1,27 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2020, 10, 24);
+  	match /{document=**} {
+    	allow read, write: if false;
+    }
+    match /users/{userid} {
+    	allow read;
+      allow write: if
+      	isConnected() &&
+        belongsTo(userid) &&
+        isNotTimeLimited();
     }
   }
+}
+
+function isConnected() {
+	return request.auth != null;
+}
+
+function belongsTo(userId) {
+	return request.auth.uid == userId;
+}
+
+function isNotTimeLimited() {
+	return request.time >= resource.data.timestamp + duration.value(1, 'm');
 }
