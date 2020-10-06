@@ -24,9 +24,9 @@ import { AppComponent } from './app.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page/current-constitutions-page.component';
-import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page/constitutions-history-page.component';
-import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window/new-constitution-window.component';
+import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page.component';
+import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page.component';
+import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
 
 
 const firebaseConfig = {

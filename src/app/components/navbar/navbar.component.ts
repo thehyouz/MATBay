@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentSection } from 'src/app/types/current-section.enum';
-import { NewConstitutionWindowComponent } from '../new-constitution-window/new-constitution-window/new-constitution-window.component';
+import { NewConstitutionWindowComponent } from '../new-constitution-window/new-constitution-window.component';
 
 @Component({
   selector: 'app-navbar',
