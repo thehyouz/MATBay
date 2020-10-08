@@ -1,5 +1,6 @@
-import { User } from 'firebase';
+
 import { Song } from './song';
+import { User } from './user';
 
 export const MAX_LIMIT = 100;
 

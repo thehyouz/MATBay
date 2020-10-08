@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { Constitution, MAX_LIMIT } from 'src/app/types/constitution';
-import { EMPTY_SONG } from 'src/app/types/song';
+import { AuthService } from 'src/app/services/auth.service';
+import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { Constitution } from 'src/app/types/constitution';
+import { User } from 'src/app/types/user';
 
 @Component({
   selector: 'app-current-constitutions-page',
@@ -9,33 +11,23 @@ import { EMPTY_SONG } from 'src/app/types/song';
 })
 export class CurrentConstitutionsPageComponent {
 
-  currentConstitutions: Constitution[];
+  private currentUser: User;
 
-  constructor() {
-    this.currentConstitutions = [];
-    this.initConstitution();
-  }
+  constructor(public constitutionManager: ConstitutionManagerService,
+              public auth: AuthService) {
+                this.currentUser = auth.user$.getValue();
+                auth.user$.subscribe(newUser => this.currentUser = newUser);
+              }
 
-  // Debug only
-  initConstitution(): void {
-    let constitution7: Constitution = {
-      season: 2,
-      round: 7,
-      name: "Il Porco Rosso",
-      isPublic: true,
-      president: null,
-      winnerUser: null,
-      users: [],
-      songs: [],
-      winnerSong: EMPTY_SONG,
-      youtubePlaylistID: "https://www.youtube.com/playlist?list=PLrOgnGStT8Gj1pC2y0sZf8wDgoKRF0J-z",
-      numberOfSongsPerUser: 25,
-      numberOfSongsMax: MAX_LIMIT
+  isAuthorized(constitution: Constitution): boolean {
+    const isOwner: boolean = (constitution.president.displayName === this.currentUser.displayName);
+    let isMember: boolean = false;
+    for (const user of constitution.users) {
+      if (user.displayName === this.currentUser.displayName) {
+        isMember = true;
+      }
     }
-
-    //for (let i = 0; i < 60; i++) {
-      this.currentConstitutions.push(constitution7); 
-    //}
+    return isOwner || isMember || constitution.isPublic;
   }
 
 }

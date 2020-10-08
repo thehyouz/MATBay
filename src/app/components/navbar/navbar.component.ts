@@ -19,7 +19,6 @@ export class NavbarComponent {
   SelectionType: typeof CurrentSection = CurrentSection;
 
   openDialog(): void {
-    console.log("hello");
     this.dialog.open(NewConstitutionWindowComponent);
   }
 }

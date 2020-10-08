@@ -23,6 +23,23 @@ button {
     display:table;
 }
 
+form {
+    color: whitesmoke;
+    width: 100%;
+    text-align: left;
+}
+
+::ng-deep {
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+       color: whitesmoke;
+    }
+    mat-form-field {
+        .mat-hint, input, ::placeholder, .mat-form-field-label {
+            color: whitesmoke;
+        }
+    }
+}
+
 .title {
     color: whitesmoke;
     text-align: center;

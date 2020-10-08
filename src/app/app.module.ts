@@ -28,6 +28,9 @@ import { CurrentConstitutionsPageComponent } from './components/current-constitu
 import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page.component';
 import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
 
+// Service
+import { ConstitutionManagerService } from './services/constitution-manager.service';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -65,7 +68,7 @@ const firebaseConfig = {
     MatFormFieldModule,
     MDBBootstrapModule.forRoot()
   ],
-  providers: [],
+  providers: [ConstitutionManagerService],
   entryComponents: [NewConstitutionWindowComponent],
   bootstrap: [AppComponent]
 })

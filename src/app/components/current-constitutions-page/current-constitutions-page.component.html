@@ -14,15 +14,15 @@
             <th> Youtube Playlist </th>
             <th> Status </th>
         </tr>
-        <tr *ngFor="let constitution of currentConstitutions">
-            <td *ngIf="constitution.isPublic === true"> {{constitution.season}} </td>
-            <td *ngIf="constitution.isPublic === true"> {{constitution.round}} </td>
-            <td *ngIf="constitution.isPublic === true"> {{constitution.name}} </td>
-            <td *ngIf="constitution.isPublic === true"> </td>
-            <td *ngIf="constitution.isPublic === true">
+        <tr *ngFor="let constitution of constitutionManager.constitutions">
+            <td *ngIf="isAuthorized(constitution)"> {{constitution.season}} </td>
+            <td *ngIf="isAuthorized(constitution)"> {{constitution.round}} </td>
+            <td *ngIf="isAuthorized(constitution)"> {{constitution.name}} </td>
+            <td *ngIf="isAuthorized(constitution)"> {{constitution.president.displayName}}</td>
+            <td *ngIf="isAuthorized(constitution)">
                 <a href="{{constitution.youtubePlaylistID}}" target="_blank">{{constitution.youtubePlaylistID}}</a>
             </td>
-            <button mat-button *ngIf="constitution.isPublic === true"> Rejoindre </button>
+            <button mat-button *ngIf="isAuthorized(constitution)"> Rejoindre </button>
         </tr>
     </table>
 </div>

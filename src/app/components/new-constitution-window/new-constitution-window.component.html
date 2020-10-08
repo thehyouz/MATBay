@@ -5,25 +5,28 @@
 <div class="content">
     <br>
     <form [formGroup]="newConstitution">
-        <label> Saison:
-            <input type="number" min = "0"  formControlName="formSeason">
-        </label>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Saison: </mat-label>
+            <input matInput type="number" min = "0"  formControlName="formSeason">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Partie: </mat-label>
+            <input matInput type="number" min = "0"  formControlName="formRound">
+        </mat-form-field>
         <hr>
-        <label> Partie:
-            <input type="number" min = "0"  formControlName="formRound">
-        </label>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Nom: </mat-label>
+            <input matInput type="text"  formControlName="formName">
+        </mat-form-field>
         <hr>
-        <label> Nom:
-            <input type="text"  formControlName="formName">
-        </label>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Nombre de chanson par utilisateur: </mat-label>
+            <input matInput type="number" min = "1" max="25"  formControlName="formNumberOfSongsPerUser">
+        </mat-form-field>
         <hr>
-        <label> La constitution est public:
-            <input type="checkbox"  formControlName="formIsPublic">
-        </label>
-        <hr>
-        <label> Nombre de chanson par utilisateur:
-            <input type="number" min = "1" max="25"  formControlName="constitutionNumberOfSongPerUser">
-        </label>
+        <mat-label> La constitution est public: </mat-label>
+        <input type="checkbox"  formControlName="formIsPublic">
     </form>
 </div>
 

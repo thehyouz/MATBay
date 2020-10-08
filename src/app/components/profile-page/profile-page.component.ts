@@ -30,7 +30,7 @@ export class ProfilePageComponent {
     }
 
     this.currentUser = auth.user$.getValue();
-    auth.user$.subscribe(newUser => this.currentUser = newUser)
+    auth.user$.subscribe(newUser => this.currentUser = newUser);
 
     this.profileForm = fb.group({
       displayName: [this.currentUser.displayName, Validators.required],
