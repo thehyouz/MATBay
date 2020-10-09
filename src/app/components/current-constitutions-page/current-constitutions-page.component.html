@@ -12,7 +12,7 @@
             <th> Nom </th>
             <th> Président </th>
             <th> Youtube Playlist </th>
-            <th> Status </th>
+            <th> Statuts </th>
         </tr>
         <tr *ngFor="let constitution of constitutionManager.constitutions">
             <td *ngIf="isAuthorized(constitution)"> {{constitution.season}} </td>

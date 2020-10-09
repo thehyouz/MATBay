@@ -6,30 +6,58 @@
     <br>
     <form [formGroup]="newConstitution">
         <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Saison: </mat-label>
+            <mat-label> Saison </mat-label>
             <input matInput type="number" min = "0"  formControlName="formSeason">
         </mat-form-field>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Partie: </mat-label>
+            <mat-label> Partie </mat-label>
             <input matInput type="number" min = "0"  formControlName="formRound">
         </mat-form-field>
-        <hr>
+        <span class="custom-br"></span>
+        <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Nom: </mat-label>
+            <mat-label> Nom </mat-label>
             <input matInput type="text"  formControlName="formName">
         </mat-form-field>
-        <hr>
+        <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Nombre de chanson par utilisateur: </mat-label>
+            <mat-label> Youtube Playlist </mat-label>
+            <input matInput type="text"  formControlName="formYoutubePlaylist">
+        </mat-form-field>
+        <span class="custom-br"></span>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Nombre de chanson par utilisateur </mat-label>
             <input matInput type="number" min = "1" max="25"  formControlName="formNumberOfSongsPerUser">
         </mat-form-field>
-        <hr>
-        <mat-label> La constitution est public: </mat-label>
-        <input type="checkbox"  formControlName="formIsPublic">
+        <span class="custom-br"></span>
+        <br>
+        <table>
+            <tr>
+                <th> Option </th>
+                <th> Statuts </th>
+            </tr>
+            <tr>
+                <td>
+                    <mat-label> La constitution est public: </mat-label>
+                </td>
+                <td>
+                    <input type="checkbox"  formControlName="formIsPublic">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-label> Les utilisateurs sont anonymes: </mat-label>
+                </td>
+                <td>
+                    <input type="checkbox">
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
-
+<br>
 <div class="alignmentButton">
     <button mat-raised-button (click)="createNewConstitution()"> Créer </button>
     <button mat-raised-button (click)="closeWindow()"> Annuler </button>
