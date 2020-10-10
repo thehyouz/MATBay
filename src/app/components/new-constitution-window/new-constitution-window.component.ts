@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { Constitution } from 'src/app/types/constitution';
@@ -28,7 +29,8 @@ export class NewConstitutionWindowComponent {
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
               private constitutionManager: ConstitutionManagerService,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private rooting: AppRoutingModule) {
     this.currentUser = auth.user$.getValue();           
     auth.user$.subscribe(newUser => this.currentUser = newUser);
 
@@ -60,7 +62,7 @@ export class NewConstitutionWindowComponent {
     this.constitutionRound = this.newConstitution.value['formRound'];
     this.constitutionName = this.newConstitution.value['formName'];
     this.constitutionIsPublic = this.newConstitution.value['formIsPublic'];
-    this.constitutionYoutubePlaylist = this.newConstitution.value['formNumberOfSongsPerUser'];
+    this.constitutionYoutubePlaylist = this.newConstitution.value['formYoutubePlaylist'];
     this.constitutionNumberOfSongPerUser = this.newConstitution.value['formNumberOfSongsPerUser'];
   }
 
@@ -68,7 +70,6 @@ export class NewConstitutionWindowComponent {
     this.updateParameters();
 
     if(!this.isMissingParameters()) {
-      console.log("IL MANQUE UN TRUC");
       let newConstitution: Constitution = {
         season: this.constitutionSeason,
         round: this.constitutionRound,
@@ -79,11 +80,13 @@ export class NewConstitutionWindowComponent {
         users: [this.currentUser],
         songs: [],
         winnerSong: EMPTY_SONG,
-        youtubePlaylistID: "",
+        youtubePlaylistID: this.constitutionYoutubePlaylist,
         numberOfSongsPerUser: this.constitutionNumberOfSongPerUser,
         numberOfSongsMax: 100
       }
-      // console.log(this.constitutionManager.constitutions);
+
+      this.rooting.addConstitutionRoute(this.constitutionName);
+
       this.constitutionManager.constitutions.push(newConstitution);
       this.closeWindow();
     }

@@ -22,7 +22,8 @@
             <td *ngIf="isAuthorized(constitution)">
                 <a href="{{constitution.youtubePlaylistID}}" target="_blank">{{constitution.youtubePlaylistID}}</a>
             </td>
-            <button mat-button *ngIf="isAuthorized(constitution)"> Rejoindre </button>
+            <button mat-button *ngIf="isAuthorized(constitution)" routerLink="{{constitution.name}}"> Rejoindre </button>
+
         </tr>
     </table>
 </div>

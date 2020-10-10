@@ -21,6 +21,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 // Component
 import { AppComponent } from './app.component';
+import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -51,7 +52,8 @@ const firebaseConfig = {
     NavbarComponent,
     CurrentConstitutionsPageComponent,
     ConstitutionsHistoryPageComponent,
-    NewConstitutionWindowComponent
+    NewConstitutionWindowComponent,
+    ConstitutionPageComponent
   ],
   imports: [
     BrowserModule,
