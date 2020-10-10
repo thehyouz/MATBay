@@ -28,7 +28,7 @@
         <span class="custom-br"></span>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Nombre de chanson par utilisateur </mat-label>
+            <mat-label> Nombre de chansons par utilisateur </mat-label>
             <input matInput type="number" min = "1" max="25"  formControlName="formNumberOfSongsPerUser">
         </mat-form-field>
         <span class="custom-br"></span>
@@ -36,14 +36,14 @@
         <table>
             <tr>
                 <th> Option </th>
-                <th> Statuts </th>
+                <th> Statut </th>
             </tr>
             <tr>
                 <td>
-                    <mat-label> La constitution est public: </mat-label>
+                    <mat-label> La constitution est publique: </mat-label>
                 </td>
                 <td>
-                    <input type="checkbox"  formControlName="formIsPublic">
+                    <mat-checkbox color="primary" formControlName="formIsPublic"> </mat-checkbox>
                 </td>
             </tr>
             <tr>
@@ -51,7 +51,7 @@
                     <mat-label> Les utilisateurs sont anonymes: </mat-label>
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <mat-checkbox color="primary"> </mat-checkbox>
                 </td>
             </tr>
         </table>
@@ -59,6 +59,6 @@
 </div>
 <br>
 <div class="alignmentButton">
-    <button mat-raised-button (click)="createNewConstitution()"> Créer </button>
-    <button mat-raised-button (click)="closeWindow()"> Annuler </button>
+    <button mat-raised-button color="primary" (click)="createNewConstitution()"> Créer </button>
+    <button mat-stroked-button color="warn" (click)="closeWindow()"> Annuler </button>
 </div>

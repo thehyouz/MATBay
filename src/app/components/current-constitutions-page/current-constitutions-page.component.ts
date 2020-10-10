@@ -20,10 +20,10 @@ export class CurrentConstitutionsPageComponent {
               }
 
   isAuthorized(constitution: Constitution): boolean {
-    const isOwner: boolean = (constitution.president.displayName === this.currentUser.displayName);
+    const isOwner: boolean = (constitution.president.uid === this.currentUser.uid);
     let isMember: boolean = false;
     for (const user of constitution.users) {
-      if (user.displayName === this.currentUser.displayName) {
+      if (user.uid === this.currentUser.uid) {
         isMember = true;
       }
     }

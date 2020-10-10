@@ -15,6 +15,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from "@angular/material/input";
 import { MatDialogModule } from "@angular/material/dialog"
+import { MatCheckbox, MatCheckboxModule, MAT_CHECKBOX_CLICK_ACTION } from "@angular/material/checkbox"
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -66,6 +67,7 @@ const firebaseConfig = {
     AngularFireAuthModule,
     MatButtonModule,
     MatDialogModule,
+    MatCheckboxModule,
     MatInputModule,
     MatFormFieldModule,
     MDBBootstrapModule.forRoot()
