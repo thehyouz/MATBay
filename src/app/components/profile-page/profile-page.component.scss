@@ -63,6 +63,16 @@ mat-form-field {
     .mat-form-field-appearance-outline .mat-form-field-outline {
        color: whitesmoke;
     }
+    .mat-form-field.mat-focused .mat-form-field-label {
+        color: whitesmoke !important;
+    }
+    .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+        color: #2E2E2E !important;
+    }
+    .mat-input-element {
+        caret-color: whitesmoke!important;
+    }
+    
     mat-form-field {
         .mat-hint, input, ::placeholder, .mat-form-field-label {
             color: whitesmoke;
@@ -72,4 +82,6 @@ mat-form-field {
 
 button {
     margin: 1%;
+    background-color: #2E2E2E;
+    color: whitesmoke;
 }

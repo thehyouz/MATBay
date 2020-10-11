@@ -14,17 +14,24 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from "@angular/material/input";
+import { MatDialogModule } from "@angular/material/dialog"
+import { MatCheckbox, MatCheckboxModule, MAT_CHECKBOX_CLICK_ACTION } from "@angular/material/checkbox"
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 // Component
 import { AppComponent } from './app.component';
+import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page/current-constitutions-page.component';
-import { ConstitutionsHistoryPageComponent } from './components/constitution-history-page/constitution-history-page/constitutions-history-page.component';
+import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page.component';
+import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page.component';
+import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
+
+// Service
+import { ConstitutionManagerService } from './services/constitution-manager.service';
 
 
 const firebaseConfig = {
@@ -45,7 +52,9 @@ const firebaseConfig = {
     WelcomePageComponent,
     NavbarComponent,
     CurrentConstitutionsPageComponent,
-    ConstitutionsHistoryPageComponent
+    ConstitutionsHistoryPageComponent,
+    NewConstitutionWindowComponent,
+    ConstitutionPageComponent
   ],
   imports: [
     BrowserModule,
@@ -57,11 +66,14 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatButtonModule,
+    MatDialogModule,
+    MatCheckboxModule,
     MatInputModule,
     MatFormFieldModule,
     MDBBootstrapModule.forRoot()
   ],
-  providers: [],
+  providers: [ConstitutionManagerService],
+  entryComponents: [NewConstitutionWindowComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

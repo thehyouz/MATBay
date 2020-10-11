@@ -1,5 +1,5 @@
-import { User } from 'firebase';
 import { SongPlatform } from './song-platform.enum';
+import { User } from './user';
 
 export interface Song {
     shortTitle: string;

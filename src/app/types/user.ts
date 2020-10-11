@@ -6,3 +6,11 @@ export interface User {
 
     timestamp: firebase.firestore.FieldValue;
 }
+
+export const EMPTY_USER: User = {
+    uid: '',
+    email: '',
+    displayName: '',
+    photoURL: '',
+    timestamp: null
+}

@@ -1,0 +1,64 @@
+<div class="title">
+    <h2> CRÉER UNE NOUVELLE CONSTITUTION </h2>
+    <span class="custom-br"></span>
+</div>
+<div class="content">
+    <br>
+    <form [formGroup]="newConstitution">
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Saison </mat-label>
+            <input matInput type="number" min = "0"  formControlName="formSeason">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Partie </mat-label>
+            <input matInput type="number" min = "0"  formControlName="formRound">
+        </mat-form-field>
+        <span class="custom-br"></span>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Nom </mat-label>
+            <input matInput type="text"  formControlName="formName">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Youtube Playlist </mat-label>
+            <input matInput type="text"  formControlName="formYoutubePlaylist">
+        </mat-form-field>
+        <span class="custom-br"></span>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Nombre de chansons par utilisateur </mat-label>
+            <input matInput type="number" min = "1" max="25"  formControlName="formNumberOfSongsPerUser">
+        </mat-form-field>
+        <span class="custom-br"></span>
+        <br>
+        <table>
+            <tr>
+                <th> Option </th>
+                <th> Statut </th>
+            </tr>
+            <tr>
+                <td>
+                    <mat-label> La constitution est publique: </mat-label>
+                </td>
+                <td>
+                    <mat-checkbox color="primary" formControlName="formIsPublic"> </mat-checkbox>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-label> Les utilisateurs sont anonymes: </mat-label>
+                </td>
+                <td>
+                    <mat-checkbox color="primary"> </mat-checkbox>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<br>
+<div class="alignmentButton">
+    <button mat-raised-button color="primary" (click)="createNewConstitution()"> Créer </button>
+    <button mat-stroked-button color="warn" (click)="closeWindow()"> Annuler </button>
+</div>

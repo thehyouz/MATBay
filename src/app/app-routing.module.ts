@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ConstitutionsHistoryPageComponent } from './components/constitution-history-page/constitution-history-page/constitutions-history-page.component';
-import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page/current-constitutions-page.component';
+import { Routes, RouterModule, Route, Router } from '@angular/router';
+import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
+import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page.component';
+import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page.component';
 
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
@@ -18,4 +19,12 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+  constructor(private router: Router) {}
+
+  addConstitutionRoute(name: string): void {
+    const newRoute: Route = {path: "current-constitutions/" + name, component: ConstitutionPageComponent};
+    routes.push(newRoute);
+    this.router.config.push(newRoute);
+  }
+}

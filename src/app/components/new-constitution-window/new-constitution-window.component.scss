@@ -1,0 +1,81 @@
+.alignmentButton {
+    text-align: center;
+}
+
+button {
+    margin: 1%;
+    background-color: #2E2E2E;
+    color: whitesmoke;
+}
+
+.content {
+    color: whitesmoke;
+    text-align: left;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    width: 95%;
+}
+
+.custom-br {
+    width: 95%;
+    height: 2px;
+    background-color: #434647;
+    margin:auto; 
+    display:table;
+}
+
+.error {
+    color: darkred;
+    background-color: lightcoral;
+}
+
+form {
+    color: whitesmoke;
+    width: 100%;
+    text-align: left;
+}
+
+mat-form-field {
+    width: 100%;
+    color: whitesmoke;
+}
+
+::ng-deep {
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+       color: whitesmoke;
+    }
+    .mat-form-field.mat-focused .mat-form-field-label {
+        color: whitesmoke !important;
+    }
+    .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+        color: #2E2E2E !important;
+    }
+    .mat-input-element {
+        caret-color: whitesmoke!important;
+    }
+    
+    mat-form-field {
+        .mat-hint, input, ::placeholder, .mat-form-field-label {
+            color: whitesmoke;
+        }
+    }
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+td, th {
+    border: 1px  whitesmoke;
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    background-color: #2E2E2E;
+}
+
+.title {
+    color: whitesmoke;
+    text-align: center;
+}
