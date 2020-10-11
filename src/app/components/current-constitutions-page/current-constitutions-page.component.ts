@@ -14,16 +14,16 @@ export class CurrentConstitutionsPageComponent {
   private currentUser: User;
 
   constructor(public constitutionManager: ConstitutionManagerService,
-              public auth: AuthService) {
-                this.currentUser = auth.user$.getValue();
-                auth.user$.subscribe(newUser => this.currentUser = newUser);
-              }
+    public auth: AuthService) {
+    this.currentUser = auth.user$.getValue();
+    auth.user$.subscribe(newUser => this.currentUser = newUser);
+  }
 
   isAuthorized(constitution: Constitution): boolean {
-    const isOwner: boolean = (constitution.president.uid === this.currentUser.uid);
+    const isOwner: boolean = (constitution.owner === this.currentUser.uid);
     let isMember: boolean = false;
     for (const user of constitution.users) {
-      if (user.uid === this.currentUser.uid) {
+      if (user === this.currentUser.uid) {
         isMember = true;
       }
     }

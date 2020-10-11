@@ -28,10 +28,10 @@ export class NewConstitutionWindowComponent {
   private constitutionNumberOfSongPerUser: number;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-              private constitutionManager: ConstitutionManagerService,
-              public auth: AuthService,
-              private rooting: AppRoutingModule) {
-    this.currentUser = auth.user$.getValue();           
+    private constitutionManager: ConstitutionManagerService,
+    public auth: AuthService,
+    private rooting: AppRoutingModule) {
+    this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
 
     this.formIsMissingParameters = false;
@@ -69,20 +69,19 @@ export class NewConstitutionWindowComponent {
   createNewConstitution(): void {
     this.updateParameters();
 
-    if(!this.isMissingParameters()) {
+    if (!this.isMissingParameters()) {
       let newConstitution: Constitution = {
         season: this.constitutionSeason,
         round: this.constitutionRound,
         name: this.constitutionName,
         isPublic: this.constitutionIsPublic,
-        president: this.currentUser,
-        winnerUser: EMPTY_USER,
-        users: [this.currentUser],
+        owner: this.currentUser.uid,
+        winnerUserIndex: -1,
+        users: [this.currentUser.uid],
         songs: [],
-        winnerSong: EMPTY_SONG,
+        winnerSongIndex: -1,
         youtubePlaylistID: this.constitutionYoutubePlaylist,
         numberOfSongsPerUser: this.constitutionNumberOfSongPerUser,
-        numberOfSongsMax: 100
       }
 
       this.rooting.addConstitutionRoute(this.constitutionName);

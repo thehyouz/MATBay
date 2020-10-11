@@ -1,8 +1,4 @@
-
 import { Song } from './song';
-import { User } from './user';
-
-export const MAX_LIMIT = 100;
 
 export interface Constitution {
     season: number;
@@ -11,14 +7,13 @@ export interface Constitution {
     isPublic: boolean;
 
     // Users
-    president: User;
-    winnerUser: User;
-    users: User[];
+    owner: string;
+    users: string[];
+    winnerUserIndex: number;
 
     // Songs
     songs: Song[];
-    winnerSong: Song;
+    winnerSongIndex: number;
     youtubePlaylistID: string;
     numberOfSongsPerUser: number;
-    numberOfSongsMax: number;
 }

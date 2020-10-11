@@ -18,11 +18,13 @@
             <td *ngIf="isAuthorized(constitution)"> {{constitution.season}} </td>
             <td *ngIf="isAuthorized(constitution)"> {{constitution.round}} </td>
             <td *ngIf="isAuthorized(constitution)"> {{constitution.name}} </td>
-            <td *ngIf="isAuthorized(constitution)"> {{constitution.president.displayName}}</td>
+            <td *ngIf="isAuthorized(constitution)"> {{constitution.owner}}</td>
             <td *ngIf="isAuthorized(constitution)">
-                <a href="{{constitution.youtubePlaylistID}}" target="_blank">{{constitution.youtubePlaylistID}}</a>
+                <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
+                    target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}</a>
             </td>
-            <button mat-button *ngIf="isAuthorized(constitution)" routerLink="{{constitution.name}}"> Rejoindre </button>
+            <button mat-button *ngIf="isAuthorized(constitution)" routerLink="{{constitution.name}}"> Rejoindre
+            </button>
 
         </tr>
     </table>
