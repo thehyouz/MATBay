@@ -14,16 +14,16 @@
             <th> Youtube Playlist </th>
             <th> Statut </th>
         </tr>
-        <tr *ngFor="let constitution of constitutionManager.constitutions">
-            <td *ngIf="isAuthorized(constitution)"> {{constitution.season}} </td>
-            <td *ngIf="isAuthorized(constitution)"> {{constitution.round}} </td>
-            <td *ngIf="isAuthorized(constitution)"> {{constitution.name}} </td>
-            <td *ngIf="isAuthorized(constitution)"> {{constitution.owner}}</td>
-            <td *ngIf="isAuthorized(constitution)">
+        <tr *ngFor="let constitution of constitutionList">
+            <td> {{constitution.season}} </td>
+            <td> {{constitution.round}} </td>
+            <td> {{constitution.name}} </td>
+            <td> {{constitution.owner}}</td>
+            <td>
                 <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
                     target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}</a>
             </td>
-            <button mat-button *ngIf="isAuthorized(constitution)" routerLink="{{constitution.name}}"> Rejoindre
+            <button mat-button routerLink="{{constitution.name}}"> Rejoindre
             </button>
 
         </tr>
