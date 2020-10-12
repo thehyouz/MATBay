@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution } from 'src/app/types/constitution';
 import { User } from 'src/app/types/user';
 
@@ -11,23 +13,23 @@ import { User } from 'src/app/types/user';
 })
 export class CurrentConstitutionsPageComponent {
 
-  private currentUser: User;
+  public constitutionList: Constitution[];
 
-  constructor(public constitutionManager: ConstitutionManagerService,
-              public auth: AuthService) {
-                this.currentUser = auth.user$.getValue();
-                auth.user$.subscribe(newUser => this.currentUser = newUser);
-              }
-
-  isAuthorized(constitution: Constitution): boolean {
-    const isOwner: boolean = (constitution.president.uid === this.currentUser.uid);
-    let isMember: boolean = false;
-    for (const user of constitution.users) {
-      if (user.uid === this.currentUser.uid) {
-        isMember = true;
-      }
-    }
-    return isOwner || isMember || constitution.isPublic;
+  constructor(
+    public constitutionManager: ConstitutionManagerService,
+    public auth: AuthService,
+    public afs: AngularFirestore,
+    private routing: RoutingService
+  ) {
+    this.constitutionList = [];
+    afs.collection('constitutions/').get().toPromise().then(constitutions => {
+      constitutions.forEach(async constitution => {
+        const data = constitution.data() as Constitution
+        this.routing.addConstitutionRoute(data.name);
+        data.owner = ((await this.afs.doc<User>(`users/${data.owner}`).get().toPromise()).data() as User).displayName;
+        this.constitutionList.push(data);
+      })
+    });
   }
 
 }

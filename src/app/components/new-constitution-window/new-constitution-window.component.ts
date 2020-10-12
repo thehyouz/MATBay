@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution } from 'src/app/types/constitution';
-import { EMPTY_SONG } from 'src/app/types/song';
-import { EMPTY_USER, User } from 'src/app/types/user';
+import { User } from 'src/app/types/user';
 
 @Component({
   selector: 'app-new-constitution-window',
@@ -28,10 +27,10 @@ export class NewConstitutionWindowComponent {
   private constitutionNumberOfSongPerUser: number;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-              private constitutionManager: ConstitutionManagerService,
-              public auth: AuthService,
-              private rooting: AppRoutingModule) {
-    this.currentUser = auth.user$.getValue();           
+    private constitutionManager: ConstitutionManagerService,
+    public auth: AuthService,
+    private routing: RoutingService) {
+    this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
 
     this.formIsMissingParameters = false;
@@ -69,23 +68,22 @@ export class NewConstitutionWindowComponent {
   createNewConstitution(): void {
     this.updateParameters();
 
-    if(!this.isMissingParameters()) {
+    if (!this.isMissingParameters()) {
       let newConstitution: Constitution = {
         season: this.constitutionSeason,
         round: this.constitutionRound,
         name: this.constitutionName,
         isPublic: this.constitutionIsPublic,
-        president: this.currentUser,
-        winnerUser: EMPTY_USER,
-        users: [this.currentUser],
+        owner: this.currentUser.uid,
+        winnerUserIndex: -1,
+        users: [this.currentUser.uid],
         songs: [],
-        winnerSong: EMPTY_SONG,
+        winnerSongIndex: -1,
         youtubePlaylistID: this.constitutionYoutubePlaylist,
         numberOfSongsPerUser: this.constitutionNumberOfSongPerUser,
-        numberOfSongsMax: 100
       }
 
-      this.rooting.addConstitutionRoute(this.constitutionName);
+      this.routing.addConstitutionRoute(this.constitutionName);
 
       this.constitutionManager.constitutions.push(newConstitution);
       this.closeWindow();
