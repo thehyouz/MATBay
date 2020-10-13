@@ -23,8 +23,7 @@
                 <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
                     target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}</a>
             </td>
-            <button mat-button routerLink="{{constitution.name}}"> Rejoindre
-            </button>
+            <button mat-button routerLink="{{constitution.name}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
 
         </tr>
     </table>

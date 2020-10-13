@@ -1,1 +1,12 @@
-<p>constitution-page works!</p>
+<mat-sidenav-container class="sidenav">
+    <div>
+        {{constitution.name}}
+        <span class="custom-br"></span>
+        <br>
+        Avec :
+        <div *ngFor="let user of users" class="user">
+            <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+            <br>
+        </div>
+    </div>
+</mat-sidenav-container>

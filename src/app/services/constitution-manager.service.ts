@@ -9,6 +9,7 @@ import { Constitution } from '../types/constitution';
 
 export class ConstitutionManagerService {
 
+  actualConstitution: Constitution;
   constitutions: Constitution[];
 
   constructor() {

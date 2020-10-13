@@ -32,4 +32,12 @@ export class CurrentConstitutionsPageComponent {
     });
   }
 
+  joinConstitution(constitution: Constitution): void {
+    this.goToConstitution(constitution);
+  }
+
+  goToConstitution(constitution: Constitution): void {
+    this.constitutionManager.actualConstitution = this.constitutionList.find(x => x.name == constitution.name);
+  }  
+
 }
