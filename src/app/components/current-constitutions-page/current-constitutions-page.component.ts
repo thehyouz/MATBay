@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution } from 'src/app/types/constitution';
@@ -17,7 +16,6 @@ export class CurrentConstitutionsPageComponent {
 
   constructor(
     public constitutionManager: ConstitutionManagerService,
-    public auth: AuthService,
     public afs: AngularFirestore,
     private routing: RoutingService
   ) {
