@@ -1,5 +1,9 @@
 import { Song } from './song';
 
+export enum ConstitutionType {
+    SOC, FMTTM
+}
+
 export interface Constitution {
     season: number;
     round: number;

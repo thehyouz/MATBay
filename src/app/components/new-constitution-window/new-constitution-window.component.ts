@@ -27,9 +27,9 @@ export class NewConstitutionWindowComponent {
   private constitutionNumberOfSongPerUser: number;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-    private constitutionManager: ConstitutionManagerService,
-    public auth: AuthService,
-    private routing: RoutingService) {
+              private constitutionManager: ConstitutionManagerService,
+              public auth: AuthService,
+              private routing: RoutingService) {
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
 

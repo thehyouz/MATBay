@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { Constitution } from 'src/app/types/constitution';
 import { User } from 'src/app/types/user';
+import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 
 @Component({
   selector: 'app-constitution-page',
@@ -20,7 +22,8 @@ export class ConstitutionPageComponent {
 
   constructor(public constitutionManager: ConstitutionManagerService,
               private afs: AngularFirestore,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private dialog: MatDialog) {
     this.users = [];
     this.constitution = this.constitutionManager.actualConstitution;
     
@@ -35,6 +38,14 @@ export class ConstitutionPageComponent {
 
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
+  }
+
+  openDialog(): void {
+    this.dialog.open(ManageSongsWindowComponent);
+  }
+
+  getSongIndex(url: string): number {
+    return this.constitution.songs.findIndex(x => x.url == url);
   }
 
   numberOfSongsOfUser(uid: string): number {
