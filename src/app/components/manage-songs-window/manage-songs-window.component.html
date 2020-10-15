@@ -6,9 +6,29 @@
 <div class="title">
     <h4> AJOUTER UNE CHANSON </h4>
     <span class="custom-br"></span>
+    <br>
+    <form [formGroup]="newSongForm">
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Titre </mat-label>
+            <input matInput type="text" formControlName="formShortTitle">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Auteur </mat-label>
+            <input matInput type="text" formControlName="formAuthor">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> URL </mat-label>
+            <input matInput type="text" formControlName="formUrl">
+        </mat-form-field>
+    </form>
+    <button mat-raised-button class="alignmentButton" (click)="addSong()"> Ajouter la chanson </button>
 </div>
 <br>
 <div class="title">
     <h4> RETIRER UNE CHANSON </h4>
     <span class="custom-br"></span>
+    Index de la chanson à retirer
+    <button mat-raised-button class="alignmentButton"> Retirer la chanson </button>
 </div>

@@ -48,6 +48,15 @@ export class ConstitutionPageComponent {
     return this.constitution.songs.findIndex(x => x.url == url);
   }
 
+  showDisplayName(uid: string): string {
+    for (const user of this.users) {
+      if (user.uid == uid) {
+        return user.displayName;
+      }
+    }
+    return "";
+  }
+
   numberOfSongsOfUser(uid: string): number {
     let i = 0;
     for (const song of this.constitution.songs) {

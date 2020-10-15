@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from 'src/app/services/auth.service';
+import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { EMPTY_SONG, Song } from 'src/app/types/song';
+import { SongPlatform } from 'src/app/types/song-platform.enum';
+import { User } from 'src/app/types/user';
 
 @Component({
   selector: 'app-manage-songs-window',
@@ -10,10 +15,57 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 export class ManageSongsWindowComponent {
 
-  // Form
-  public newSong: FormGroup;
+  private currentUser: User;
 
-  constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>) { }
+  public newSongForm: FormGroup;
+  private newSongParameter: Song;
+
+  constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
+              private constitutionManager: ConstitutionManagerService,
+              private auth: AuthService) {
+    this.newSongParameter = EMPTY_SONG;
+
+    this.currentUser = auth.user$.getValue();
+    auth.user$.subscribe(newUser => this.currentUser = newUser);
+
+    this.newSongForm = new FormGroup({
+      formShortTitle: new FormControl(),
+      formAuthor: new FormControl(),
+      formUrl: new FormControl()
+    });
+  }
+
+  isMissingParameters(): boolean {
+    const titleIsMissing: boolean = (this.newSongParameter.shortTitle === null);
+    const authorIsMissing: boolean = (this.newSongParameter.author === null);
+    const urlIsMissing: boolean = (this.newSongParameter.url === null);
+
+    return titleIsMissing || authorIsMissing || urlIsMissing;
+  }
+
+  updateParameters(): void {
+    this.newSongParameter.shortTitle = this.newSongForm.value['formShortTitle'];
+    this.newSongParameter.author = this.newSongForm.value['formAuthor'];
+    this.newSongParameter.url = this.newSongForm.value['formUrl'];
+  }
+
+  addSong(): void {
+    this.updateParameters();
+
+    if(!this.isMissingParameters()) {
+      let newSong: Song = {
+        shortTitle: this.newSongParameter.shortTitle,
+        platform: SongPlatform.Youtube,
+        url: this.newSongParameter.url,
+        patron: this.currentUser.uid,
+        author: this.newSongParameter.author
+      };
+  
+      this.constitutionManager.actualConstitution.songs.push(newSong);
+      console.log(newSong);
+      this.closeWindow();
+    }
+  }
 
   closeWindow(): void {
     this.dialogRef.close();

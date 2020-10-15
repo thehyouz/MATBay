@@ -4,7 +4,7 @@
         <span class="custom-br"></span>
         <div *ngIf="constitution.songs.length == 0"> Aucune chanson </div>
         <div *ngIf="constitution.songs.length != 0"> {{constitution.songs.length}} chansons </div>
-        Il vous reste:
+        Vous avez:
         {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
         <br>
         <br>
@@ -32,8 +32,10 @@
             <td> {{getSongIndex(song.url)}} </td>
             <td> {{song.shortTitle}} </td>
             <td> {{song.author}} </td>
-            <td> {{song.url}} </td>
-            <td> </td>
+            <td> 
+                <a href="{{song.url}}"> {{song.url}} </a>
+            </td>
+            <td> {{showDisplayName(song.patron)}} </td>
         </tr>
     </table>
 </div>

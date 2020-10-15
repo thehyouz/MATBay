@@ -30,6 +30,10 @@ export class CurrentConstitutionsPageComponent {
     });
   }
 
+  removeSpaceInString(string: string): string {
+    return string.replace(/\s/g, "");
+  }
+
   joinConstitution(constitution: Constitution): void {
     this.goToConstitution(constitution);
   }

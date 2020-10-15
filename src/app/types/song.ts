@@ -5,13 +5,14 @@ export interface Song {
     platform: SongPlatform;
     url: string;
     patron: string;
-    author?: string;
+    author: string;
     modifiers?: string[];
 }
 
 export const EMPTY_SONG: Song = {
     shortTitle: '',
-    platform: SongPlatform.Youtube,
+    platform: -1,
     url: '',
-    patron: '',
+    author: '',
+    patron: ''
 }
