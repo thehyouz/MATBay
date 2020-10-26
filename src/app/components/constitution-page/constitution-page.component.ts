@@ -4,6 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { Constitution } from 'src/app/types/constitution';
+import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
@@ -21,6 +22,9 @@ export class ConstitutionPageComponent {
 
   public users: User[];
   public currentUser: User;
+
+  public currentSection: CurrentSectionConstitution = CurrentSectionConstitution.SongList;
+  public SelectionType: typeof CurrentSectionConstitution = CurrentSectionConstitution;
 
   constructor(public constitutionManager: ConstitutionManagerService,
               private afs: AngularFirestore,
@@ -72,6 +76,15 @@ export class ConstitutionPageComponent {
       }
     }
     return i;
+  }
+
+  currentSectionSongList(): void {
+    // TODO : Refresh la liste des chansons du serveur ?
+    this.currentSection = this.SelectionType.SongList;
+  }
+
+  currentSectionOwner(): void {
+    this.currentSection = this.SelectionType.Owner;
   }
 
 }

@@ -20,7 +20,35 @@
 </mat-sidenav-container>
 
 <div class="content">
-    <table id="t01">
+    
+</div>
+
+<div class="content">
+    <!-- Navbar -->
+    <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
+        <!-- Navbar brand -->
+        <mdb-navbar-brand><a class="navbar-brand" routerLink="/"></a></mdb-navbar-brand>
+        <links>
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
+                    <button mat-button class="nav-link waves-light" (click)="currentSectionSongList()"> Liste Chansons </button>
+                </li>
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
+                    <button mat-button class="nav-link waves-light" (click)="currentSectionOwner()"> Présidence </button>
+                </li>
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Stats}">
+                    <button mat-button class="nav-link waves-light" (click)="currentSectionOwner()"> Statistiques </button>
+                </li>
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
+                    <button mat-button class="nav-link waves-light" (click)="currentSectionOwner()"> Exporter </button>
+                </li>
+            </ul>
+        </links>
+    </mdb-navbar>
+    <br>
+    <!-- Table -->
+    <table *ngIf="currentSection === SelectionType.SongList" id="t01">
         <tr>
             <th> Index </th>
             <th> Titre </th>

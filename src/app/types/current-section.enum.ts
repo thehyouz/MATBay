@@ -3,3 +3,10 @@ export enum CurrentSection {
     Constitutions,
     Profile
 }
+
+export enum CurrentSectionConstitution {
+    Owner,
+    SongList,
+    Stats,
+    Export
+}
