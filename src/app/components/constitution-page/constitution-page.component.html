@@ -15,7 +15,7 @@
         </div>
         <span class="custom-br"></span>
         <br>
-        <button mat-button color="primary" (click)="openDialog()"> Gérer mes chansons </button>
+        <button mat-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
     </div>
 </mat-sidenav-container>
 
@@ -29,8 +29,8 @@
             <th> Ajouté par </th>
         </tr>
         <tr *ngFor="let song of constitution.songs">
-            <td> {{getSongIndex(song.url)}} </td>
-            <td> {{song.shortTitle}} </td>
+            <td> {{song.id}} </td>
+            <td> <button mat-button color="primary" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
             <td> {{song.author}} </td>
             <td> 
                 <a href="{{song.url}}"> {{song.url}} </a>

@@ -18,6 +18,7 @@ export class ManageSongsWindowComponent {
   private currentUser: User;
 
   public newSongForm: FormGroup;
+  public deleteSongForm: FormGroup;
   private newSongParameter: Song;
 
   constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
@@ -33,6 +34,10 @@ export class ManageSongsWindowComponent {
       formAuthor: new FormControl(),
       formUrl: new FormControl()
     });
+
+    this.deleteSongForm = new FormGroup({
+      formSongId: new FormControl(),
+    })
   }
 
   isMissingParameters(): boolean {
@@ -53,7 +58,13 @@ export class ManageSongsWindowComponent {
     this.updateParameters();
 
     if(!this.isMissingParameters()) {
+      let newId = 0;
+      if (this.constitutionManager.actualConstitution.songs[this.constitutionManager.actualConstitution.songs.length -1]) {
+        newId = this.constitutionManager.actualConstitution.songs[this.constitutionManager.actualConstitution.songs.length -1].id+1;
+      }
+
       let newSong: Song = {
+        id: newId,
         shortTitle: this.newSongParameter.shortTitle,
         platform: SongPlatform.Youtube,
         url: this.newSongParameter.url,
@@ -62,7 +73,15 @@ export class ManageSongsWindowComponent {
       };
   
       this.constitutionManager.actualConstitution.songs.push(newSong);
-      console.log(newSong);
+      this.closeWindow();
+    }
+  }
+
+  deleteSong(): void {
+    const id = this.deleteSongForm.value['formSongId'];
+    if (id !== null) {
+      const index = this.constitutionManager.actualConstitution.songs.findIndex(x => x.id == id);
+      this.constitutionManager.actualConstitution.songs.splice(index, 1);
       this.closeWindow();
     }
   }

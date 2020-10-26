@@ -1,5 +1,8 @@
 import { Song } from './song';
 
+export const MAX_USER_LIMIT = 10;
+export const MAX_SONG_LIMIT = 100;
+
 export enum ConstitutionType {
     SOC, FMTTM
 }

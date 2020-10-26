@@ -1,6 +1,7 @@
 import { SongPlatform } from './song-platform.enum';
 
 export interface Song {
+    id: number,
     shortTitle: string;
     platform: SongPlatform;
     url: string;
@@ -10,6 +11,7 @@ export interface Song {
 }
 
 export const EMPTY_SONG: Song = {
+    id: -1,
     shortTitle: '',
     platform: -1,
     url: '',

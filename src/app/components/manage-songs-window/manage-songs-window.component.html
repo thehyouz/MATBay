@@ -29,6 +29,12 @@
 <div class="title">
     <h4> RETIRER UNE CHANSON </h4>
     <span class="custom-br"></span>
-    Index de la chanson à retirer
-    <button mat-raised-button class="alignmentButton"> Retirer la chanson </button>
+    <form [formGroup]="deleteSongForm">
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Index de la chanson à retirer </mat-label>
+            <input matInput type="number" formControlName="formSongId">
+        </mat-form-field>
+    </form>
+    
+    <button mat-raised-button class="alignmentButton" (click)="deleteSong()"> Retirer la chanson </button>
 </div>

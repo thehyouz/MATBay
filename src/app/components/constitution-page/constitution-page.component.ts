@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { Constitution } from 'src/app/types/constitution';
+import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
+import { SongWindowComponent } from '../song-window/song-window.component';
 
 @Component({
   selector: 'app-constitution-page',
@@ -40,12 +42,17 @@ export class ConstitutionPageComponent {
     auth.user$.subscribe(newUser => this.currentUser = newUser);
   }
 
-  openDialog(): void {
+  openDialogManageSongs(): void {
     this.dialog.open(ManageSongsWindowComponent);
   }
 
-  getSongIndex(url: string): number {
-    return this.constitution.songs.findIndex(x => x.url == url);
+  openDialogSong(song: Song): void {
+    const dialogConfig = new MatDialogConfig;
+    dialogConfig.data = {
+      song: song,
+      constitution: this.constitution
+    }
+    this.dialog.open(SongWindowComponent, dialogConfig);
   }
 
   showDisplayName(uid: string): string {

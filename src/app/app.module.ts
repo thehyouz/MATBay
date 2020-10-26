@@ -34,6 +34,7 @@ import { ManageSongsWindowComponent } from './components/manage-songs-window/man
 
 // Service
 import { ConstitutionManagerService } from './services/constitution-manager.service';
+import { SongWindowComponent } from './components/song-window/song-window.component';
 
 
 const firebaseConfig = {
@@ -57,7 +58,8 @@ const firebaseConfig = {
     ConstitutionsHistoryPageComponent,
     NewConstitutionWindowComponent,
     ConstitutionPageComponent,
-    ManageSongsWindowComponent
+    ManageSongsWindowComponent,
+    SongWindowComponent
   ],
   imports: [
     BrowserModule,
