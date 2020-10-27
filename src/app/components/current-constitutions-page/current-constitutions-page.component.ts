@@ -21,6 +21,7 @@ export class CurrentConstitutionsPageComponent {
     private routing: RoutingService,
     public auth: AuthService
   ) {
+    this.constitutionManager.constitutions = [];
     afs.collection('constitutions/').get().toPromise().then(constitutions => {
       constitutions.forEach(async constitution => {
         const data = constitution.data() as Constitution

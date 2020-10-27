@@ -56,6 +56,9 @@
             </tr>
         </table>
     </form>
+    <div class="error" *ngIf="currentStatus.error">
+        {{currentStatus.message}}
+    </div>
 </div>
 <br>
 <div class="alignmentButton">

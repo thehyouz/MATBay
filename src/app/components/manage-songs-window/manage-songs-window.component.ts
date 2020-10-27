@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Constitution } from 'src/app/types/constitution';
 import { EMPTY_SONG, Song } from 'src/app/types/song';
 import { SongPlatform } from 'src/app/types/song-platform.enum';
+import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
 
 @Component({
@@ -12,9 +13,10 @@ import { User } from 'src/app/types/user';
   templateUrl: './manage-songs-window.component.html',
   styleUrls: ['./manage-songs-window.component.scss']
 })
-
 export class ManageSongsWindowComponent {
 
+  public currentStatusAdd: Status;
+  public currentStatusDelete: Status;
   private currentUser: User;
   private constitution: Constitution;
 
@@ -25,6 +27,16 @@ export class ManageSongsWindowComponent {
   constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
               private auth: AuthService,
               @Inject(MAT_DIALOG_DATA) data) {
+    this.currentStatusAdd = {
+      error: false,
+      hidden: true,
+      message: ""
+    }
+    this.currentStatusDelete = {
+      error: false,
+      hidden: true,
+      message: ""
+    }
     this.newSongParameter = EMPTY_SONG;
 
     this.currentUser = auth.user$.getValue();
@@ -57,7 +69,6 @@ export class ManageSongsWindowComponent {
     this.newSongParameter.url = this.newSongForm.value['formUrl'];
   }
 
-  // TODO : Message Erreur
   addSong(): void {
     this.updateParameters();
 
@@ -79,18 +90,30 @@ export class ManageSongsWindowComponent {
   
       this.constitution.songs.push(newSong);
       this.closeWindow();
+    } else {
+      this.currentStatusAdd.error = true;
+      this.currentStatusAdd.message = "Erreur : Paramètre manquant";
     }
   }
 
-  // TODO : Message Erreur
   deleteSong(): void {
     const id = this.deleteSongForm.value['formSongId'];
     if (id !== null) {
       const index = this.constitution.songs.findIndex(x => x.id == id);
-      if (this.constitution.songs[index].patron === this.currentUser.uid) {
+      if (index === -1) {
+        this.currentStatusDelete.error = true;
+        this.currentStatusDelete.message = "Erreur : La chanson n'existe pas";
+      }
+      else if (this.constitution.songs[index].patron === this.currentUser.uid) {
         this.constitution.songs.splice(index, 1);
         this.closeWindow();
+      } else {
+        this.currentStatusDelete.error = true;
+        this.currentStatusDelete.message = "Erreur : La chanson ne vous appartient pas";
       }
+    } else {
+      this.currentStatusDelete.error = true;
+      this.currentStatusDelete.message = "Erreur : Paramètre manquant";
     }
   }
 
