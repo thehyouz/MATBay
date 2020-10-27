@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { Constitution } from 'src/app/types/constitution';
@@ -29,9 +30,10 @@ export class ConstitutionPageComponent {
   constructor(public constitutionManager: ConstitutionManagerService,
               private afs: AngularFirestore,
               public auth: AuthService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private router: Router) {
     this.users = [];
-    this.constitution = this.constitutionManager.actualConstitution;
+    this.constitution = this.constitutionManager.constitutions.find(x => this.router.url.includes(this.removeSpaceInString(x.name)));
     
     this.constitution.users.forEach(async uid => {
       const user = ((await this.afs.doc<User>(`users/${uid}`).get().toPromise()).data() as User);
@@ -46,8 +48,16 @@ export class ConstitutionPageComponent {
     auth.user$.subscribe(newUser => this.currentUser = newUser);
   }
 
+  removeSpaceInString(string: string): string {
+    return string.replace(/\s/g, "");
+  }
+
   openDialogManageSongs(): void {
-    this.dialog.open(ManageSongsWindowComponent);
+    const dialogConfig = new MatDialogConfig;
+    dialogConfig.data = {
+      constitution: this.constitution
+    }
+    this.dialog.open(ManageSongsWindowComponent, dialogConfig);
   }
 
   openDialogSong(song: Song): void {
@@ -78,13 +88,15 @@ export class ConstitutionPageComponent {
     return i;
   }
 
-  currentSectionSongList(): void {
-    // TODO : Refresh la liste des chansons du serveur ?
-    this.currentSection = this.SelectionType.SongList;
+  changeCurrentSection(newSection: CurrentSectionConstitution): void {
+    this.currentSection = newSection;
   }
 
-  currentSectionOwner(): void {
-    this.currentSection = this.SelectionType.Owner;
+  showOwnerInfo(): boolean {
+    const isCorrectSection = this.currentSection === this.SelectionType.Owner;
+    const isOwner = this.constitution.owner === this.showDisplayName(this.currentUser.uid);
+    
+    return isCorrectSection && isOwner;
   }
 
 }

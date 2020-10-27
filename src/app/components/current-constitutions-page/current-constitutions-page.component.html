@@ -14,7 +14,7 @@
             <th> Youtube Playlist </th>
             <th> Statut </th>
         </tr>
-        <tr *ngFor="let constitution of constitutionList">
+        <tr *ngFor="let constitution of constitutionManager.constitutions">
             <td> {{constitution.season}} </td>
             <td> {{constitution.round}} </td>
             <td> {{constitution.name}} </td>
@@ -24,7 +24,7 @@
                     target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}</a>
             </td>
             <button *ngIf="!isUserAlreadyAMember(constitution)" mat-button routerLink="{{removeSpaceInString(constitution.name)}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
-            <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{removeSpaceInString(constitution.name)}}" (click)="goToConstitution(constitution)"> Voir </button>
+            <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{removeSpaceInString(constitution.name)}}"> Voir </button>
         </tr>
     </table>
 </div>

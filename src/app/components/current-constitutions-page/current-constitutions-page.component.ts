@@ -13,7 +13,6 @@ import { User } from 'src/app/types/user';
 })
 export class CurrentConstitutionsPageComponent {
 
-  public constitutionList: Constitution[];
   public currentUser: User;
 
   constructor(
@@ -22,13 +21,12 @@ export class CurrentConstitutionsPageComponent {
     private routing: RoutingService,
     public auth: AuthService
   ) {
-    this.constitutionList = [];
     afs.collection('constitutions/').get().toPromise().then(constitutions => {
       constitutions.forEach(async constitution => {
         const data = constitution.data() as Constitution
         this.routing.addConstitutionRoute(data.name);
         data.owner = ((await this.afs.doc<User>(`users/${data.owner}`).get().toPromise()).data() as User).displayName;
-        this.constitutionList.push(data);
+        this.constitutionManager.constitutions.push(data);
       })
     });
 
@@ -42,11 +40,6 @@ export class CurrentConstitutionsPageComponent {
 
   joinConstitution(constitution: Constitution): void {
     constitution.users.push(this.currentUser.uid);
-    this.goToConstitution(constitution);
-  }
-
-  goToConstitution(constitution: Constitution): void {
-    this.constitutionManager.actualConstitution = this.constitutionList.find(x => x.name === constitution.name);
   }
 
   isUserAlreadyAMember(constitution: Constitution): boolean {

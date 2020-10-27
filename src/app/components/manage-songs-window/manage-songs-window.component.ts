@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { Constitution } from 'src/app/types/constitution';
 import { EMPTY_SONG, Song } from 'src/app/types/song';
 import { SongPlatform } from 'src/app/types/song-platform.enum';
 import { User } from 'src/app/types/user';
@@ -16,18 +16,21 @@ import { User } from 'src/app/types/user';
 export class ManageSongsWindowComponent {
 
   private currentUser: User;
+  private constitution: Constitution;
 
   public newSongForm: FormGroup;
   public deleteSongForm: FormGroup;
   private newSongParameter: Song;
 
   constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
-              private constitutionManager: ConstitutionManagerService,
-              private auth: AuthService) {
+              private auth: AuthService,
+              @Inject(MAT_DIALOG_DATA) data) {
     this.newSongParameter = EMPTY_SONG;
 
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
+
+    this.constitution = data.constitution;
 
     this.newSongForm = new FormGroup({
       formShortTitle: new FormControl(),
@@ -54,13 +57,15 @@ export class ManageSongsWindowComponent {
     this.newSongParameter.url = this.newSongForm.value['formUrl'];
   }
 
+  // TODO : Message Erreur
   addSong(): void {
     this.updateParameters();
 
     if(!this.isMissingParameters()) {
       let newId = 0;
-      if (this.constitutionManager.actualConstitution.songs[this.constitutionManager.actualConstitution.songs.length -1]) {
-        newId = this.constitutionManager.actualConstitution.songs[this.constitutionManager.actualConstitution.songs.length -1].id+1;
+
+      if (this.constitution.songs[this.constitution.songs.length -1]) {
+        newId = this.constitution.songs[this.constitution.songs.length -1].id+1;
       }
 
       let newSong: Song = {
@@ -72,17 +77,20 @@ export class ManageSongsWindowComponent {
         author: this.newSongParameter.author
       };
   
-      this.constitutionManager.actualConstitution.songs.push(newSong);
+      this.constitution.songs.push(newSong);
       this.closeWindow();
     }
   }
 
+  // TODO : Message Erreur
   deleteSong(): void {
     const id = this.deleteSongForm.value['formSongId'];
     if (id !== null) {
-      const index = this.constitutionManager.actualConstitution.songs.findIndex(x => x.id == id);
-      this.constitutionManager.actualConstitution.songs.splice(index, 1);
-      this.closeWindow();
+      const index = this.constitution.songs.findIndex(x => x.id == id);
+      if (this.constitution.songs[index].patron === this.currentUser.uid) {
+        this.constitution.songs.splice(index, 1);
+        this.closeWindow();
+      }
     }
   }
 

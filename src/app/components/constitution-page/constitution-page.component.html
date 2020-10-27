@@ -32,22 +32,22 @@
             <!-- Links -->
             <ul class="navbar-nav mr-auto">
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
-                    <button mat-button class="nav-link waves-light" (click)="currentSectionSongList()"> Liste Chansons </button>
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> Liste Chansons </button>
                 </li>
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
-                    <button mat-button class="nav-link waves-light" (click)="currentSectionOwner()"> Présidence </button>
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
                 </li>
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Stats}">
-                    <button mat-button class="nav-link waves-light" (click)="currentSectionOwner()"> Statistiques </button>
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Stats)"> Statistiques </button>
                 </li>
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
-                    <button mat-button class="nav-link waves-light" (click)="currentSectionOwner()"> Exporter </button>
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> Exporter </button>
                 </li>
             </ul>
         </links>
     </mdb-navbar>
     <br>
-    <!-- Table -->
+    <!-- Table Song List-->
     <table *ngIf="currentSection === SelectionType.SongList" id="t01">
         <tr>
             <th> Index </th>
@@ -66,4 +66,9 @@
             <td> {{showDisplayName(song.patron)}} </td>
         </tr>
     </table>
+    <!-- Owner Info -->
+    <div *ngIf="showOwnerInfo()">
+        <button mat-button class="nav-link waves-light"> Terminer {{constitution.name}} </button>
+        <button mat-button class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
+    </div>
 </div>
