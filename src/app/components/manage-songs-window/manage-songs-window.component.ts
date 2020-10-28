@@ -69,30 +69,44 @@ export class ManageSongsWindowComponent {
     this.newSongParameter.url = this.newSongForm.value['formUrl'];
   }
 
-  addSong(): void {
-    this.updateParameters();
-
-    if(!this.isMissingParameters()) {
-      let newId = 0;
-
-      if (this.constitution.songs[this.constitution.songs.length -1]) {
-        newId = this.constitution.songs[this.constitution.songs.length -1].id+1;
+  numberOfSongsOfUser(uid: string): number {
+    let i = 0;
+    for (const song of this.constitution.songs) {
+      if (song.patron == uid) {
+        i++;
       }
+    }
+    return i;
+  }
 
-      let newSong: Song = {
-        id: newId,
-        shortTitle: this.newSongParameter.shortTitle,
-        platform: SongPlatform.Youtube,
-        url: this.newSongParameter.url,
-        patron: this.currentUser.uid,
-        author: this.newSongParameter.author
-      };
-  
-      this.constitution.songs.push(newSong);
-      this.closeWindow();
-    } else {
+  addSong(): void {
+    if(this.numberOfSongsOfUser(this.currentUser.uid) >= this.constitution.numberOfSongsPerUser) {
       this.currentStatusAdd.error = true;
-      this.currentStatusAdd.message = "Erreur : Paramètre manquant";
+      this.currentStatusAdd.message = "Erreur : Vous avez atteint votre nombre max de chanson";
+    } else {
+      this.updateParameters();
+      if(!this.isMissingParameters()) {
+        let newId = 0;
+
+        if (this.constitution.songs[this.constitution.songs.length -1]) {
+          newId = this.constitution.songs[this.constitution.songs.length -1].id+1;
+        }
+
+        let newSong: Song = {
+          id: newId,
+          shortTitle: this.newSongParameter.shortTitle,
+          platform: SongPlatform.Youtube,
+          url: this.newSongParameter.url,
+          patron: this.currentUser.uid,
+          author: this.newSongParameter.author
+        };
+    
+        this.constitution.songs.push(newSong);
+        this.closeWindow();
+      } else {
+        this.currentStatusAdd.error = true;
+        this.currentStatusAdd.message = "Erreur : Paramètre manquant";
+      }
     }
   }
 
