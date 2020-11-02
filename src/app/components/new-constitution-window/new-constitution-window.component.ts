@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution } from 'src/app/types/constitution';
+import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
 
 @Component({
@@ -15,6 +16,7 @@ import { User } from 'src/app/types/user';
 export class NewConstitutionWindowComponent {
 
   private currentUser: User;
+  public currentStatus: Status;
   public formIsMissingParameters: boolean;
 
   // Form
@@ -27,12 +29,17 @@ export class NewConstitutionWindowComponent {
   private constitutionNumberOfSongPerUser: number;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-    private constitutionManager: ConstitutionManagerService,
-    public auth: AuthService,
-    private routing: RoutingService) {
+              private constitutionManager: ConstitutionManagerService,
+              public auth: AuthService,
+              private routing: RoutingService) {
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
 
+    this.currentStatus = {
+      error: false,
+      hidden: true,
+      message: ""
+    }
     this.formIsMissingParameters = false;
 
     this.newConstitution = new FormGroup({
@@ -87,6 +94,9 @@ export class NewConstitutionWindowComponent {
 
       this.constitutionManager.constitutions.push(newConstitution);
       this.closeWindow();
+    } else {
+      this.currentStatus.error = true;
+      this.currentStatus.message = "Erreur : Paramètre manquant";
     }
   }
 

@@ -21,4 +21,8 @@ export class NavbarComponent {
   openDialog(): void {
     this.dialog.open(NewConstitutionWindowComponent);
   }
+
+  changeCurrentSection(newSection: CurrentSection): void {
+    this.currentSection = newSection;
+  }
 }

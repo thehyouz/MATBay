@@ -1,0 +1,63 @@
+.content {
+    margin-left: 22%;
+    margin-right: 3%;
+    margin-bottom: 3%;
+    margin-top: 3%;
+}
+
+.custom-br {
+    width: 95%;
+    height: 2px;
+    background-color: #434647;
+    margin:auto; 
+    display:table;
+}
+
+/* CSS  https://www.w3schools.com/howto/howto_css_fixed_sidebar.asp */
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 19%; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 0; /* Stay on top */
+    top: 0%; /* Stay at the top */
+    left: 0;
+    background-color: #2E2E2E;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 80px;
+    text-align: center;
+    color: whitesmoke;
+}
+
+.picture {
+    display: block;
+    margin: 0 auto;
+
+    width: 60px;
+    height: 60px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;    
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+}
+
+td, th {
+    border: 1px solid #434647;
+    text-align: center;
+    padding: 8px;
+}
+
+#t01 th {
+    background-color: #2E2E2E;
+    color: whitesmoke;
+}
+
+#t01 tr:nth-child(even) {
+    background-color: #434647;
+}
+#t01 tr:nth-child(odd) {
+   background-color: #353738;
+}

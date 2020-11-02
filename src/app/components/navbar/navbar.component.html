@@ -10,11 +10,11 @@
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
             <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Home}">
-                <a class="nav-link waves-light" routerLink="/" mdbWavesEffect>Accueil</a>
+                <a class="nav-link waves-light" routerLink="/" mdbWavesEffect (click)="changeCurrentSection(SelectionType.Home)">Accueil</a>
             </li>
             <!-- Dropdown -->
             <li class="nav-item dropdown" class="{'nav-item':true, 'active': currentSection === SelectionType.Constitutions}" dropdown>
-                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect (click)="changeCurrentSection(SelectionType.Constitutions)">
                 Constitutions<span class="caret"></span></a>
                 <div *dropdownMenu class="dropdown-menu dropdown elegant-color dropdown-primary" role="menu">
                     <button mat-button class="dropdown-item waves-dark"  (click)="openDialog()"id="content"> Créer une Constitution </button>

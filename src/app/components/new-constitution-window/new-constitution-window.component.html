@@ -22,7 +22,7 @@
         </mat-form-field>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Youtube Playlist </mat-label>
+            <mat-label> Youtube Playlist ID </mat-label>
             <input matInput type="text"  formControlName="formYoutubePlaylist">
         </mat-form-field>
         <span class="custom-br"></span>
@@ -56,6 +56,9 @@
             </tr>
         </table>
     </form>
+    <div class="error" *ngIf="currentStatus.error">
+        {{currentStatus.message}}
+    </div>
 </div>
 <br>
 <div class="alignmentButton">

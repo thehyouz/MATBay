@@ -5,10 +5,9 @@ import { Constitution } from '../types/constitution';
   providedIn: 'root'
 })
 
-// Temporaire
-
 export class ConstitutionManagerService {
 
+  // actualConstitution: Constitution;
   constitutions: Constitution[];
 
   constructor() {

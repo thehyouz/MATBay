@@ -2,12 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '../../types/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-interface Status {
-  error: boolean;
-  hidden: boolean;
-  message: string;
-}
+import { Status } from 'src/app/types/status';
 
 @Component({
   selector: 'app-profile-page',

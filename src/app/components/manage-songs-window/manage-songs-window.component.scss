@@ -8,13 +8,6 @@ button {
     color: whitesmoke;
 }
 
-.content {
-    color: whitesmoke;
-    text-align: left;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    width: 95%;
-}
-
 .custom-br {
     width: 95%;
     height: 2px;
@@ -26,6 +19,10 @@ button {
 .error {
     color: darkred;
     background-color: lightcoral;
+}
+
+.title {
+    color: whitesmoke;
     text-align: center;
 }
 
@@ -59,24 +56,4 @@ mat-form-field {
             color: whitesmoke;
         }
     }
-}
-
-table {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-}
-td, th {
-    border: 1px  whitesmoke;
-    text-align: center;
-    padding: 8px;
-}
-
-th {
-    background-color: #2E2E2E;
-}
-
-.title {
-    color: whitesmoke;
-    text-align: center;
 }

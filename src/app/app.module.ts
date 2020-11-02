@@ -15,7 +15,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from "@angular/material/input";
 import { MatDialogModule } from "@angular/material/dialog"
-import { MatCheckbox, MatCheckboxModule, MAT_CHECKBOX_CLICK_ACTION } from "@angular/material/checkbox"
+import { MatCheckboxModule } from "@angular/material/checkbox"
+import { MatSidenavModule } from "@angular/material/sidenav"
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -29,6 +30,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { CurrentConstitutionsPageComponent } from './components/current-constitutions-page/current-constitutions-page.component';
 import { ConstitutionsHistoryPageComponent } from './components/constitutions-history-page/constitutions-history-page.component';
 import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
+import { ManageSongsWindowComponent } from './components/manage-songs-window/manage-songs-window.component';
+import { SongWindowComponent } from './components/song-window/song-window.component';
 
 // Service
 import { ConstitutionManagerService } from './services/constitution-manager.service';
@@ -54,7 +57,9 @@ const firebaseConfig = {
     CurrentConstitutionsPageComponent,
     ConstitutionsHistoryPageComponent,
     NewConstitutionWindowComponent,
-    ConstitutionPageComponent
+    ConstitutionPageComponent,
+    ManageSongsWindowComponent,
+    SongWindowComponent
   ],
   imports: [
     BrowserModule,
@@ -69,11 +74,12 @@ const firebaseConfig = {
     MatDialogModule,
     MatCheckboxModule,
     MatInputModule,
+    MatSidenavModule,
     MatFormFieldModule,
     MDBBootstrapModule.forRoot()
   ],
   providers: [ConstitutionManagerService],
-  entryComponents: [NewConstitutionWindowComponent],
+  entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

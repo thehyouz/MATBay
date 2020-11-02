@@ -1,1 +1,77 @@
-<p>constitution-page works!</p>
+<mat-sidenav-container class="sidenav">
+    <div>
+        <h4> {{constitution.name}} </h4>
+        <span class="custom-br"></span>
+        <div *ngIf="constitution.songs.length == 0"> Aucune chanson </div>
+        <div *ngIf="constitution.songs.length != 0"> {{constitution.songs.length}} chansons </div>
+        Vous avez:
+        {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
+        <br>
+        <br>
+        Membres :
+        <div *ngFor="let user of users">
+            <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+            <br>
+        </div>
+        <span class="custom-br"></span>
+        <br>
+        <button mat-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
+    </div>
+</mat-sidenav-container>
+
+<div class="content">
+    
+</div>
+
+<div class="content">
+    <!-- Navbar -->
+    <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
+        <!-- Navbar brand -->
+        <mdb-navbar-brand><a class="navbar-brand" routerLink="/"></a></mdb-navbar-brand>
+        <links>
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> Liste Chansons </button>
+                </li>
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
+                </li>
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Stats}">
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Stats)"> Statistiques </button>
+                </li>
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> Exporter </button>
+                </li>
+            </ul>
+        </links>
+    </mdb-navbar>
+    <br>
+    <!-- Table Song List-->
+    <table *ngIf="currentSection === SelectionType.SongList" id="t01">
+        <tr>
+            <th> Index </th>
+            <th> Titre </th>
+            <th> Auteur </th>
+            <th> URL </th>
+            <th> Ajouté par </th>
+        </tr>
+        <tr *ngFor="let song of constitution.songs">
+            <td> {{song.id}} </td>
+            <td> <button mat-button color="primary" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+            <td> {{song.author}} </td>
+            <td> 
+                <a href="{{song.url}}"> {{song.url}} </a>
+            </td>
+            <td> {{showDisplayName(song.patron)}} </td>
+        </tr>
+    </table>
+    <!-- Owner Info -->
+    <div *ngIf="showOwnerInfo()">
+        <h3> {{constitution.name}} </h3> 
+        <span class="custom-br"></span>
+        
+        <button mat-button class="nav-link waves-light"> Terminer {{constitution.name}} </button>
+        <button mat-button class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
+    </div>
+</div>

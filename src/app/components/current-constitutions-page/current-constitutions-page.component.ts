@@ -13,23 +13,38 @@ import { User } from 'src/app/types/user';
 })
 export class CurrentConstitutionsPageComponent {
 
-  public constitutionList: Constitution[];
+  public currentUser: User;
 
   constructor(
     public constitutionManager: ConstitutionManagerService,
-    public auth: AuthService,
     public afs: AngularFirestore,
-    private routing: RoutingService
+    private routing: RoutingService,
+    public auth: AuthService
   ) {
-    this.constitutionList = [];
+    this.constitutionManager.constitutions = [];
     afs.collection('constitutions/').get().toPromise().then(constitutions => {
       constitutions.forEach(async constitution => {
         const data = constitution.data() as Constitution
         this.routing.addConstitutionRoute(data.name);
         data.owner = ((await this.afs.doc<User>(`users/${data.owner}`).get().toPromise()).data() as User).displayName;
-        this.constitutionList.push(data);
+        this.constitutionManager.constitutions.push(data);
       })
     });
+
+    this.currentUser = auth.user$.getValue();
+    auth.user$.subscribe(newUser => this.currentUser = newUser);
+  }
+
+  removeSpaceInString(string: string): string {
+    return string.replace(/\s/g, "");
+  }
+
+  joinConstitution(constitution: Constitution): void {
+    constitution.users.push(this.currentUser.uid);
+  }
+
+  isUserAlreadyAMember(constitution: Constitution): boolean {
+    return constitution.users.find(x => x === this.currentUser.uid) !== undefined;
   }
 
 }
