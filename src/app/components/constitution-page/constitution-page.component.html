@@ -68,6 +68,9 @@
     </table>
     <!-- Owner Info -->
     <div *ngIf="showOwnerInfo()">
+        <h3> {{constitution.name}} </h3> 
+        <span class="custom-br"></span>
+        
         <button mat-button class="nav-link waves-light"> Terminer {{constitution.name}} </button>
         <button mat-button class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
     </div>

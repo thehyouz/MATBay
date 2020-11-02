@@ -20,7 +20,7 @@ export interface Constitution {
     users: string[];
     winnerUserIndex: number;
     // numberMaxOfUser: number;
-    // isAnonymous: bool;
+    // isAnonymous: boolean;
 
     // Songs
     songs: Song[];
