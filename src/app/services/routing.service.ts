@@ -11,8 +11,14 @@ export class RoutingService {
 
   constructor(private router: Router) { }
 
-  addConstitutionRoute(name: string): void {
-    const newRoute: Route = { path: "current-constitutions/" + name.replace(/\s/g, ""), component: ConstitutionPageComponent };
+  addConstitutionRoute(youtubeID: string): void {
+    for(const route of ROUTES) {
+      if (route.path.includes(youtubeID)) {
+        return;
+      }
+    }
+
+    const newRoute: Route = { path: "current-constitutions/" + youtubeID, component: ConstitutionPageComponent };
     ROUTES.push(newRoute);
     this.router.config.push(newRoute);
   }

@@ -86,7 +86,7 @@ export class NewConstitutionWindowComponent {
         users: [this.currentUser.uid],
         songs: [],
         winnerSongIndex: -1,
-        youtubePlaylistID: this.constitutionYoutubePlaylist,
+        youtubePlaylistID: this.constitutionYoutubePlaylist? this.constitutionYoutubePlaylist : "",
         numberOfSongsPerUser: this.constitutionNumberOfSongPerUser,
       }
 

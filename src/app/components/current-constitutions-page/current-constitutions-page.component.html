@@ -23,8 +23,8 @@
                 <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
                     target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}</a>
             </td>
-            <button *ngIf="!isUserAlreadyAMember(constitution)" mat-button routerLink="{{removeSpaceInString(constitution.name)}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
-            <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{removeSpaceInString(constitution.name)}}"> Voir </button>
+            <button *ngIf="!isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.youtubePlaylistID}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
+            <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.youtubePlaylistID}}"> Voir </button>
         </tr>
     </table>
 </div>

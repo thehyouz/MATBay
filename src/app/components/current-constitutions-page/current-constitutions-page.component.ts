@@ -25,7 +25,7 @@ export class CurrentConstitutionsPageComponent {
     afs.collection('constitutions/').get().toPromise().then(constitutions => {
       constitutions.forEach(async constitution => {
         const data = constitution.data() as Constitution
-        this.routing.addConstitutionRoute(data.name);
+        this.routing.addConstitutionRoute(data.youtubePlaylistID);
         data.owner = ((await this.afs.doc<User>(`users/${data.owner}`).get().toPromise()).data() as User).displayName;
         this.constitutionManager.constitutions.push(data);
       })
@@ -33,10 +33,6 @@ export class CurrentConstitutionsPageComponent {
 
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
-  }
-
-  removeSpaceInString(string: string): string {
-    return string.replace(/\s/g, "");
   }
 
   joinConstitution(constitution: Constitution): void {

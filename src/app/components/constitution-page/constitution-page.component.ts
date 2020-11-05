@@ -33,7 +33,7 @@ export class ConstitutionPageComponent {
               private dialog: MatDialog,
               private router: Router) {
     this.users = [];
-    this.constitution = this.constitutionManager.constitutions.find(x => this.router.url.includes(this.removeSpaceInString(x.name)));
+    this.constitution = this.constitutionManager.constitutions.find(x => this.router.url.includes(x.youtubePlaylistID));
     
     this.constitution.users.forEach(async uid => {
       const user = ((await this.afs.doc<User>(`users/${uid}`).get().toPromise()).data() as User);
@@ -46,10 +46,6 @@ export class ConstitutionPageComponent {
 
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
-  }
-
-  removeSpaceInString(string: string): string {
-    return string.replace(/\s/g, "");
   }
 
   openDialogManageSongs(): void {
