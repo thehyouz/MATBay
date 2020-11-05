@@ -34,6 +34,9 @@
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
                     <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> Liste Chansons </button>
                 </li>
+                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Vote}">
+                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Vote)"> Zone Électorale </button>
+                </li>
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
                     <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
                 </li>

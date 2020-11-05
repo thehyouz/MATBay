@@ -8,5 +8,6 @@ export enum CurrentSectionConstitution {
     Owner,
     SongList,
     Stats,
-    Export
+    Export,
+    Vote
 }
