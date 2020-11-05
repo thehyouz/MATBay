@@ -9,6 +9,7 @@ export enum ConstitutionType {
 }
 
 export interface Constitution {
+    // firebaseId: string;
     season: number;
     round: number;
     name: string;
@@ -27,4 +28,18 @@ export interface Constitution {
     winnerSongIndex: number;
     youtubePlaylistID: string;
     numberOfSongsPerUser: number;
+}
+
+export const EMPTY_CONSTITUTION: Constitution = {
+    season: -1,
+    round: -1,
+    name: "",
+    isPublic: false,
+    owner: "",
+    users: [],
+    winnerUserIndex: -1,
+    songs: [],
+    winnerSongIndex: -1,
+    youtubePlaylistID: "",
+    numberOfSongsPerUser: -1
 }

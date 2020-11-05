@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { Constitution } from 'src/app/types/constitution';
+import { Constitution, EMPTY_CONSTITUTION } from 'src/app/types/constitution';
 import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
 
@@ -19,14 +19,8 @@ export class NewConstitutionWindowComponent {
   public currentStatus: Status;
   public formIsMissingParameters: boolean;
 
-  // Form
-  public newConstitution: FormGroup;
-  private constitutionSeason: number;
-  private constitutionRound: number;
-  private constitutionName: string;
-  private constitutionIsPublic: boolean;
-  private constitutionYoutubePlaylist: string;
-  private constitutionNumberOfSongPerUser: number;
+  public newConstitutionForm: FormGroup;
+  private newConstitutionParameter: Constitution;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
               private constitutionManager: ConstitutionManagerService,
@@ -40,23 +34,27 @@ export class NewConstitutionWindowComponent {
       hidden: true,
       message: ""
     }
+
+    this.newConstitutionParameter = EMPTY_CONSTITUTION;
     this.formIsMissingParameters = false;
 
-    this.newConstitution = new FormGroup({
-      formSeason: new FormControl(this.constitutionSeason),
-      formRound: new FormControl(this.constitutionRound),
-      formName: new FormControl(this.constitutionName),
-      formIsPublic: new FormControl(this.constitutionIsPublic),
-      formYoutubePlaylist: new FormControl(this.constitutionYoutubePlaylist),
-      formNumberOfSongsPerUser: new FormControl(this.constitutionNumberOfSongPerUser)
+    this.newConstitutionForm = new FormGroup({
+      formSeason: new FormControl(),
+      formRound: new FormControl(),
+      formName: new FormControl(),
+      formIsPublic: new FormControl(),
+      formYoutubePlaylist: new FormControl(),
+      formNumberOfSongsPerUser: new FormControl(),
+      formIsAnonymous: new FormControl(),
+      formNumberOfUser: new FormControl()
     })
   }
 
   isMissingParameters(): boolean {
-    const seasonIsMissing: boolean = (this.constitutionSeason === null);
-    const roundIsMissing: boolean = (this.constitutionRound === null);
-    const nameIsMissing: boolean = (this.constitutionName === null);
-    const numberOfSongsPerUserIsMissing: boolean = (this.constitutionNumberOfSongPerUser === null);
+    const seasonIsMissing: boolean = (this.newConstitutionParameter.season === null);
+    const roundIsMissing: boolean = (this.newConstitutionParameter.round === null);
+    const nameIsMissing: boolean = (this.newConstitutionParameter.name === null);
+    const numberOfSongsPerUserIsMissing: boolean = (this.newConstitutionParameter.numberOfSongsPerUser === null);
 
     this.formIsMissingParameters = seasonIsMissing || roundIsMissing || nameIsMissing || numberOfSongsPerUserIsMissing;
 
@@ -64,12 +62,12 @@ export class NewConstitutionWindowComponent {
   }
 
   updateParameters(): void {
-    this.constitutionSeason = this.newConstitution.value['formSeason'];
-    this.constitutionRound = this.newConstitution.value['formRound'];
-    this.constitutionName = this.newConstitution.value['formName'];
-    this.constitutionIsPublic = this.newConstitution.value['formIsPublic'];
-    this.constitutionYoutubePlaylist = this.newConstitution.value['formYoutubePlaylist'];
-    this.constitutionNumberOfSongPerUser = this.newConstitution.value['formNumberOfSongsPerUser'];
+    this.newConstitutionParameter.season = this.newConstitutionForm.value['formSeason'];
+    this.newConstitutionParameter.round = this.newConstitutionForm.value['formRound'];
+    this.newConstitutionParameter.name = this.newConstitutionForm.value['formName'];
+    this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
+    this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'];
+    this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
   }
 
   createNewConstitution(): void {
@@ -77,20 +75,20 @@ export class NewConstitutionWindowComponent {
 
     if (!this.isMissingParameters()) {
       let newConstitution: Constitution = {
-        season: this.constitutionSeason,
-        round: this.constitutionRound,
-        name: this.constitutionName,
-        isPublic: this.constitutionIsPublic,
+        season:  this.newConstitutionParameter.season,
+        round: this.newConstitutionParameter.round,
+        name: this.newConstitutionParameter.name,
+        isPublic: this.newConstitutionParameter.isPublic,
         owner: this.currentUser.uid,
         winnerUserIndex: -1,
         users: [this.currentUser.uid],
         songs: [],
         winnerSongIndex: -1,
-        youtubePlaylistID: this.constitutionYoutubePlaylist? this.constitutionYoutubePlaylist : "",
-        numberOfSongsPerUser: this.constitutionNumberOfSongPerUser,
+        youtubePlaylistID: this.newConstitutionParameter.youtubePlaylistID? this.newConstitutionParameter.youtubePlaylistID : "",
+        numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser,
       }
 
-      this.routing.addConstitutionRoute(this.constitutionName);
+      this.routing.addConstitutionRoute(newConstitution.youtubePlaylistID);
 
       this.constitutionManager.constitutions.push(newConstitution);
       this.closeWindow();

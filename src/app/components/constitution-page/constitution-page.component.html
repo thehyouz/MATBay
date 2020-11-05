@@ -38,7 +38,7 @@
                     <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Vote)"> Zone Électorale </button>
                 </li>
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
-                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
+                    <button *ngIf="constitution.owner === currentUser.uid" mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
                 </li>
                 <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Stats}">
                     <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Stats)"> Statistiques </button>
