@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ROUTES } from 'src/app/constants/routes';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -24,8 +25,9 @@ export class CurrentConstitutionsPageComponent {
     this.constitutionManager.constitutions = [];
     afs.collection('constitutions/').get().toPromise().then(constitutions => {
       constitutions.forEach(async constitution => {
-        const data = constitution.data() as Constitution
-        this.routing.addConstitutionRoute(data.youtubePlaylistID);
+        const data = constitution.data() as Constitution;
+        // this.routing.addConstitutionRoute(data.youtubePlaylistID);
+        this.routing.addConstitutionRoute(data.id);
         data.owner = ((await this.afs.doc<User>(`users/${data.owner}`).get().toPromise()).data() as User).displayName;
         this.constitutionManager.constitutions.push(data);
       })

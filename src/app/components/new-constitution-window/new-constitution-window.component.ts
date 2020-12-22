@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
@@ -25,7 +26,8 @@ export class NewConstitutionWindowComponent {
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
               private constitutionManager: ConstitutionManagerService,
               public auth: AuthService,
-              private routing: RoutingService) {
+              private routing: RoutingService,
+              public afs: AngularFirestore) {
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
 
@@ -70,11 +72,12 @@ export class NewConstitutionWindowComponent {
     this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
   }
 
-  createNewConstitution(): void {
+  async createNewConstitution(): Promise<void> {
     this.updateParameters();
 
     if (!this.isMissingParameters()) {
-      let newConstitution: Constitution = {
+      /* let newConstitution: Constitution = {
+        // id: '',
         season:  this.newConstitutionParameter.season,
         round: this.newConstitutionParameter.round,
         name: this.newConstitutionParameter.name,
@@ -86,11 +89,32 @@ export class NewConstitutionWindowComponent {
         winnerSongIndex: -1,
         youtubePlaylistID: this.newConstitutionParameter.youtubePlaylistID? this.newConstitutionParameter.youtubePlaylistID : "",
         numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser,
-      }
+      } */
 
-      this.routing.addConstitutionRoute(newConstitution.youtubePlaylistID);
+      // this.routing.addConstitutionRoute(newConstitution.youtubePlaylistID);
+      // this.routing.addConstitutionRoute(this.newConstitutionParameter.youtubePlaylistID);
 
-      this.constitutionManager.constitutions.push(newConstitution);
+      // this.constitutionManager.constitutions.push(newConstitution);
+      
+      const test = await this.afs.collection('constitutions/').add({})
+
+      this.afs.collection('constitutions/').doc(test.id).set({
+        id: test.id,
+        season:  this.newConstitutionParameter.season,
+        round: this.newConstitutionParameter.round,
+        name: this.newConstitutionParameter.name,
+        isPublic: this.newConstitutionParameter.isPublic,
+        owner: this.currentUser.uid,
+        winnerUserIndex: -1,
+        users: [this.currentUser.uid],
+        songs: [],
+        winnerSongIndex: -1,
+        youtubePlaylistID: this.newConstitutionParameter.youtubePlaylistID? this.newConstitutionParameter.youtubePlaylistID : "",
+        numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser
+      });
+
+      this.routing.addConstitutionRoute(test.id);
+      
       this.closeWindow();
     } else {
       this.currentStatus.error = true;

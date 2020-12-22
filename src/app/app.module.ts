@@ -89,7 +89,7 @@ const firebaseConfig = {
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private afs: AngularFirestore,
+  /*constructor(private afs: AngularFirestore,
               private routing: RoutingService) { 
 
     afs.collection('constitutions/').get().toPromise().then(constitutions => {
@@ -99,6 +99,6 @@ export class AppModule {
       })
     });
     console.log(ROUTES);
-  }
+  }*/
 
 }

@@ -9,7 +9,8 @@ export enum ConstitutionType {
 }
 
 export interface Constitution {
-    // firebaseId: string;
+    id: string;
+
     season: number;
     round: number;
     name: string;
@@ -31,6 +32,7 @@ export interface Constitution {
 }
 
 export const EMPTY_CONSTITUTION: Constitution = {
+    id: "",
     season: -1,
     round: -1,
     name: "",

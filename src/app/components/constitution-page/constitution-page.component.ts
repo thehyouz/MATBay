@@ -33,7 +33,7 @@ export class ConstitutionPageComponent {
               private dialog: MatDialog,
               private router: Router) {
     this.users = [];
-    this.constitution = this.constitutionManager.constitutions.find(x => this.router.url.includes(x.youtubePlaylistID));
+    this.constitution = this.constitutionManager.constitutions.find(x => this.router.url.includes(x.id));
     
     this.constitution.users.forEach(async uid => {
       const user = ((await this.afs.doc<User>(`users/${uid}`).get().toPromise()).data() as User);
