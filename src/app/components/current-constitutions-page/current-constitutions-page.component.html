@@ -20,8 +20,11 @@
             <td> {{constitution.name}} </td>
             <td> {{constitution.owner}}</td>
             <td>
-                <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
-                    target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}</a>
+                <div *ngIf="constitution.youtubePlaylistID != ''"> 
+                    <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
+                    target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}} </a>
+                </div>
+                <div *ngIf="constitution.youtubePlaylistID == ''"> Pas de lien Youtube Playlist disponible </div>
             </td>
             <button *ngIf="!isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.id}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
             <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.id}}"> Voir </button>

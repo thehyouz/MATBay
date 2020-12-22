@@ -21,8 +21,8 @@ export interface Constitution {
     owner: string;
     users: string[];
     winnerUserIndex: number;
-    // numberMaxOfUser: number;
-    // isAnonymous: boolean;
+    numberMaxOfUser: number;
+    isAnonymous: boolean;
 
     // Songs
     songs: Song[];
@@ -40,6 +40,8 @@ export const EMPTY_CONSTITUTION: Constitution = {
     owner: "",
     users: [],
     winnerUserIndex: -1,
+    numberMaxOfUser: -1,
+    isAnonymous: false,
     songs: [],
     winnerSongIndex: -1,
     youtubePlaylistID: "",

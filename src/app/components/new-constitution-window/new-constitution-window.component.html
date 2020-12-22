@@ -32,11 +32,11 @@
         Utilisateurs:
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nombre d'utilisateurs </mat-label>
-            <input matInput type="number" min = "4" max="10"  formControlName="formNumberOfUser">
+            <input matInput type="number" formControlName="formNumberMaxOfUser">
         </mat-form-field>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nombre de chansons par utilisateur </mat-label>
-            <input matInput type="number" min = "1" max="25"  formControlName="formNumberOfSongsPerUser">
+            <input matInput type="number" formControlName="formNumberOfSongsPerUser">
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
