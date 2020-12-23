@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
@@ -26,7 +27,8 @@ export class ManageSongsWindowComponent {
 
   constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
               private auth: AuthService,
-              @Inject(MAT_DIALOG_DATA) data) {
+              @Inject(MAT_DIALOG_DATA) data,
+              public afs: AngularFirestore) {
     this.currentStatusAdd = {
       error: false,
       hidden: true,
@@ -100,6 +102,15 @@ export class ManageSongsWindowComponent {
           patron: this.currentUser.uid,
           author: this.newSongParameter.author
         };
+
+        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').add({
+          id: newSong.id,
+          shortTitle: newSong.shortTitle,
+          platform: newSong.platform,
+          url: newSong.shortTitle,
+          patron: newSong.patron,
+          author: newSong.author
+        })
     
         this.constitution.songs.push(newSong);
         this.closeWindow();

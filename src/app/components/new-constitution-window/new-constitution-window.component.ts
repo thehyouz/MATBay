@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
-// import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
 import { Status } from 'src/app/types/status';
@@ -24,7 +24,7 @@ export class NewConstitutionWindowComponent {
   private newConstitutionParameter: Constitution;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-              // private constitutionManager: ConstitutionManagerService,
+              private constitutionManager: ConstitutionManagerService,
               public auth: AuthService,
               private routing: RoutingService,
               public afs: AngularFirestore) {
@@ -92,10 +92,10 @@ export class NewConstitutionWindowComponent {
       this.currentStatus.error = true;
       this.currentStatus.message = "Erreur : Valeurs limites du nombre d'utilisteur (4 à 10) ou du nombre de chansons (100) ont été dépassés";
     } else {
-      const newConstitution = await this.afs.collection('constitutions/').add({})
+      const newConstitutionFirebase = await this.afs.collection('constitutions/').add({});
 
-      this.afs.collection('constitutions/').doc(newConstitution.id).set({
-        id: newConstitution.id,
+      this.afs.collection('constitutions/').doc(newConstitutionFirebase.id).set({
+        id: newConstitutionFirebase.id,
         season:  this.newConstitutionParameter.season,
         round: this.newConstitutionParameter.round,
         name: this.newConstitutionParameter.name,
@@ -111,8 +111,8 @@ export class NewConstitutionWindowComponent {
         numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser
       });
 
-      this.routing.addConstitutionRoute(newConstitution.id);
-      // this.constitutionManager.constitutions.push(newConstitution);
+      this.routing.addConstitutionRoute(newConstitutionFirebase.id);
+      this.constitutionManager.constitutions.push(this.newConstitutionParameter);
 
       this.closeWindow();
     }

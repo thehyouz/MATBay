@@ -7,7 +7,7 @@ export interface Song {
     url: string;
     patron: string;
     author: string;
-    modifiers?: string[];
+    // modifiers?: string[];
 }
 
 export const EMPTY_SONG: Song = {

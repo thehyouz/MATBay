@@ -40,9 +40,14 @@ export class ConstitutionPageComponent {
       this.users.push(user);
     });
 
-    if(this.constitution.songs == null) {
-      this.constitution.songs = [];
-    }
+    this.constitution.songs = [];
+
+    afs.collection('constitutions/').doc(this.constitution.id).collection('/songs').get().toPromise().then(songs => {
+      songs.forEach(async song => {
+        const data = song.data() as Song;
+        this.constitution.songs.push(data);
+      })
+    })
 
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
