@@ -14,10 +14,11 @@ const YOUTUBE_HEADER_LENGTH = 32;
 })
 
 export class SongWindowComponent {
-
   song: Song;
   constitution: Constitution;
   safeUrl: SafeResourceUrl;
+
+  grade: number;
 
   constructor(private dialogRef: MatDialogRef<SongWindowComponent>,
               @Inject(MAT_DIALOG_DATA) data,
@@ -28,11 +29,23 @@ export class SongWindowComponent {
     this.safeUrl = this.makeSafeURL();
   }
 
+  array(n: number): any[] {
+    return Array(n);
+  }
+
   makeSafeURL(): SafeResourceUrl {
     if (this.song.platform == SongPlatform.Youtube) {
       return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(YOUTUBE_HEADER_LENGTH));
     }
     return "";
+  }
+
+  updateGrade(newGrade: number): void {
+    this.grade = newGrade;
+  }
+
+  isSelected(number: number): boolean {
+    return number == this.grade;
   }
 
   closeWindow(): void {

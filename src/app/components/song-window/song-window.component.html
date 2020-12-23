@@ -12,7 +12,13 @@
     </iframe>
 </div>
 <br>
+<div class="alignment">
+    <span *ngFor="let button of array(10) ; index as i">
+        <button *ngIf="!isSelected(i)" mat-raised-button class="vote-button" (click)="updateGrade(i)"> {{i+1}} </button>
+        <button *ngIf="isSelected(i)" mat-raised-button color="primary" (click)="updateGrade(i)"> {{i+1}} </button>
+    </span>
+</div>
 <br>
-<div class="alignmentButton">
+<div>
     <button mat-stroked-button color="warn" (click)="closeWindow()"> Annuler </button>
 </div>
