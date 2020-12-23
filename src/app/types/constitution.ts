@@ -15,7 +15,7 @@ export interface Constitution {
     round: number;
     name: string;
     isPublic: boolean;
-    // type: ConstitutionType;
+    type: ConstitutionType;
     // isLocked: boolean;
 
     // Users
@@ -38,6 +38,7 @@ export const EMPTY_CONSTITUTION: Constitution = {
     round: -1,
     name: "",
     isPublic: false,
+    type: 0,
     owner: "",
     users: [],
     winnerUserIndex: -1,

@@ -43,4 +43,8 @@ export class CurrentConstitutionsPageComponent {
     return constitution.users.find(x => x === this.currentUser.uid) !== undefined;
   }
 
+  isConstitutionFull(constitution: Constitution): boolean {
+    return constitution.numberMaxOfUser == constitution.users.length;
+  }
+
 }

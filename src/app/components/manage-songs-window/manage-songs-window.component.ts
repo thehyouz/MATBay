@@ -53,7 +53,7 @@ export class ManageSongsWindowComponent {
     });
 
     this.deleteSongForm = new FormGroup({
-      formSongId: new FormControl(),
+      formSongConstitutionNumber: new FormControl(),
     })
   }
 
@@ -108,9 +108,10 @@ export class ManageSongsWindowComponent {
 
         this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(newSongID).set({
           id: newSong.id,
+          constitutionNumber: newSong.constitutionNumber,
           shortTitle: newSong.shortTitle,
           platform: newSong.platform,
-          url: newSong.shortTitle,
+          url: newSong.url,
           patron: newSong.patron,
           author: newSong.author
         })
@@ -125,9 +126,9 @@ export class ManageSongsWindowComponent {
   }
 
   deleteSong(): void {
-    const id = this.deleteSongForm.value['formSongId'];
-    if (id !== null) {
-      const index = this.constitution.songs.findIndex(x => x.id == id);
+    const constitutionNumber = this.deleteSongForm.value['formSongConstitutionNumber'];
+    if (constitutionNumber !== null) {
+      const index = this.constitution.songs.findIndex(x => x.constitutionNumber == constitutionNumber);
       if (index === -1) {
         this.currentStatusDelete.error = true;
         this.currentStatusDelete.message = "Erreur : La chanson n'existe pas";

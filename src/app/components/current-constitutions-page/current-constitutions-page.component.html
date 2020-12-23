@@ -26,7 +26,8 @@
                 </div>
                 <div *ngIf="constitution.youtubePlaylistID == ''"> Pas de lien Youtube Playlist disponible </div>
             </td>
-            <button *ngIf="!isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.id}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
+            <button *ngIf="!isUserAlreadyAMember(constitution) && !isConstitutionFull(constitution)" mat-button routerLink="{{constitution.id}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
+            <div class="title" *ngIf="!isUserAlreadyAMember(constitution) && isConstitutionFull(constitution)"> Complet </div>
             <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.id}}"> Voir </button>
         </tr>
     </table>

@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { Constitution, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
+import { Constitution, ConstitutionType, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
 import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
 
@@ -83,8 +83,6 @@ export class NewConstitutionWindowComponent {
   async createNewConstitution(): Promise<void> {
     this.updateParameters();
 
-    console.log(this.newConstitutionParameter);
-
     if (this.isMissingParameters()) {
       this.currentStatus.error = true;
       this.currentStatus.message = "Erreur : Paramètre manquant";
@@ -101,6 +99,7 @@ export class NewConstitutionWindowComponent {
         round: this.newConstitutionParameter.round,
         name: this.newConstitutionParameter.name,
         isPublic: this.newConstitutionParameter.isPublic? this.newConstitutionParameter.isPublic : false,
+        type: ConstitutionType.SOC,
         owner: this.currentUser.uid,
         winnerUserIndex: -1,
         numberMaxOfUser: this.newConstitutionParameter.numberMaxOfUser,
@@ -118,6 +117,7 @@ export class NewConstitutionWindowComponent {
         round: newConstitution.round,
         name: newConstitution.name,
         isPublic: newConstitution.isPublic? newConstitution.isPublic : false,
+        type: newConstitution.type,
         owner: this.currentUser.uid,
         winnerUserIndex: -1,
         numberMaxOfUser: newConstitution.numberMaxOfUser,

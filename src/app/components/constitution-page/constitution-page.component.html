@@ -16,7 +16,7 @@
         </div>
         <span class="custom-br"></span>
         <br>
-        <button mat-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
+        <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
     </div>
 </mat-sidenav-container>
 
@@ -62,7 +62,7 @@
         </tr>
         <tr *ngFor="let song of constitution.songs">
             <td> {{song.constitutionNumber}} </td>
-            <td> <button mat-button color="primary" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+            <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
             <td> {{song.author}} </td>
             <td> 
                 <a href="{{song.url}}"> {{song.url}} </a>
@@ -80,7 +80,7 @@
         </tr>
         <tr *ngFor="let song of constitution.songs">
             <td> {{song.constitutionNumber}} </td>
-            <td> <button mat-button color="primary" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+            <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
             <td> 
                 <a href="{{song.url}}"> {{song.url}} </a>
             </td>
@@ -95,7 +95,10 @@
             <li> Saison {{constitution.season}} - Partie {{constitution.round}} <br> </li>
             <li> Nombre de participant : {{constitution.users.length}}/{{constitution.numberMaxOfUser}}</li>
         </div>
-        <button mat-button class="nav-link waves-light"> Terminer {{constitution.name}} </button>
-        <button mat-button class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
+        <br>
+        <div>
+            <button mat-raised-button color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
+            <button mat-raised-button color="primary" class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
+        </div>
     </div>
 </div>
