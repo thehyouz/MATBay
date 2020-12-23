@@ -3,7 +3,8 @@
         <h4> {{constitution.name}} </h4>
         <span class="custom-br"></span>
         <div *ngIf="constitution.songs.length == 0"> Aucune chanson </div>
-        <div *ngIf="constitution.songs.length != 0"> {{constitution.songs.length}} chansons </div>
+        <div *ngIf="constitution.songs.length == 1"> {{constitution.songs.length}} chanson </div>
+        <div *ngIf="constitution.songs.length > 1"> {{constitution.songs.length}} chansons </div>
         Vous avez:
         {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
         <br>
@@ -60,7 +61,7 @@
             <th> Ajouté par </th>
         </tr>
         <tr *ngFor="let song of constitution.songs">
-            <td> {{song.id}} </td>
+            <td> {{song.constitutionNumber}} </td>
             <td> <button mat-button color="primary" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
             <td> {{song.author}} </td>
             <td> 
@@ -69,13 +70,30 @@
             <td> {{showDisplayName(song.patron)}} </td>
         </tr>
     </table>
+    <!-- Vote List -->
+    <table *ngIf="currentSection === SelectionType.Vote" id="t01">
+        <tr>
+            <th> Index </th>
+            <th> Titre </th>
+            <th> URL </th>
+            <th> Note </th>
+        </tr>
+        <tr *ngFor="let song of constitution.songs">
+            <td> {{song.constitutionNumber}} </td>
+            <td> <button mat-button color="primary" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+            <td> 
+                <a href="{{song.url}}"> {{song.url}} </a>
+            </td>
+            <td> </td>
+        </tr>
+    </table>
     <!-- Owner Info -->
     <div *ngIf="showOwnerInfo()">
         <h3> {{constitution.name}} </h3> 
         <span class="custom-br"></span>
         <div>
-            Saison {{constitution.season}} <br>
-            Partie {{constitution.round}} <br>
+            <li> Saison {{constitution.season}} - Partie {{constitution.round}} <br> </li>
+            <li> Nombre de participant : {{constitution.users.length}}/{{constitution.numberMaxOfUser}}</li>
         </div>
         <button mat-button class="nav-link waves-light"> Terminer {{constitution.name}} </button>
         <button mat-button class="nav-link waves-light"> Supprimer {{constitution.name}} </button>

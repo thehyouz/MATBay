@@ -92,10 +92,11 @@ export class NewConstitutionWindowComponent {
       this.currentStatus.error = true;
       this.currentStatus.message = "Erreur : Valeurs limites du nombre d'utilisteur (4 à 10) ou du nombre de chansons (100) ont été dépassés";
     } else {
-      const newConstitutionFirebase = await this.afs.collection('constitutions/').add({});
 
-      this.afs.collection('constitutions/').doc(newConstitutionFirebase.id).set({
-        id: newConstitutionFirebase.id,
+      const newConstitutionID = this.afs.createId();
+
+      let newConstitution: Constitution = {
+        id: newConstitutionID,
         season:  this.newConstitutionParameter.season,
         round: this.newConstitutionParameter.round,
         name: this.newConstitutionParameter.name,
@@ -109,10 +110,27 @@ export class NewConstitutionWindowComponent {
         winnerSongIndex: -1,
         youtubePlaylistID: this.newConstitutionParameter.youtubePlaylistID? this.newConstitutionParameter.youtubePlaylistID : "",
         numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser
+      }
+
+      this.afs.collection('constitutions/').doc(newConstitutionID).set({
+        id: newConstitution.id,
+        season:  newConstitution.season,
+        round: newConstitution.round,
+        name: newConstitution.name,
+        isPublic: newConstitution.isPublic? newConstitution.isPublic : false,
+        owner: this.currentUser.uid,
+        winnerUserIndex: -1,
+        numberMaxOfUser: newConstitution.numberMaxOfUser,
+        users: [this.currentUser.uid],
+        isAnonymous: newConstitution.isAnonymous? newConstitution.isAnonymous : false,
+        songs: [],
+        winnerSongIndex: -1,
+        youtubePlaylistID: newConstitution.youtubePlaylistID? newConstitution.youtubePlaylistID : "",
+        numberOfSongsPerUser: newConstitution.numberOfSongsPerUser
       });
 
-      this.routing.addConstitutionRoute(newConstitutionFirebase.id);
-      this.constitutionManager.constitutions.push(this.newConstitutionParameter);
+      this.routing.addConstitutionRoute(newConstitution.id);
+      this.constitutionManager.constitutions.push(newConstitution);
 
       this.closeWindow();
     }

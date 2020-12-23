@@ -88,14 +88,17 @@ export class ManageSongsWindowComponent {
     } else {
       this.updateParameters();
       if(!this.isMissingParameters()) {
-        let newId = 0;
+        let newConstitutionNumber = 0;
 
         if (this.constitution.songs[this.constitution.songs.length -1]) {
-          newId = this.constitution.songs[this.constitution.songs.length -1].id+1;
+          newConstitutionNumber = this.constitution.songs[this.constitution.songs.length -1].constitutionNumber+1;
         }
 
+        const newSongID = this.afs.createId();
+
         let newSong: Song = {
-          id: newId,
+          id: newSongID,
+          constitutionNumber: newConstitutionNumber,
           shortTitle: this.newSongParameter.shortTitle,
           platform: SongPlatform.Youtube,
           url: this.newSongParameter.url,
@@ -103,7 +106,7 @@ export class ManageSongsWindowComponent {
           author: this.newSongParameter.author
         };
 
-        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').add({
+        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(newSongID).set({
           id: newSong.id,
           shortTitle: newSong.shortTitle,
           platform: newSong.platform,

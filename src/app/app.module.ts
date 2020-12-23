@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 
 // Fire
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestore, AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 
 // Material
@@ -36,9 +36,6 @@ import { SongWindowComponent } from './components/song-window/song-window.compon
 // Service
 import { ConstitutionManagerService } from './services/constitution-manager.service';
 import { RouterModule } from '@angular/router';
-import { ROUTES } from './constants/routes';
-import { RoutingService } from './services/routing.service';
-import { Constitution } from './types/constitution';
 
 
 const firebaseConfig = {
@@ -66,7 +63,6 @@ const firebaseConfig = {
     SongWindowComponent
   ],
   imports: [
-    RouterModule.forRoot(ROUTES),
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -88,17 +84,4 @@ const firebaseConfig = {
   entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  /*constructor(private afs: AngularFirestore,
-              private routing: RoutingService) { 
-
-    afs.collection('constitutions/').get().toPromise().then(constitutions => {
-      constitutions.forEach(async constitution => {
-        const data = constitution.data() as Constitution
-        this.routing.addConstitutionRoute(data.youtubePlaylistID);
-      })
-    });
-    console.log(ROUTES);
-  }*/
-
-}
+export class AppModule {}
