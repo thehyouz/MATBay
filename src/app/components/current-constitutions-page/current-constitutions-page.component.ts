@@ -37,6 +37,9 @@ export class CurrentConstitutionsPageComponent {
 
   joinConstitution(constitution: Constitution): void {
     constitution.users.push(this.currentUser.uid);
+    this.afs.collection("constitutions/").doc(constitution.id).update({
+      users: constitution.users
+    })
   }
 
   isUserAlreadyAMember(constitution: Constitution): boolean {

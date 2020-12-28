@@ -32,26 +32,42 @@ export class ConstitutionPageComponent {
               public auth: AuthService,
               private dialog: MatDialog,
               private router: Router) {
-    this.users = [];
     this.constitution = this.constitutionManager.constitutions.find(x => this.router.url.includes(x.id));
-    
-    // TODO: Optimiser le nombre de lecture
-    this.constitution.users.forEach(async uid => {
-      const user = ((await this.afs.doc<User>(`users/${uid}`).get().toPromise()).data() as User);
-      this.users.push(user);
-    });
+  
+    this.users = [];
+    afs.collection('users/').get().toPromise().then(users => {
+      users.forEach(async user => {
+        const data = user.data() as User;
+        if (this.constitution.users.includes(data.uid)) {
+          this.users.push(data);
+        }
+      });
+      this.users = this.users.sort(this.compareUserName);
+    })
 
     this.constitution.songs = [];
-
     afs.collection('constitutions/').doc(this.constitution.id).collection('/songs').get().toPromise().then(songs => {
       songs.forEach(async song => {
         const data = song.data() as Song;
         this.constitution.songs.push(data);
-      })
+      });
+      this.constitution.songs.sort(this.compareSongConstitutionNumber);
     })
 
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
+  }
+
+  compareUserName(user1: User, user2: User): number {
+    if (user1.displayName > user2.displayName) {return 1;}
+    if (user1.displayName < user2.displayName) {return -1;}
+    return 0;
+  }
+
+  compareSongConstitutionNumber(song1: Song, song2: Song): number {
+    if (song1.constitutionNumber > song2.constitutionNumber) { return 1; }
+    if (song1.constitutionNumber < song2.constitutionNumber) { return -1; }
+    return 0;
   }
 
   openDialogManageSongs(): void {
@@ -66,7 +82,8 @@ export class ConstitutionPageComponent {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
       song: song,
-      constitution: this.constitution
+      constitution: this.constitution,
+      currentSection: this.currentSection
     }
     this.dialog.open(SongWindowComponent, dialogConfig);
   }
