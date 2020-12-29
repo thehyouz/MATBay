@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
-import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution } from 'src/app/types/constitution';
 import { User } from 'src/app/types/user';
 
@@ -14,25 +13,21 @@ import { User } from 'src/app/types/user';
 export class CurrentConstitutionsPageComponent {
 
   public currentUser: User;
+  public constitutions:Constitution[]
 
   constructor(
     public constitutionManager: ConstitutionManagerService,
     public afs: AngularFirestore,
-    private routing: RoutingService,
-    public auth: AuthService
+    public auth: AuthService,
   ) {
-    this.constitutionManager.constitutions = [];
-    afs.collection('constitutions/').get().toPromise().then(constitutions => {
-      constitutions.forEach(async constitution => {
-        const data = constitution.data() as Constitution;
-        this.routing.addConstitutionRoute(data.id);
-        data.owner = ((await this.afs.doc<User>(`users/${data.owner}`).get().toPromise()).data() as User).displayName;
-        this.constitutionManager.constitutions.push(data);
-      })
-    });
 
+    // update current user
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
+
+    // update current constitution
+    this.constitutions = this.constitutionManager.constitutions.getValue();
+    this.constitutionManager.constitutions.subscribe(newList => this.constitutions = newList);
   }
 
   joinConstitution(constitution: Constitution): void {

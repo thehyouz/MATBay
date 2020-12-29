@@ -130,7 +130,6 @@ export class NewConstitutionWindowComponent {
       });
 
       this.routing.addConstitutionRoute(newConstitution.id);
-      this.constitutionManager.constitutions.push(newConstitution);
 
       this.closeWindow();
     }

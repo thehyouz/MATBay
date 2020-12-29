@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
@@ -29,7 +30,8 @@ export class SongWindowComponent {
   constructor(private dialogRef: MatDialogRef<SongWindowComponent>,
               @Inject(MAT_DIALOG_DATA) data,
               private sanitizer: DomSanitizer,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private afs: AngularFirestore) {
     this.song = data.song;
     this.constitution = data.constitution;
     this.currentSection = data.currentSection;
@@ -46,21 +48,23 @@ export class SongWindowComponent {
 
   makeSafeURL(): SafeResourceUrl {
     if (this.song.platform == SongPlatform.Youtube) {
-      console.log("Make safe URL");
-      console.log(this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(YOUTUBE_HEADER_LENGTH)));
       return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(YOUTUBE_HEADER_LENGTH));
     }
     return "";
   }
 
   canVote(): boolean {
-    const isUserThePatron = (this.song.patron == this.currentUser.uid);
+    // const isUserThePatron = (this.song.patron == this.currentUser.uid);
     const isInVoteMode = (this.currentSection == CurrentSectionConstitution.Vote);
-    return !isUserThePatron && isInVoteMode;
+    return  isInVoteMode // && !isUserThePatron;
   }
 
   updateGrade(newGrade: number): void {
     this.grade = newGrade;
+    this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(this.song.id).collection('/votes').doc(this.currentUser.uid).set({
+      user: this.currentUser.uid,
+      grade: this.grade
+    });
   }
 
   isSelected(number: number): boolean {
