@@ -54,9 +54,9 @@ export class SongWindowComponent {
   }
 
   canVote(): boolean {
-    // const isUserThePatron = (this.song.patron == this.currentUser.uid);
+    const isUserThePatron = (this.song.patron == this.currentUser.uid);
     const isInVoteMode = (this.currentSection == CurrentSectionConstitution.Vote);
-    return  isInVoteMode // && !isUserThePatron;
+    return  isInVoteMode && !isUserThePatron;
   }
 
   updateGrade(newGrade: number): void {

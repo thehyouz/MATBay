@@ -21,7 +21,7 @@
             <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
             <br>
             <br>
-            <button mat-stroked-button color="warn" > Quitter la constitution </button>
+            <button mat-stroked-button color="warn" (click)="leaveConstitution()"> Quitter la constitution </button>
         </div>
     </mat-sidenav-container>
     
@@ -98,6 +98,10 @@
             </div>
             <br>
             <div>
+                <button mat-raised-button color="primary" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
+            </div>
+            <br>
+            <div>
                 <button mat-raised-button color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
                 <button mat-raised-button color="primary" class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
             </div>
@@ -112,5 +116,5 @@
 
 <!-- If not ready-->
 <div *ngIf="isUserLoading || isConstitutionLoading">
-    bonjour sa charg
+    Page en cours de chargement...
 </div>

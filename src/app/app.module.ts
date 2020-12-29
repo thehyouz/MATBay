@@ -34,7 +34,7 @@ import { ManageSongsWindowComponent } from './components/manage-songs-window/man
 import { SongWindowComponent } from './components/song-window/song-window.component';
 
 // Service
-import { ConstitutionManagerService } from './services/constitution-manager.service';
+import { ConstitutionManagerService, ConstitutionSongManagerService, ConstitutionUserManagerService } from './services/constitution-manager.service';
 import { RouterModule } from '@angular/router';
 
 
@@ -80,7 +80,7 @@ const firebaseConfig = {
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],
-  providers: [ConstitutionManagerService],
+  providers: [ConstitutionManagerService, ConstitutionSongManagerService, ConstitutionUserManagerService],
   entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent],
   bootstrap: [AppComponent]
 })

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { ConstitutionManagerService, ConstitutionSongManagerService, ConstitutionUserManagerService } from 'src/app/services/constitution-manager.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
@@ -35,22 +35,26 @@ export class ConstitutionPageComponent implements OnInit {
       if (newList === null) return;
       this.constitution = newList.find(x => {return x.id === this.routes.snapshot.paramMap.get('id')});
 
+      // User
       this.users = [];
       this.afs.collection('users/').get().toPromise().then(users => {
         users.forEach(async user => {
           const data = user.data() as User;
-          if (this.constitution.users.includes(data.uid)) {
+          if (this.constitution.users.includes(data.uid) && !this.users.some(user => user.uid === data.uid)) {
             this.users.push(data);
           }
         });
         this.users = this.users.sort(this.compareUserName);
       })
 
+      // Song
       this.constitution.songs = [];
       this.afs.collection('constitutions/').doc(this.constitution.id).collection('/songs').get().toPromise().then(songs => {
         songs.forEach(async song => {
           const data = song.data() as Song;
-          this.constitution.songs.push(data);
+          if (!this.constitution.songs.some(song => song.id === data.id)) {
+            this.constitution.songs.push(data);
+          }
         });
         this.constitution.songs.sort(this.compareSongConstitutionNumber);
       })
@@ -60,17 +64,19 @@ export class ConstitutionPageComponent implements OnInit {
 
     this.auth.user$.subscribe(newUser => {
       this.currentUser = newUser;
-      if (newUser)
-        this.isUserLoading = false;
+      if (newUser) {this.isUserLoading = false;}
     });
   }
 
   constructor(public constitutionManager: ConstitutionManagerService,
+              // public constitutionSongsManager: ConstitutionSongManagerService,
+              // public constitutionUsersManager: ConstitutionUserManagerService,
               private afs: AngularFirestore,
               public auth: AuthService,
               private dialog: MatDialog,
-              private routes: ActivatedRoute) {
-  }
+              private routes: ActivatedRoute,
+              private router: Router
+  ) {}
 
   compareUserName(user1: User, user2: User): number {
     if (user1.displayName > user2.displayName) {return 1;}
@@ -130,6 +136,17 @@ export class ConstitutionPageComponent implements OnInit {
     const isOwner = this.constitution.owner === this.currentUser.uid;
 
     return isCorrectSection && isOwner;
+  }
+
+  leaveConstitution(): void {
+    const index = this.constitution.users.findIndex(x => x === this.currentUser.uid);
+    this.constitution.users.splice(index);
+
+    this.afs.collection("constitutions/").doc(this.constitution.id).update({
+      users: this.constitution.users
+    });
+
+    this.router.navigate(['current-constitutions']);
   }
 
 }
