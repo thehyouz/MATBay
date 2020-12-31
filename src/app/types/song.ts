@@ -19,3 +19,27 @@ export const EMPTY_SONG: Song = {
     author: '',
     patron: ''
 }
+
+export function compareSongConstitutionNumberASC(song1: Song, song2: Song): number {
+    if (song1.constitutionNumber > song2.constitutionNumber) { return 1; }
+    if (song1.constitutionNumber < song2.constitutionNumber) { return -1; }
+    return 0;
+}
+
+export function compareSongConstitutionNumberDSC(song1: Song, song2: Song): number {
+    if (song1.constitutionNumber > song2.constitutionNumber) { return 1; }
+    if (song1.constitutionNumber < song2.constitutionNumber) { return -1; }
+    return 0;
+}
+
+export function compareSongShortTitleASC(song1: Song, song2: Song): number {
+    if (song1.shortTitle > song2.shortTitle) { return 1; }
+    if (song1.shortTitle < song2.shortTitle) { return -1; }
+    return 0;
+}
+
+export function compareSongShortTitleDSC(song1: Song, song2: Song): number {
+    if (song1.shortTitle > song2.shortTitle) { return -1; }
+    if (song1.shortTitle < song2.shortTitle) { return 1; }
+    return 0;
+}

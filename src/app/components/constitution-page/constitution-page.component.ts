@@ -6,8 +6,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService, ConstitutionSongManagerService, ConstitutionUserManagerService } from 'src/app/services/constitution-manager.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
-import { Song } from 'src/app/types/song';
-import { User } from 'src/app/types/user';
+import { Song, compareSongConstitutionNumberASC } from 'src/app/types/song';
+import { compareUserNameASC, User } from 'src/app/types/user';
+import { VoteSOC } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from '../song-window/song-window.component';
 
@@ -30,12 +31,14 @@ export class ConstitutionPageComponent implements OnInit {
   public currentSection: CurrentSectionConstitution = CurrentSectionConstitution.SongList;
   public SelectionType: typeof CurrentSectionConstitution = CurrentSectionConstitution;
 
+  votes: VoteSOC[];
+
   ngOnInit() {
     this.constitutionManager.constitutions.subscribe(newList => {
       if (newList === null) return;
       this.constitution = newList.find(x => {return x.id === this.routes.snapshot.paramMap.get('id')});
 
-      // User
+      // Users
       this.users = [];
       this.afs.collection('users/').get().toPromise().then(users => {
         users.forEach(async user => {
@@ -44,10 +47,10 @@ export class ConstitutionPageComponent implements OnInit {
             this.users.push(data);
           }
         });
-        this.users = this.users.sort(this.compareUserName);
+        this.users = this.users.sort(compareUserNameASC);
       })
 
-      // Song
+      // Songs
       this.constitution.songs = [];
       this.afs.collection('constitutions/').doc(this.constitution.id).collection('/songs').get().toPromise().then(songs => {
         songs.forEach(async song => {
@@ -56,7 +59,18 @@ export class ConstitutionPageComponent implements OnInit {
             this.constitution.songs.push(data);
           }
         });
-        this.constitution.songs.sort(this.compareSongConstitutionNumber);
+        this.constitution.songs.sort(compareSongConstitutionNumberASC);
+      })
+
+      // Votes //TODO: Optimiser 
+      this.votes = [];
+      this.afs.collection('constitutions/').doc(this.constitution.id).collection("/votes").get().toPromise().then(votes => {
+        votes.forEach(async vote => {
+          const data = vote.data() as VoteSOC;
+          if (!this.votes.some(vote => vote.id === data.id) && data.userID === this.currentUser.uid) {
+            this.votes.push(data);
+          }
+        })
       })
       
       this.isConstitutionLoading = false;
@@ -78,18 +92,6 @@ export class ConstitutionPageComponent implements OnInit {
               private router: Router
   ) {}
 
-  compareUserName(user1: User, user2: User): number {
-    if (user1.displayName > user2.displayName) {return 1;}
-    if (user1.displayName < user2.displayName) {return -1;}
-    return 0;
-  }
-
-  compareSongConstitutionNumber(song1: Song, song2: Song): number {
-    if (song1.constitutionNumber > song2.constitutionNumber) { return 1; }
-    if (song1.constitutionNumber < song2.constitutionNumber) { return -1; }
-    return 0;
-  }
-
   openDialogManageSongs(): void {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
@@ -103,9 +105,14 @@ export class ConstitutionPageComponent implements OnInit {
     dialogConfig.data = {
       song: song,
       constitution: this.constitution,
-      currentSection: this.currentSection
+      currentSection: this.currentSection,
+      vote: this.votes.find(x => x.songID === song.constitutionNumber)
     }
     this.dialog.open(SongWindowComponent, dialogConfig);
+  }
+
+  returnVote(song: Song): number {
+    return this.votes.find(x => x.songID === song.constitutionNumber).grade;
   }
 
   showDisplayName(uid: string): string {

@@ -85,7 +85,8 @@
                 <td> 
                     <a href="{{song.url}}"> {{song.url}} </a>
                 </td>
-                <td> </td>
+                <td *ngIf="currentUser.uid === song.patron"> / </td>
+                <td *ngIf="currentUser.uid !== song.patron"> {{returnVote(song)}} </td>
             </tr>
         </table>
         <!-- Owner Info -->
@@ -95,6 +96,7 @@
             <div>
                 <li> Saison {{constitution.season}} - Partie {{constitution.round}} <br> </li>
                 <li> Nombre de participant : {{constitution.users.length}}/{{constitution.numberMaxOfUser}}</li>
+                <li> Nombre de Vote : /{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}}</li>
             </div>
             <br>
             <div>

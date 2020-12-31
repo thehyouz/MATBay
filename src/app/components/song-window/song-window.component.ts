@@ -8,6 +8,7 @@ import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { SongPlatform } from 'src/app/types/song-platform.enum';
 import { User } from 'src/app/types/user';
+import { EMPTY_VOTE_SOC, VoteSOC } from 'src/app/types/vote';
 
 const YOUTUBE_HEADER_LENGTH = 32;
 
@@ -22,10 +23,10 @@ export class SongWindowComponent {
   constitution: Constitution;
   safeUrl: SafeResourceUrl;
 
-  grade: number;
+  vote: VoteSOC;
 
   currentUser: User;
-  currentSection: number;
+  private currentSection: number;
 
   constructor(private dialogRef: MatDialogRef<SongWindowComponent>,
               @Inject(MAT_DIALOG_DATA) data,
@@ -35,6 +36,11 @@ export class SongWindowComponent {
     this.song = data.song;
     this.constitution = data.constitution;
     this.currentSection = data.currentSection;
+    this.vote = data.vote;
+
+    if (this.vote === undefined) {
+      this.vote = EMPTY_VOTE_SOC;
+    }
 
     this.safeUrl = this.makeSafeURL();
 
@@ -60,15 +66,33 @@ export class SongWindowComponent {
   }
 
   updateGrade(newGrade: number): void {
-    this.grade = newGrade;
-    this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(this.song.id).collection('/votes').doc(this.currentUser.uid).set({
-      user: this.currentUser.uid,
-      grade: this.grade
-    });
+    this.vote.grade = newGrade;
+
+    if (this.vote.id === "") {
+      const newID = this.afs.createId();
+
+      this.vote = {
+        id: newID,
+        userID: this.currentUser.uid,
+        songID: this.song.constitutionNumber,
+        grade: newGrade
+      }
+
+      this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(newID).set({
+        id: this.vote.id,
+        userID: this.vote.userID,
+        songID: this.vote.songID,
+        grade: this.vote.grade
+      });
+    } else {
+      this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(this.vote.id).update({
+        grade: newGrade
+      });
+    }
   }
 
   isSelected(number: number): boolean {
-    return number == this.grade;
+    return number == this.vote.grade;
   }
 
   closeWindow(): void {
