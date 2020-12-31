@@ -5,15 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class MathService {
 
-  constructor() { }
+  constructor() {}
 
   mean(values: number[]): number {
-    // let sum = 0;
-    // for (const value of values) {
-    //   sum += value;
-    // }
-    // return sum / values.length;
-
     return values.reduce( (prev:number, current:number) => prev + current, 0) / values.length;
   }
 

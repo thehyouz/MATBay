@@ -86,18 +86,21 @@
                     <a href="{{song.url}}"> {{song.url}} </a>
                 </td>
                 <td *ngIf="currentUser.uid === song.patron"> / </td>
-                <td *ngIf="currentUser.uid !== song.patron"> {{returnVote(song)}} </td>
+                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) !== -1)"> {{returnVote(song)+1}} </td>
+                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) === -1)"> </td>
             </tr>
         </table>
         <!-- Owner Info -->
         <div *ngIf="showOwnerInfo()">
-            <h3> {{constitution.name}} </h3> 
+            <h3> Statistiques </h3> 
             <span class="custom-br"></span>
-            <div>
-                <li> Saison {{constitution.season}} - Partie {{constitution.round}} <br> </li>
-                <li> Nombre de participant : {{constitution.users.length}}/{{constitution.numberMaxOfUser}}</li>
-                <li> Nombre de Vote : /{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}}</li>
-            </div>
+            <br>
+            <li> Saison {{constitution.season}} - Partie {{constitution.round}} </li>
+            <li> Nombre de participant : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
+            <li> Nombre de Vote : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}} </li>
+            <br>
+            <h3> Options </h3> 
+            <span class="custom-br"></span>
             <br>
             <div>
                 <button mat-raised-button color="primary" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
@@ -112,6 +115,35 @@
         <div *ngIf="currentSection === SelectionType.Result">
             <h4> Mes Résultats </h4>
             <span class="custom-br"></span>
+            <br>
+            <li> Moyenne de mes votes : {{currentUserMeanVotes().toFixed(2)}} </li>
+            <li> Moyenne de mes chansons : {{currentUserMeanSongs().toFixed(2)}}</li>
+            <br>
+            <h4> Résultats Globaux </h4>
+            <span class="custom-br"></span>
+            <br>
+            Moyenne des utilisateurs entre eux :
+            <table id="t01">
+                <tr>
+                    <th> Utilisateur </th>
+                    <th *ngFor="let user of users"> {{user.displayName}} </th>
+                </tr>
+                <tr *ngFor="let user of users">
+                    <td> {{user.displayName}} </td>
+                </tr>
+            </table>
+            <br>
+            Classement globale chansons :
+            <table id="t01">
+                <tr>
+                    <th> Index </th>
+                    <th> Titre </th>
+                    <th> Auteur </th>
+                    <th> URL </th>
+                    <th> Moyenne </th>
+                    <th> Ajouté par </th>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

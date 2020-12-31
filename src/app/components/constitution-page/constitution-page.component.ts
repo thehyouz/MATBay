@@ -4,11 +4,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService, ConstitutionSongManagerService, ConstitutionUserManagerService } from 'src/app/services/constitution-manager.service';
+import { MathService } from 'src/app/services/math.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song, compareSongConstitutionNumberASC } from 'src/app/types/song';
 import { compareUserNameASC, User } from 'src/app/types/user';
-import { VoteSOC } from 'src/app/types/vote';
+import { extractValuesOfVotesSOC, VoteSOC } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from '../song-window/song-window.component';
 
@@ -67,7 +68,7 @@ export class ConstitutionPageComponent implements OnInit {
       this.afs.collection('constitutions/').doc(this.constitution.id).collection("/votes").get().toPromise().then(votes => {
         votes.forEach(async vote => {
           const data = vote.data() as VoteSOC;
-          if (!this.votes.some(vote => vote.id === data.id) && data.userID === this.currentUser.uid) {
+          if (!this.votes.some(vote => vote.id === data.id)) {
             this.votes.push(data);
           }
         })
@@ -89,7 +90,8 @@ export class ConstitutionPageComponent implements OnInit {
               public auth: AuthService,
               private dialog: MatDialog,
               private routes: ActivatedRoute,
-              private router: Router
+              private router: Router,
+              private math: MathService
   ) {}
 
   openDialogManageSongs(): void {
@@ -112,7 +114,31 @@ export class ConstitutionPageComponent implements OnInit {
   }
 
   returnVote(song: Song): number {
-    return this.votes.find(x => x.songID === song.constitutionNumber).grade;
+    const vote = this.votes.find(x => x.songID === song.constitutionNumber);
+    if (vote !== undefined) {
+      return vote.grade;
+    }
+    return -1;
+  }
+
+  currentUserMeanVotes(): number {
+    const currentUserVote: VoteSOC[] = [];
+    for (const vote of this.votes) {
+      if (vote.userID === this.currentUser.uid) {
+        currentUserVote.push(vote);
+      }
+    }
+    return this.math.mean(extractValuesOfVotesSOC(currentUserVote));
+  }
+
+  currentUserMeanSongs(): number {
+    const currentUserSongsVote: VoteSOC[] = [];
+    for (const vote of this.votes) {
+      if (this.constitution.songs.find(x => x.constitutionNumber === vote.songID && x.patron === this.currentUser.uid)) {
+        currentUserSongsVote.push(vote);
+      }
+    }
+    return this.math.mean(extractValuesOfVotesSOC(currentUserSongsVote));
   }
 
   showDisplayName(uid: string): string {

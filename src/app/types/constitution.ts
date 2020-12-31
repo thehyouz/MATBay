@@ -17,6 +17,7 @@ export interface Constitution {
     isPublic: boolean;
     type: ConstitutionType;
     // isLocked: boolean;
+    // isShowingResult: boolean;
 
     // Users
     owner: string;
