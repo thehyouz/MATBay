@@ -1,8 +1,7 @@
 import { SongPlatform } from './song-platform.enum';
 
 export interface Song {
-    id: string,
-    constitutionNumber: number,
+    id: number
     shortTitle: string;
     platform: SongPlatform;
     url: string;
@@ -11,8 +10,7 @@ export interface Song {
 }
 
 export const EMPTY_SONG: Song = {
-    id: '',
-    constitutionNumber: -1,
+    id: -1,
     shortTitle: '',
     platform: -1,
     url: '',
@@ -20,15 +18,15 @@ export const EMPTY_SONG: Song = {
     patron: ''
 }
 
-export function compareSongConstitutionNumberASC(song1: Song, song2: Song): number {
-    if (song1.constitutionNumber > song2.constitutionNumber) { return 1; }
-    if (song1.constitutionNumber < song2.constitutionNumber) { return -1; }
+export function compareSongIdASC(song1: Song, song2: Song): number {
+    if (song1.id > song2.id) { return 1; }
+    if (song1.id < song2.id) { return -1; }
     return 0;
 }
 
-export function compareSongConstitutionNumberDSC(song1: Song, song2: Song): number {
-    if (song1.constitutionNumber > song2.constitutionNumber) { return 1; }
-    if (song1.constitutionNumber < song2.constitutionNumber) { return -1; }
+export function compareSongIdDSC(song1: Song, song2: Song): number {
+    if (song1.id > song2.id) { return -1; }
+    if (song1.id < song2.id) { return 1; }
     return 0;
 }
 

@@ -8,6 +8,7 @@ import { EMPTY_SONG, Song } from 'src/app/types/song';
 import { SongPlatform } from 'src/app/types/song-platform.enum';
 import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
+import { VoteSOC } from 'src/app/types/vote';
 
 @Component({
   selector: 'app-manage-songs-window',
@@ -24,6 +25,8 @@ export class ManageSongsWindowComponent {
   public newSongForm: FormGroup;
   public deleteSongForm: FormGroup;
   private newSongParameter: Song;
+
+  private votes: VoteSOC[];
 
   constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
               private auth: AuthService,
@@ -45,6 +48,7 @@ export class ManageSongsWindowComponent {
     auth.user$.subscribe(newUser => this.currentUser = newUser);
 
     this.constitution = data.constitution;
+    this.votes = data.votes;
 
     this.newSongForm = new FormGroup({
       formShortTitle: new FormControl(),
@@ -91,14 +95,11 @@ export class ManageSongsWindowComponent {
         let newConstitutionNumber = 0;
 
         if (this.constitution.songs[this.constitution.songs.length -1]) {
-          newConstitutionNumber = this.constitution.songs[this.constitution.songs.length -1].constitutionNumber+1;
+          newConstitutionNumber = this.constitution.songs[this.constitution.songs.length -1].id+1;
         }
 
-        const newSongID = this.afs.createId();
-
         let newSong: Song = {
-          id: newSongID,
-          constitutionNumber: newConstitutionNumber,
+          id: newConstitutionNumber,
           shortTitle: this.newSongParameter.shortTitle,
           platform: SongPlatform.Youtube,
           url: this.newSongParameter.url,
@@ -106,9 +107,8 @@ export class ManageSongsWindowComponent {
           author: this.newSongParameter.author
         };
 
-        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(newSongID).set({
+        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(newConstitutionNumber.toString()).set({
           id: newSong.id,
-          constitutionNumber: newSong.constitutionNumber,
           shortTitle: newSong.shortTitle,
           platform: newSong.platform,
           url: newSong.url,
@@ -128,13 +128,18 @@ export class ManageSongsWindowComponent {
   deleteSong(): void {
     const constitutionNumber = this.deleteSongForm.value['formSongConstitutionNumber'];
     if (constitutionNumber !== null) {
-      const index = this.constitution.songs.findIndex(x => x.constitutionNumber == constitutionNumber);
+      const index = this.constitution.songs.findIndex(x => x.id == constitutionNumber);
       if (index === -1) {
         this.currentStatusDelete.error = true;
         this.currentStatusDelete.message = "Erreur : La chanson n'existe pas";
       }
       else if (this.constitution.songs[index].patron === this.currentUser.uid) {
-        this.constitution.songs.splice(index, 1);
+        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(this.constitution.songs[index].id.toString()).delete();
+        for (const vote of this.votes) {
+          if (vote.songID === constitutionNumber) {
+            this.afs.collection('constitutions').doc(this.constitution.id).collection('/votes').doc(vote.id).delete();
+          }
+        }        
         this.closeWindow();
       } else {
         this.currentStatusDelete.error = true;

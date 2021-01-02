@@ -7,7 +7,7 @@ import { ConstitutionManagerService, ConstitutionSongManagerService, Constitutio
 import { MathService } from 'src/app/services/math.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
-import { Song, compareSongConstitutionNumberASC } from 'src/app/types/song';
+import { Song, compareSongIdASC } from 'src/app/types/song';
 import { compareUserNameASC, User } from 'src/app/types/user';
 import { extractValuesOfVotesSOC, VoteSOC } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
@@ -60,7 +60,7 @@ export class ConstitutionPageComponent implements OnInit {
             this.constitution.songs.push(data);
           }
         });
-        this.constitution.songs.sort(compareSongConstitutionNumberASC);
+        this.constitution.songs.sort(compareSongIdASC);
       })
 
       // Votes //TODO: Optimiser 
@@ -97,7 +97,8 @@ export class ConstitutionPageComponent implements OnInit {
   openDialogManageSongs(): void {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      constitution: this.constitution
+      constitution: this.constitution,
+      votes: this.votes
     }
     this.dialog.open(ManageSongsWindowComponent, dialogConfig);
   }
@@ -108,37 +109,53 @@ export class ConstitutionPageComponent implements OnInit {
       song: song,
       constitution: this.constitution,
       currentSection: this.currentSection,
-      vote: this.votes.find(x => x.songID === song.constitutionNumber)
+      vote: this.votes.find(x => x.songID === song.id),
     }
     this.dialog.open(SongWindowComponent, dialogConfig);
   }
 
   returnVote(song: Song): number {
-    const vote = this.votes.find(x => x.songID === song.constitutionNumber);
+    const vote = this.votes.find(x => x.songID === song.id);
     if (vote !== undefined) {
       return vote.grade;
     }
     return -1;
   }
 
-  currentUserMeanVotes(): number {
+  userMeanVotes(uid: string): number {
     const currentUserVote: VoteSOC[] = [];
     for (const vote of this.votes) {
-      if (vote.userID === this.currentUser.uid) {
+      if (vote.userID === uid) {
         currentUserVote.push(vote);
       }
     }
     return this.math.mean(extractValuesOfVotesSOC(currentUserVote));
   }
 
-  currentUserMeanSongs(): number {
+  userMeanSongs(uid: string): number {
     const currentUserSongsVote: VoteSOC[] = [];
     for (const vote of this.votes) {
-      if (this.constitution.songs.find(x => x.constitutionNumber === vote.songID && x.patron === this.currentUser.uid)) {
+      if (this.constitution.songs.find(x => x.id === vote.songID && x.patron === uid)) {
         currentUserSongsVote.push(vote);
       }
     }
     return this.math.mean(extractValuesOfVotesSOC(currentUserSongsVote));
+  }
+
+  userMeanUser(uid1: string, uid2: string): number {
+    const user1Songs: Song[] = [];
+    for (const song of this.constitution.songs) {
+      if (song.patron === uid1) {
+        user1Songs.push(song);
+      }
+    }
+    const user2Votes: VoteSOC[] = [];
+    for (const vote of this.votes) {
+      if (user1Songs.find(x => x.id === vote.songID && x.patron === uid1 && vote.userID === uid2)) { 
+        user2Votes.push(vote);
+      }
+    }
+    return this.math.mean(extractValuesOfVotesSOC(user2Votes));
   }
 
   showDisplayName(uid: string): string {
@@ -178,6 +195,18 @@ export class ConstitutionPageComponent implements OnInit {
     this.afs.collection("constitutions/").doc(this.constitution.id).update({
       users: this.constitution.users
     });
+
+    for (const song of this.constitution.songs) {
+      if (song.patron === this.currentUser.uid) {
+        this.afs.collection("constitutions/").doc(this.constitution.id).collection("/songs").doc(song.id.toString()).delete();
+      }
+    }
+
+    for (const vote of this.votes) {
+      if (vote.userID === this.currentUser.uid) {
+        this.afs.collection("constitutions/").doc(this.constitution.id).collection("/votes").doc(vote.id).delete();
+      }
+    }
 
     this.router.navigate(['current-constitutions']);
   }

@@ -74,7 +74,7 @@ export class SongWindowComponent {
       this.vote = {
         id: newID,
         userID: this.currentUser.uid,
-        songID: this.song.constitutionNumber,
+        songID: this.song.id,
         grade: newGrade
       }
 

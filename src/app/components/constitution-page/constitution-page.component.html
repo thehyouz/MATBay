@@ -62,7 +62,7 @@
                 <th> Ajouté par </th>
             </tr>
             <tr *ngFor="let song of constitution.songs">
-                <td> {{song.constitutionNumber}} </td>
+                <td> {{song.id}} </td>
                 <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
                 <td> {{song.author}} </td>
                 <td> 
@@ -80,7 +80,7 @@
                 <th> Note </th>
             </tr>
             <tr *ngFor="let song of constitution.songs">
-                <td> {{song.constitutionNumber}} </td>
+                <td> {{song.id}} </td>
                 <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
                 <td> 
                     <a href="{{song.url}}"> {{song.url}} </a>
@@ -102,22 +102,20 @@
             <h3> Options </h3> 
             <span class="custom-br"></span>
             <br>
-            <div>
-                <button mat-raised-button color="primary" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
-            </div>
+            <button mat-raised-button color="primary" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
             <br>
-            <div>
-                <button mat-raised-button color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
-                <button mat-raised-button color="primary" class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
-            </div>
+            <button mat-raised-button color="primary" class="nav-link waves-light"> Publier les résultats </button>
+            <br>
+            <button mat-raised-button color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
+            <button mat-raised-button color="primary" class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
         </div>
         <!-- Result Info -->
         <div *ngIf="currentSection === SelectionType.Result">
             <h4> Mes Résultats </h4>
             <span class="custom-br"></span>
             <br>
-            <li> Moyenne de mes votes : {{currentUserMeanVotes().toFixed(2)}} </li>
-            <li> Moyenne de mes chansons : {{currentUserMeanSongs().toFixed(2)}}</li>
+            <li> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
+            <li> Moyenne de mes chansons : {{userMeanSongs(currentUser.uid).toFixed(2)}}</li>
             <br>
             <h4> Résultats Globaux </h4>
             <span class="custom-br"></span>
@@ -129,7 +127,11 @@
                     <th *ngFor="let user of users"> {{user.displayName}} </th>
                 </tr>
                 <tr *ngFor="let user of users">
-                    <td> {{user.displayName}} </td>
+                    <td style="background-color: #2E2E2E"> {{user.displayName}} </td>
+                    <td *ngFor="let user2 of users"> 
+                        <span *ngIf="user.uid === user2.uid"> / </span>
+                        <span *ngIf="user.uid !== user2.uid"> {{userMeanUser(user2.uid, user.uid).toFixed(2)}} </span>
+                    </td>
                 </tr>
             </table>
             <br>
@@ -140,7 +142,7 @@
                     <th> Titre </th>
                     <th> Auteur </th>
                     <th> URL </th>
-                    <th> Moyenne </th>
+                    <th> Score </th>
                     <th> Ajouté par </th>
                 </tr>
             </table>

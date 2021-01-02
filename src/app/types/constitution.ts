@@ -16,8 +16,8 @@ export interface Constitution {
     name: string;
     isPublic: boolean;
     type: ConstitutionType;
-    // isLocked: boolean;
-    // isShowingResult: boolean;
+    isLocked: boolean;
+    isShowingResult: boolean;
 
     // Users
     owner: string;
@@ -39,6 +39,8 @@ export const EMPTY_CONSTITUTION: Constitution = {
     round: -1,
     name: "",
     isPublic: false,
+    isLocked: false,
+    isShowingResult: false,
     type: 0,
     owner: "",
     users: [],
