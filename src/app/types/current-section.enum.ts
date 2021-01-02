@@ -11,3 +11,10 @@ export enum CurrentSectionConstitution {
     Export,
     Vote
 }
+
+export enum CurrentSectionTableSongList {
+    Index,
+    Title,
+    Author,
+    User
+}

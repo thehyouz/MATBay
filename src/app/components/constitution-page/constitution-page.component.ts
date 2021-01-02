@@ -188,6 +188,25 @@ export class ConstitutionPageComponent implements OnInit {
     return isCorrectSection && isOwner;
   }
 
+  canLockSongList(): boolean {
+    return this.constitution.songs.length === this.constitution.numberMaxOfUser * this.constitution.numberOfSongsPerUser;
+  }
+
+  canPublishResults(): boolean {
+    const numberOfVotes = this.constitution.numberOfSongsPerUser * this.constitution.numberMaxOfUser * (this.constitution.numberMaxOfUser - 1);
+    return this.votes.length === numberOfVotes;
+  }
+
+  canFinishConstitution(): boolean {
+    return this.constitution.winnerSongIndex !== -1 && this.constitution.winnerUserIndex !== -1;
+  }
+
+  changeResultsStatus(status: boolean): void {
+    this.afs.collection("constitutions/").doc(this.constitution.id).update({
+      isShowingResult: status
+    });
+  }
+
   leaveConstitution(): void {
     const index = this.constitution.users.findIndex(x => x === this.currentUser.uid);
     this.constitution.users.splice(index);

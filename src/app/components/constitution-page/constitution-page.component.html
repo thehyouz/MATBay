@@ -96,32 +96,59 @@
             <span class="custom-br"></span>
             <br>
             <li> Saison {{constitution.season}} - Partie {{constitution.round}} </li>
-            <li> Nombre de participant : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
-            <li> Nombre de Vote : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}} </li>
+            <li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
+            <li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser}}</li>
+            <li> Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}} </li>
             <br>
             <h3> Options </h3> 
             <span class="custom-br"></span>
             <br>
-            <button mat-raised-button color="primary" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
+            <li>
+                <button mat-raised-button *ngIf="!canLockSongList()" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
+                <button mat-raised-button *ngIf="canLockSongList()" color="primary" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
+                - Empêcher la modification de la liste de chansons.
+                <span *ngIf="!canLockSongList()" class="warning"> (Il manque des chansons) </span>
+            </li>
             <br>
-            <button mat-raised-button color="primary" class="nav-link waves-light"> Publier les résultats </button>
+            <li>
+                <button mat-raised-button *ngIf="!canPublishResults()" class="nav-link waves-light"> Publier les résultats </button>
+                <button mat-raised-button *ngIf="canPublishResults() && !constitution.isShowingResult" color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
+                <button mat-raised-button *ngIf="canPublishResults() && constitution.isShowingResult" color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>
+                - Afficher / Cacher les résultats de la Constitution.
+                <span *ngIf="!canPublishResults()" class="warning"> (Toutes les chansons doivent être votés) </span>
+            </li>
             <br>
-            <button mat-raised-button color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
-            <button mat-raised-button color="primary" class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
+            <li> 
+                <button mat-raised-button *ngIf="!canFinishConstitution()"  class="nav-link waves-light"> Terminer {{constitution.name}} </button>
+                <button mat-raised-button *ngIf="canFinishConstitution()" color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
+                - Archiver la Constiution dans l'historique des Constitutions.
+                <span *ngIf="!canFinishConstitution()" class="warning"> (Les résultats doivent être publiés) </span>
+            </li>
+            <br>
+            <li>
+                <button mat-raised-button color="primary" class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
+                - Attention : les données seront perdus à jamais.
+            </li>
         </div>
         <!-- Result Info -->
         <div *ngIf="currentSection === SelectionType.Result">
+            <!-- <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
+            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button> -->
             <h4> Mes Résultats </h4>
             <span class="custom-br"></span>
             <br>
             <li> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
-            <li> Moyenne de mes chansons : {{userMeanSongs(currentUser.uid).toFixed(2)}}</li>
+            <li> Moyenne de mes chansons : 
+                <span *ngIf="constitution.isShowingResult"> {{userMeanSongs(currentUser.uid).toFixed(2)}} </span>
+                <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            </li>
             <br>
             <h4> Résultats Globaux </h4>
             <span class="custom-br"></span>
             <br>
             Moyenne des utilisateurs entre eux :
-            <table id="t01">
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <table *ngIf="constitution.isShowingResult" id="t01">
                 <tr>
                     <th> Utilisateur </th>
                     <th *ngFor="let user of users"> {{user.displayName}} </th>
@@ -136,7 +163,8 @@
             </table>
             <br>
             Classement globale chansons :
-            <table id="t01">
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <table *ngIf="constitution.isShowingResult" id="t01" >
                 <tr>
                     <th> Index </th>
                     <th> Titre </th>
