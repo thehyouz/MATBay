@@ -66,7 +66,7 @@
                 <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
                 <td> {{song.author}} </td>
                 <td> 
-                    <a href="{{song.url}}"> {{song.url}} </a>
+                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
                 </td>
                 <td> {{showDisplayName(song.patron)}} </td>
             </tr>
@@ -83,7 +83,7 @@
                 <td> {{song.id}} </td>
                 <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
                 <td> 
-                    <a href="{{song.url}}"> {{song.url}} </a>
+                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
                 </td>
                 <td *ngIf="currentUser.uid === song.patron"> / </td>
                 <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) !== -1)"> {{returnVote(song)+1}} </td>
@@ -172,6 +172,16 @@
                     <th> URL </th>
                     <th> Score </th>
                     <th> Ajouté par </th>
+                </tr>
+                <tr *ngFor="let result of calculateResults()">
+                    <td> {{result.id}} </td>
+                    <td> {{result.title}} </td>
+                    <td> {{result.author}} </td>
+                    <td>
+                        <a href="{{result.url}}"> {{result.url}} </a>
+                    </td>
+                    <td> {{result.score}} </td>
+                    <td> {{result.user}} </td>
                 </tr>
             </table>
         </div>
