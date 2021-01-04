@@ -11,7 +11,6 @@ import { User } from 'src/app/types/user';
   styleUrls: ['./current-constitutions-page.component.scss']
 })
 export class CurrentConstitutionsPageComponent implements OnInit{
-
   public currentUser: User;
   public constitutions:Constitution[];
 

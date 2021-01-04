@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { MathService } from 'src/app/services/math.service';
 import { SongListManagerService } from 'src/app/services/song-list-manager.service';
+import { VoteManagerService } from 'src/app/services/vote-manager.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song, compareSongIdASC } from 'src/app/types/song';
@@ -18,23 +19,21 @@ import { SongWindowComponent } from '../song-window/song-window.component';
   selector: 'app-constitution-page',
   templateUrl: './constitution-page.component.html',
   styleUrls: ['./constitution-page.component.scss'],
-  providers: [ SongListManagerService ]
+  providers: [ SongListManagerService, VoteManagerService ]
 })
 
 export class ConstitutionPageComponent implements OnInit {
-
   public constitution: Constitution;
 
   public users: User[];
   public currentUser: User;
-
+  public currentSection: CurrentSectionConstitution = CurrentSectionConstitution.SongList;
+  public SelectionType: typeof CurrentSectionConstitution = CurrentSectionConstitution;
+  
   public isConstitutionLoading: boolean = true;
   public isUserLoading: boolean = true;
 
-  public currentSection: CurrentSectionConstitution = CurrentSectionConstitution.SongList;
-  public SelectionType: typeof CurrentSectionConstitution = CurrentSectionConstitution;
-
-  votes: VoteSOC[];
+  public votes: VoteSOC[];
 
   ngOnInit() {
     this.constitutionManager.constitutions.subscribe(newList => {
@@ -42,6 +41,7 @@ export class ConstitutionPageComponent implements OnInit {
       this.constitution = newList.find(x => {return x.id === this.routes.snapshot.paramMap.get('id')});
 
       this.songManager.init(this.constitution.id);
+      this.voteManager.init(this.constitution.id);
 
       // Users
       this.users = [];
@@ -63,17 +63,15 @@ export class ConstitutionPageComponent implements OnInit {
           this.constitution.songs.push(song);
         });
         this.constitution.songs.sort(compareSongIdASC);
-      })
+      });
 
-      // Votes //TODO: Optimiser 
-      this.votes = [];
-      this.afs.collection('constitutions/').doc(this.constitution.id).collection("/votes").get().toPromise().then(votes => {
-        votes.forEach(async vote => {
-          const data = vote.data() as VoteSOC;
-          if (!this.votes.some(vote => vote.id === data.id)) {
-            this.votes.push(data);
-          }
-        })
+      // Votes
+      this.votes = this.voteManager.votes.getValue();
+      this.voteManager.votes.subscribe(newVotes => {
+        this.votes = [];
+        newVotes.forEach(async vote => {
+          this.votes.push(vote);
+        });
       })
       
       this.isConstitutionLoading = false;
@@ -85,14 +83,15 @@ export class ConstitutionPageComponent implements OnInit {
     });
   }
 
-  constructor(public constitutionManager: ConstitutionManagerService,
+  constructor(private constitutionManager: ConstitutionManagerService,
               private afs: AngularFirestore,
-              public auth: AuthService,
+              private auth: AuthService,
               private dialog: MatDialog,
               private routes: ActivatedRoute,
               private router: Router,
               private math: MathService,
-              private songManager: SongListManagerService
+              private songManager: SongListManagerService,
+              private voteManager: VoteManagerService
   ) {}
 
   openDialogManageSongs(): void {

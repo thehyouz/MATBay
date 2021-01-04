@@ -16,7 +16,6 @@ import { VoteSOC } from 'src/app/types/vote';
   styleUrls: ['./manage-songs-window.component.scss']
 })
 export class ManageSongsWindowComponent {
-
   public currentStatusAdd: Status;
   public currentStatusDelete: Status;
   private currentUser: User;

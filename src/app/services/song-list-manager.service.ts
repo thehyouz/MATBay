@@ -14,8 +14,7 @@ export class SongListManagerService {
   
   constructor(private afs: AngularFirestore) { }
 
-  init(constitutionID: string): void
-  {
+  init(constitutionID: string): void {
     this.constitutionID = constitutionID;
     
     this.songListObservable = this.afs.collection<Song>(`constitutions/${this.constitutionID}/songs`).valueChanges();

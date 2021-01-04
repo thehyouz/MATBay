@@ -19,13 +19,13 @@ const YOUTUBE_HEADER_LENGTH = 32;
 })
 
 export class SongWindowComponent {
-  song: Song;
-  constitution: Constitution;
-  safeUrl: SafeResourceUrl;
+  public song: Song;
+  private constitution: Constitution;
+  public safeUrl: SafeResourceUrl;
 
-  vote: VoteSOC;
+  private vote: VoteSOC;
 
-  currentUser: User;
+  private currentUser: User;
   private currentSection: number;
 
   constructor(private dialogRef: MatDialogRef<SongWindowComponent>,
