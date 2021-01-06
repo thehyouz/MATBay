@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution, ConstitutionType, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
+import { YOUTUBE_PLAYLIST_HEADER_LENGTH } from 'src/app/types/song-platform';
 import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
 
@@ -73,7 +74,7 @@ export class NewConstitutionWindowComponent {
     this.newConstitutionParameter.round = this.newConstitutionForm.value['formRound'];
     this.newConstitutionParameter.name = this.newConstitutionForm.value['formName'];
     this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
-    this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'];
+    this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'].slice(YOUTUBE_PLAYLIST_HEADER_LENGTH);
     this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
     this.newConstitutionParameter.isAnonymous = this.newConstitutionForm.value['formIsAnonymous'];
     this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];
@@ -87,7 +88,7 @@ export class NewConstitutionWindowComponent {
       this.currentStatus.message = "Erreur : Paramètre manquant";
     } else if (!this.parametersAreValid()) {
       this.currentStatus.error = true;
-      this.currentStatus.message = "Erreur : Valeurs limites du nombre d'utilisteur (4 à 10) ou du nombre de chansons (100) ont été dépassés";
+      this.currentStatus.message = "Erreur : Valeurs limites du nombre d'utilisateurs (2 à 10) ou du nombre de chansons (100) ont été dépassés";
     } else {
 
       const newConstitutionID = this.afs.createId();

@@ -1,4 +1,4 @@
-import { SongPlatform } from './song-platform.enum';
+import { SongPlatform } from './song-platform';
 
 export interface Song {
     id: number

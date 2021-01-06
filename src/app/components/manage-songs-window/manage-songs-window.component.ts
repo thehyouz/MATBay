@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { Constitution } from 'src/app/types/constitution';
 import { EMPTY_SONG, Song } from 'src/app/types/song';
-import { SongPlatform } from 'src/app/types/song-platform.enum';
+import { SongPlatform } from 'src/app/types/song-platform';
 import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
 import { VoteSOC } from 'src/app/types/vote';
@@ -85,68 +85,78 @@ export class ManageSongsWindowComponent {
   }
 
   addSong(): void {
-    if(this.numberOfSongsOfUser(this.currentUser.uid) >= this.constitution.numberOfSongsPerUser) {
-      this.currentStatusAdd.error = true;
-      this.currentStatusAdd.message = "Erreur : Vous avez atteint votre nombre max de chanson";
-    } else {
-      this.updateParameters();
-      if(!this.isMissingParameters()) {
-        let newConstitutionNumber = 0;
-
-        if (this.constitution.songs[this.constitution.songs.length -1]) {
-          newConstitutionNumber = this.constitution.songs[this.constitution.songs.length -1].id+1;
-        }
-
-        let newSong: Song = {
-          id: newConstitutionNumber,
-          shortTitle: this.newSongParameter.shortTitle,
-          platform: SongPlatform.Youtube,
-          url: this.newSongParameter.url,
-          patron: this.currentUser.uid,
-          author: this.newSongParameter.author
-        };
-
-        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(newConstitutionNumber.toString()).set({
-          id: newSong.id,
-          shortTitle: newSong.shortTitle,
-          platform: newSong.platform,
-          url: newSong.url,
-          patron: newSong.patron,
-          author: newSong.author
-        })
-    
-        this.constitution.songs.push(newSong);
-        this.closeWindow();
-      } else {
+    if (!this.constitution.isLocked) {
+      if(this.numberOfSongsOfUser(this.currentUser.uid) >= this.constitution.numberOfSongsPerUser) {
         this.currentStatusAdd.error = true;
-        this.currentStatusAdd.message = "Erreur : Paramètre manquant";
+        this.currentStatusAdd.message = "Erreur : Vous avez atteint votre nombre max de chanson";
+      } else {
+        this.updateParameters();
+        if(!this.isMissingParameters()) {
+          let newConstitutionNumber = 0;
+  
+          if (this.constitution.songs[this.constitution.songs.length -1]) {
+            newConstitutionNumber = this.constitution.songs[this.constitution.songs.length -1].id+1;
+          }
+  
+          let newSong: Song = {
+            id: newConstitutionNumber,
+            shortTitle: this.newSongParameter.shortTitle,
+            platform: SongPlatform.Youtube,
+            url: this.newSongParameter.url,
+            patron: this.currentUser.uid,
+            author: this.newSongParameter.author
+          };
+  
+          this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(newConstitutionNumber.toString()).set({
+            id: newSong.id,
+            shortTitle: newSong.shortTitle,
+            platform: newSong.platform,
+            url: newSong.url,
+            patron: newSong.patron,
+            author: newSong.author
+          })
+      
+          this.constitution.songs.push(newSong);
+          this.closeWindow();
+        } else {
+          this.currentStatusAdd.error = true;
+          this.currentStatusAdd.message = "Erreur : Paramètre manquant";
+        }
       }
+    } else {
+      this.currentStatusAdd.error = true;
+      this.currentStatusAdd.message = "Erreur : La constitution est verrouillée, vous ne pouvez pas ajouter de chansons";
     }
   }
 
   deleteSong(): void {
-    const constitutionNumber = this.deleteSongForm.value['formSongConstitutionNumber'];
-    if (constitutionNumber !== null) {
-      const index = this.constitution.songs.findIndex(x => x.id == constitutionNumber);
-      if (index === -1) {
-        this.currentStatusDelete.error = true;
-        this.currentStatusDelete.message = "Erreur : La chanson n'existe pas";
-      }
-      else if (this.constitution.songs[index].patron === this.currentUser.uid) {
-        this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(this.constitution.songs[index].id.toString()).delete();
-        for (const vote of this.votes) {
-          if (vote.songID === constitutionNumber) {
-            this.afs.collection('constitutions').doc(this.constitution.id).collection('/votes').doc(vote.id).delete();
-          }
-        }        
-        this.closeWindow();
+    if (!this.constitution.isLocked) {
+      const constitutionNumber = this.deleteSongForm.value['formSongConstitutionNumber'];
+      if (constitutionNumber !== null) {
+        const index = this.constitution.songs.findIndex(x => x.id == constitutionNumber);
+        if (index === -1) {
+          this.currentStatusDelete.error = true;
+          this.currentStatusDelete.message = "Erreur : La chanson n'existe pas";
+        }
+        else if (this.constitution.songs[index].patron === this.currentUser.uid) {
+          this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(this.constitution.songs[index].id.toString()).delete();
+          for (const vote of this.votes) {
+            if (vote.songID === constitutionNumber) {
+              this.afs.collection('constitutions').doc(this.constitution.id).collection('/votes').doc(vote.id).delete();
+            }
+          }        
+          this.closeWindow();
+        } else {
+          this.currentStatusDelete.error = true;
+          this.currentStatusDelete.message = "Erreur : La chanson ne vous appartient pas";
+        }
       } else {
         this.currentStatusDelete.error = true;
-        this.currentStatusDelete.message = "Erreur : La chanson ne vous appartient pas";
+        this.currentStatusDelete.message = "Erreur : Paramètre manquant";
       }
     } else {
       this.currentStatusDelete.error = true;
-      this.currentStatusDelete.message = "Erreur : Paramètre manquant";
+      this.currentStatusDelete.message = "Erreur : La constitution est verrouillée, vous ne pouvez pas retirer de chansons";
     }
   }
 

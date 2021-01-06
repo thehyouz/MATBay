@@ -46,10 +46,10 @@ export class ConstitutionPageComponent implements OnInit {
       // Users
       this.users = [];
       this.afs.collection('users/').get().toPromise().then(users => {
+        this.users = [];
         users.forEach(async user => {
-          const data = user.data() as User;
-          if (this.constitution.users.includes(data.uid) && !this.users.some(user => user.uid === data.uid)) {
-            this.users.push(data);
+          if (this.constitution.users.find(newUserID => newUserID === (user.data() as User).uid)) {
+            this.users.push(user.data() as User);  
           }
         });
         this.users = this.users.sort(compareUserNameASC);
@@ -109,7 +109,7 @@ export class ConstitutionPageComponent implements OnInit {
       song: song,
       constitution: this.constitution,
       currentSection: this.currentSection,
-      vote: this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid)),
+      vo0te: this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid)),
     }
     this.dialog.open(SongWindowComponent, dialogConfig);
   }
@@ -168,15 +168,17 @@ export class ConstitutionPageComponent implements OnInit {
         }
       }
       const mean = this.math.mean(extractValuesOfVotesSOC(selectedVotes));
-      const username = this.users.find(x => x.uid === song.patron).displayName;
-      results.push({
-        id: song.id,
-        title: song.shortTitle,
-        author: song.author,
-        url: song.url,
-        score: mean,
-        user: username
-      });
+      const user = this.users.find(x => {return x.uid === song.patron});
+      if (user !== undefined) {
+        results.push({
+          id: song.id,
+          title: song.shortTitle,
+          author: song.author,
+          url: song.url,
+          score: mean,
+          user: user.displayName
+        });
+      }
     }
     results.sort(compareResultScoreDSC);
     return results;
@@ -231,7 +233,15 @@ export class ConstitutionPageComponent implements OnInit {
     });
   }
 
+  changeLockStatus(status: boolean): void {
+    this.afs.collection("constitutions/").doc(this.constitution.id).update({
+      isLocked: status
+    });
+  }
+
   leaveConstitution(): void {
+    if (this.constitution.owner === this.currentUser.uid) return;
+    
     const index = this.constitution.users.findIndex(x => x === this.currentUser.uid);
     this.constitution.users.splice(index);
 
@@ -255,6 +265,20 @@ export class ConstitutionPageComponent implements OnInit {
         this.afs.collection("constitutions/").doc(this.constitution.id).collection("/votes").doc(vote.id).delete();
       }
     }
+
+    this.router.navigate(['current-constitutions']);
+  }
+
+  deleteConstitution(): void {
+    for (const vote of this.votes) {
+      this.afs.collection("constitutions/").doc(this.constitution.id).collection("/votes").doc(vote.id).delete();
+    }
+    
+    for (const song of this.constitution.songs) {
+      this.afs.collection("constitutions/").doc(this.constitution.id).collection("/songs").doc(song.id.toString()).delete();
+    }
+
+    this.afs.collection("constitutions/").doc(this.constitution.id).delete();
 
     this.router.navigate(['current-constitutions']);
   }

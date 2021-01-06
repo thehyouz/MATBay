@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
-import { Constitution } from 'src/app/types/constitution';
+import { compareConstitutionASC, Constitution } from 'src/app/types/constitution';
 import { User } from 'src/app/types/user';
 
 @Component({
@@ -17,7 +17,17 @@ export class CurrentConstitutionsPageComponent implements OnInit{
   public isUserLoading: boolean = true;
   public areConstitutionsLoading: boolean = true;
 
+  private users: User[];
+
   ngOnInit() {
+    // get all users
+    this.afs.collection("users/").get().toPromise().then(newUsers => {
+      this.users = [];
+      newUsers.forEach(async user => {
+        this.users.push(user.data() as User);
+      });
+    });
+
     // update current user
     this.currentUser = this.auth.user$.getValue();
     this.auth.user$.subscribe(newUser => {
@@ -29,7 +39,10 @@ export class CurrentConstitutionsPageComponent implements OnInit{
     this.constitutions = this.constitutionManager.constitutions.getValue();
     this.constitutionManager.constitutions.subscribe(newList => {
       this.constitutions = newList;
-      if (newList) {this.areConstitutionsLoading = false;}
+      if (newList) {
+        this.areConstitutionsLoading = false;
+        this.constitutions.sort(compareConstitutionASC);
+      }
     });
   }
 
@@ -39,14 +52,16 @@ export class CurrentConstitutionsPageComponent implements OnInit{
     public auth: AuthService,
   ) {}
 
-  // TODO: Optimiser
-  async showDisplayName(uid: string): Promise<string> {
-    /* this.afs.collection('users/').get().toPromise().then(users => {
-      const data = users.docs.find(x => x.id === uid).data() as User;
-    }); */
+  showDisplayName(uid: string): string {
+    let name = ""
+    if (this.users !== undefined) {
+      name = this.users.find(user => user.uid === uid).displayName;  
+    }
 
-    const name = ((await this.afs.doc<User>(`users/${uid}`).get().toPromise()).data() as User).displayName;
-    return name;
+    if (name !== undefined) {
+      return name;
+    }
+    return "Error";
   }
 
   joinConstitution(constitution: Constitution): void {

@@ -1,6 +1,6 @@
 import { Song } from './song';
 
-export const MIN_USER_LIMIT = 4;
+export const MIN_USER_LIMIT = 2;
 export const MAX_USER_LIMIT = 10;
 export const MAX_SONG_LIMIT = 100;
 
@@ -51,4 +51,13 @@ export const EMPTY_CONSTITUTION: Constitution = {
     winnerSongIndex: -1,
     youtubePlaylistID: "",
     numberOfSongsPerUser: -1
+}
+
+export function compareConstitutionASC(c1: Constitution, c2: Constitution): number {
+    if (c1.season > c2.season) { return 1; }
+    if (c1.season < c2.season) { return -1; }
+    else {
+        if (c1.round > c2.round) { return 1; }
+        if (c1.round < c2.round ) { return -1; }
+    }
 }

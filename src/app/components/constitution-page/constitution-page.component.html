@@ -1,4 +1,4 @@
-<!-- Contennt -->
+<!-- Content -->
 <div *ngIf="!(isUserLoading || isConstitutionLoading)">
     <mat-sidenav-container class="sidenav">
         <div>
@@ -21,7 +21,9 @@
             <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
             <br>
             <br>
-            <button mat-stroked-button color="warn" (click)="leaveConstitution()"> Quitter la constitution </button>
+            <button mat-stroked-button [disabled]="currentUser.uid === constitution.owner" color="warn" (click)="leaveConstitution()"> Quitter la constitution </button>
+            <br>
+            <span *ngIf="currentUser.uid === constitution.owner" class="warning"> Vous ne pouvez pas quitter votre constitution </span>
         </div>
     </mat-sidenav-container>
     
@@ -55,11 +57,11 @@
         <!-- Table Song List-->
         <table *ngIf="currentSection === SelectionType.SongList" id="t01">
             <tr>
-                <th> Index </th>
+                <th> ID </th>
                 <th> Titre </th>
                 <th> Auteur </th>
                 <th> URL </th>
-                <th> Ajouté par </th>
+                <th *ngIf="!constitution.isAnonymous"> Ajouté par </th>
             </tr>
             <tr *ngFor="let song of constitution.songs">
                 <td> {{song.id}} </td>
@@ -68,13 +70,13 @@
                 <td> 
                     <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
                 </td>
-                <td> {{showDisplayName(song.patron)}} </td>
+                <td *ngIf="!constitution.isAnonymous"> {{showDisplayName(song.patron)}} </td>
             </tr>
         </table>
         <!-- Vote List -->
         <table *ngIf="currentSection === SelectionType.Vote" id="t01">
             <tr>
-                <th> Index </th>
+                <th> ID </th>
                 <th> Titre </th>
                 <th> URL </th>
                 <th> Note </th>
@@ -104,29 +106,25 @@
             <span class="custom-br"></span>
             <br>
             <li>
-                <button mat-raised-button *ngIf="!canLockSongList()" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
-                <button mat-raised-button *ngIf="canLockSongList()" color="primary" class="nav-link waves-light"> Bloquer {{constitution.name}} </button>
+                <button mat-raised-button [disabled]="!canLockSongList()" color="primary" class="nav-link waves-light" (click)="changeLockStatus(true)"> Vérouiller {{constitution.name}} </button>
                 - Empêcher la modification de la liste de chansons.
                 <span *ngIf="!canLockSongList()" class="warning"> (Il manque des chansons) </span>
             </li>
             <br>
             <li>
-                <button mat-raised-button *ngIf="!canPublishResults()" class="nav-link waves-light"> Publier les résultats </button>
-                <button mat-raised-button *ngIf="canPublishResults() && !constitution.isShowingResult" color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
-                <button mat-raised-button *ngIf="canPublishResults() && constitution.isShowingResult" color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>
+                <button mat-raised-button [disabled]="!canPublishResults()" color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
                 - Afficher / Cacher les résultats de la Constitution.
                 <span *ngIf="!canPublishResults()" class="warning"> (Toutes les chansons doivent être votés) </span>
             </li>
             <br>
-            <li> 
-                <button mat-raised-button *ngIf="!canFinishConstitution()"  class="nav-link waves-light"> Terminer {{constitution.name}} </button>
-                <button mat-raised-button *ngIf="canFinishConstitution()" color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
+            <li>
+                <button mat-raised-button [disabled]="!canFinishConstitution()" color="primary" class="nav-link waves-light"> Terminer {{constitution.name}} </button>
                 - Archiver la Constiution dans l'historique des Constitutions.
                 <span *ngIf="!canFinishConstitution()" class="warning"> (Les résultats doivent être publiés) </span>
             </li>
             <br>
             <li>
-                <button mat-raised-button color="primary" class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
+                <button mat-raised-button color="primary" class="nav-link waves-light" (click)="deleteConstitution()"> Supprimer {{constitution.name}} </button>
                 - Attention : les données seront perdus à jamais.
             </li>
         </div>
@@ -178,7 +176,7 @@
                     <td> {{result.title}} </td>
                     <td> {{result.author}} </td>
                     <td>
-                        <a href="{{result.url}}"> {{result.url}} </a>
+                        <a href="{{result.url}}" target="_blank"> {{result.url}} </a>
                     </td>
                     <td> {{result.score}} </td>
                     <td> {{result.user}} </td>

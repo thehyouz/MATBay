@@ -6,11 +6,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
-import { SongPlatform } from 'src/app/types/song-platform.enum';
+import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform';
 import { User } from 'src/app/types/user';
 import { EMPTY_VOTE_SOC, VoteSOC } from 'src/app/types/vote';
 
-const YOUTUBE_HEADER_LENGTH = 32;
 
 @Component({
   selector: 'app-song-window',
@@ -62,37 +61,42 @@ export class SongWindowComponent {
   canVote(): boolean {
     const isUserThePatron = (this.song.patron == this.currentUser.uid);
     const isInVoteMode = (this.currentSection == CurrentSectionConstitution.Vote);
-    return  isInVoteMode && !isUserThePatron;
+    return isInVoteMode && !isUserThePatron;
   }
 
   updateGrade(newGrade: number): void {
-    this.vote.grade = newGrade;
+    this.afs.doc(`/constitutions/${this.constitution.id}/songs/${this.song.id}`).get().toPromise().then(doc => {
+      if (!doc.exists) return;
 
-    if (this.vote.id === "") {
-      const newID = this.afs.createId();
+      this.vote.grade = newGrade;
 
-      this.vote = {
-        id: newID,
-        userID: this.currentUser.uid,
-        songID: this.song.id,
-        grade: newGrade
+      if (this.vote.id === "") {
+        const newID = this.afs.createId();
+
+        this.vote = {
+          id: newID,
+          userID: this.currentUser.uid,
+          songID: this.song.id,
+          grade: newGrade
+        }
+
+        this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(newID).set({
+          id: this.vote.id,
+          userID: this.vote.userID,
+          songID: this.vote.songID,
+          grade: this.vote.grade
+        });
+
+      } else {
+        this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(this.vote.id).update({
+          grade: newGrade
+        });
       }
-
-      this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(newID).set({
-        id: this.vote.id,
-        userID: this.vote.userID,
-        songID: this.vote.songID,
-        grade: this.vote.grade
-      });
-    } else {
-      this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(this.vote.id).update({
-        grade: newGrade
-      });
-    }
+    })
   }
 
   isSelected(number: number): boolean {
-    return number == this.vote.grade;
+    return number === this.vote.grade;
   }
 
   closeWindow(): void {
