@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution, ConstitutionType, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
 import { YOUTUBE_PLAYLIST_HEADER_LENGTH } from 'src/app/types/song-platform';
@@ -74,7 +74,10 @@ export class NewConstitutionWindowComponent {
     this.newConstitutionParameter.round = this.newConstitutionForm.value['formRound'];
     this.newConstitutionParameter.name = this.newConstitutionForm.value['formName'];
     this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
-    this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'].slice(YOUTUBE_PLAYLIST_HEADER_LENGTH);
+    this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'];
+    if (this.newConstitutionParameter.youtubePlaylistID !== null) {
+      this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionParameter.youtubePlaylistID.slice(YOUTUBE_PLAYLIST_HEADER_LENGTH);
+    }
     this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
     this.newConstitutionParameter.isAnonymous = this.newConstitutionForm.value['formIsAnonymous'];
     this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];

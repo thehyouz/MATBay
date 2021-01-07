@@ -3,15 +3,15 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
 import { MathService } from 'src/app/services/math.service';
-import { SongListManagerService } from 'src/app/services/song-list-manager.service';
-import { VoteManagerService } from 'src/app/services/vote-manager.service';
+import { SongListManagerService } from 'src/app/services/manager/song-list-manager.service';
+import { VoteManagerService } from 'src/app/services/manager/vote-manager.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song, compareSongIdASC } from 'src/app/types/song';
 import { compareUserNameASC, User } from 'src/app/types/user';
-import { compareResultScoreDSC, extractValuesOfVotesSOC, ResultSOC, VoteSOC } from 'src/app/types/vote';
+import { compareResultScoreDSC, EMPTY_GRADE_VOTE, extractValuesOfVotesSOC, GradeVote, ResultGradeVote} from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from '../song-window/song-window.component';
 
@@ -33,7 +33,7 @@ export class ConstitutionPageComponent implements OnInit {
   public isConstitutionLoading: boolean = true;
   public isUserLoading: boolean = true;
 
-  public votes: VoteSOC[];
+  public votes: GradeVote[];
 
   ngOnInit() {
     this.constitutionManager.constitutions.subscribe(newList => {
@@ -105,11 +105,15 @@ export class ConstitutionPageComponent implements OnInit {
 
   openDialogSong(song: Song): void {
     const dialogConfig = new MatDialogConfig;
+
+    let vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
+    if (vote === undefined) { vote = EMPTY_GRADE_VOTE; }
+
     dialogConfig.data = {
       song: song,
       constitution: this.constitution,
       currentSection: this.currentSection,
-      vo0te: this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid)),
+      vote: vote,
     }
     this.dialog.open(SongWindowComponent, dialogConfig);
   }
@@ -123,7 +127,7 @@ export class ConstitutionPageComponent implements OnInit {
   }
 
   userMeanVotes(uid: string): number {
-    const currentUserVote: VoteSOC[] = [];
+    const currentUserVote: GradeVote[] = [];
     for (const vote of this.votes) {
       if (vote.userID === uid) {
         currentUserVote.push(vote);
@@ -133,7 +137,7 @@ export class ConstitutionPageComponent implements OnInit {
   }
 
   userMeanSongs(uid: string): number {
-    const currentUserSongsVote: VoteSOC[] = [];
+    const currentUserSongsVote: GradeVote[] = [];
     for (const vote of this.votes) {
       if (this.constitution.songs.find(x => x.id === vote.songID && x.patron === uid)) {
         currentUserSongsVote.push(vote);
@@ -149,7 +153,7 @@ export class ConstitutionPageComponent implements OnInit {
         user1Songs.push(song);
       }
     }
-    const user2Votes: VoteSOC[] = [];
+    const user2Votes: GradeVote[] = [];
     for (const vote of this.votes) {
       if (user1Songs.find(x => x.id === vote.songID && x.patron === uid1 && vote.userID === uid2)) { 
         user2Votes.push(vote);
@@ -158,8 +162,8 @@ export class ConstitutionPageComponent implements OnInit {
     return this.math.mean(extractValuesOfVotesSOC(user2Votes));
   }
 
-  calculateResults(): ResultSOC[] {
-    const results: ResultSOC[] = [];
+  calculateResults(): ResultGradeVote[] {
+    const results: ResultGradeVote[] = [];
     for(const song of this.constitution.songs) {
       const selectedVotes = [];
       for(const vote of this.votes) {

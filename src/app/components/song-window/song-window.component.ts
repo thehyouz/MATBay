@@ -8,7 +8,7 @@ import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform';
 import { User } from 'src/app/types/user';
-import { EMPTY_VOTE_SOC, VoteSOC } from 'src/app/types/vote';
+import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class SongWindowComponent {
   private constitution: Constitution;
   public safeUrl: SafeResourceUrl;
 
-  private vote: VoteSOC;
+  private vote: GradeVote;
 
   private currentUser: User;
   private currentSection: number;
@@ -37,14 +37,14 @@ export class SongWindowComponent {
     this.currentSection = data.currentSection;
     this.vote = data.vote;
 
-    if (this.vote === undefined) {
-      this.vote = EMPTY_VOTE_SOC;
-    }
-
     this.safeUrl = this.makeSafeURL();
 
     this.currentUser = auth.user$.getValue();
     auth.user$.subscribe(newUser => this.currentUser = newUser);
+
+    if (this.vote.songID === -1) {
+      this.vote.grade = -1;
+    }
   }
 
   array(n: number): any[] {

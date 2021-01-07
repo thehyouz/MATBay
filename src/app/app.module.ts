@@ -34,7 +34,7 @@ import { ManageSongsWindowComponent } from './components/manage-songs-window/man
 import { SongWindowComponent } from './components/song-window/song-window.component';
 
 // Service
-import { ConstitutionManagerService } from './services/constitution-manager.service';
+import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
 
 

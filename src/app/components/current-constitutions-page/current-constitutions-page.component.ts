@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConstitutionManagerService } from 'src/app/services/constitution-manager.service';
+import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
 import { compareConstitutionASC, Constitution } from 'src/app/types/constitution';
 import { User } from 'src/app/types/user';
 

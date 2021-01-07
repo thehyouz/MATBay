@@ -8,7 +8,7 @@ import { EMPTY_SONG, Song } from 'src/app/types/song';
 import { SongPlatform } from 'src/app/types/song-platform';
 import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
-import { VoteSOC } from 'src/app/types/vote';
+import { GradeVote } from 'src/app/types/vote';
 
 @Component({
   selector: 'app-manage-songs-window',
@@ -25,7 +25,7 @@ export class ManageSongsWindowComponent {
   public deleteSongForm: FormGroup;
   private newSongParameter: Song;
 
-  private votes: VoteSOC[];
+  private votes: GradeVote[];
 
   constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
               private auth: AuthService,

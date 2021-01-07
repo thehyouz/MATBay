@@ -1,11 +1,13 @@
-export interface VoteSOC {
+// GradeVote
+
+export interface GradeVote {
     id: string,
     userID: string,
     songID: number,
     grade: number
 }
 
-export interface ResultSOC {
+export interface ResultGradeVote {
     id: number,
     title: string,
     author: string,
@@ -14,14 +16,14 @@ export interface ResultSOC {
     user: string
 }
 
-export const EMPTY_VOTE_SOC = {
+export const EMPTY_GRADE_VOTE = {
     id: "",
     userID: "",
     songID: -1,
     grade: -1
 }
 
-export function extractValuesOfVotesSOC(votes: VoteSOC[]): number[] {
+export function extractValuesOfVotesSOC(votes: GradeVote[]): number[] {
     let array: number[] = [];
     for (const vote of votes) {
       array.push(vote.grade + 1);   // + 1 --> les notes stockés sur Firebase vont de 0 à 9
@@ -29,8 +31,12 @@ export function extractValuesOfVotesSOC(votes: VoteSOC[]): number[] {
     return array;
 }
 
-export function compareResultScoreDSC(result1: ResultSOC, result2: ResultSOC) {
+export function compareResultScoreDSC(result1: ResultGradeVote, result2: ResultGradeVote) {
     if (result1.score > result2.score) { return -1; }
     if (result1.score < result2.score) { return 1; }
     return 0;
 }
+
+// RankingVote
+// EliminationVote
+// TournamentVote

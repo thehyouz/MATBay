@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Constitution } from '../types/constitution';
+import { Constitution } from '../../types/constitution';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
