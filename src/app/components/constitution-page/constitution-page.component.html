@@ -4,9 +4,9 @@
         <div>
             <h4> {{constitution.name}} </h4>
             <span class="custom-br"></span>
-            <div *ngIf="constitution.songs.length == 0"> Aucune chanson </div>
-            <div *ngIf="constitution.songs.length == 1"> {{constitution.songs.length}} chanson </div>
-            <div *ngIf="constitution.songs.length > 1"> {{constitution.songs.length}} chansons </div>
+            <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
+            <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
+            <div *ngIf="constitution.songs?.length > 1"> {{constitution.songs.length}} chansons </div>
             Vous avez:
             {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
             <br>
@@ -55,16 +55,16 @@
         </mdb-navbar>
         <br>
         <!-- Table Song List-->
-        <table *ngIf="currentSection === SelectionType.SongList" id="t01">
+        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.SongList" id="t01">
             <tr>
-                <th> ID </th>
-                <th> Titre </th>
-                <th> Auteur </th>
+                <th mat-sort-header="id"> ID </th>
+                <th mat-sort-header="title"> Titre </th>
+                <th mat-sort-header="author"> Auteur </th>
                 <th> URL </th>
-                <th *ngIf="!constitution.isAnonymous"> Ajouté par </th>
+                <th mat-sort-header="username" *ngIf="!constitution.isAnonymous"> Ajouté par </th>
             </tr>
             <tr *ngFor="let song of constitution.songs">
-                <td> {{song.id}} </td>
+                <td > {{song.id}} </td>
                 <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
                 <td> {{song.author}} </td>
                 <td> 
@@ -74,12 +74,12 @@
             </tr>
         </table>
         <!-- Vote List -->
-        <table *ngIf="currentSection === SelectionType.Vote" id="t01">
+        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.Vote" id="t01">
             <tr>
-                <th> ID </th>
-                <th> Titre </th>
-                <th> URL </th>
-                <th> Note </th>
+                <th mat-sort-header="id"> ID </th>
+                <th mat-sort-header="title"> Titre </th>
+                <th mat-sort-header="author"> URL </th>
+                <th mat-sort-header="grade"> Note </th>
             </tr>
             <tr *ngFor="let song of constitution.songs">
                 <td> {{song.id}} </td>
@@ -130,8 +130,9 @@
         </div>
         <!-- Result Info -->
         <div *ngIf="currentSection === SelectionType.Result">
-            <!-- <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
-            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button> -->
+            <!-- -->
+            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
+            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button> 
             <h4> Mes Résultats </h4>
             <span class="custom-br"></span>
             <br>
@@ -162,23 +163,23 @@
             <br>
             Classement globale chansons :
             <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-            <table *ngIf="constitution.isShowingResult" id="t01" >
+            <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01" >
                 <tr>
-                    <th> Index </th>
-                    <th> Titre </th>
-                    <th> Auteur </th>
+                    <th mat-sort-header="id" > ID </th>
+                    <th mat-sort-header="title"> Titre </th>
+                    <th mat-sort-header="author"> Auteur </th>
                     <th> URL </th>
-                    <th> Score </th>
-                    <th> Ajouté par </th>
+                    <th mat-sort-header="score"> Score </th>
+                    <th mat-sort-header="user"> Ajouté par </th>
                 </tr>
-                <tr *ngFor="let result of calculateResults()">
+                <tr *ngFor="let result of results">
                     <td> {{result.id}} </td>
                     <td> {{result.title}} </td>
                     <td> {{result.author}} </td>
                     <td>
                         <a href="{{result.url}}" target="_blank"> {{result.url}} </a>
                     </td>
-                    <td> {{result.score}} </td>
+                    <td> {{result.score.toFixed(2)}} </td>
                     <td> {{result.user}} </td>
                 </tr>
             </table>

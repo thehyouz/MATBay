@@ -47,12 +47,13 @@ table {
     margin-left: auto;
     margin-right: auto;
     width: 95%;
-}
+}.grow {width: 100%;}
 
 td, th {
     border: 1px solid #434647;
     text-align: center;
     padding: 8px;
+    width: 1%;
 }
 
 #t01 th {

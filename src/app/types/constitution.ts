@@ -5,8 +5,7 @@ export const MAX_USER_LIMIT = 10;
 export const MAX_SONG_LIMIT = 100;
 
 export enum ConstitutionType {
-    // GRADE, RANKING, ELIMINATION, TOURNAMENT
-    SOC, FMTTM
+    GRADE //, RANKING, ELIMINATION, TOURNAMENT
 }
 
 export interface Constitution {
@@ -52,6 +51,20 @@ export const EMPTY_CONSTITUTION: Constitution = {
     winnerSongIndex: -1,
     youtubePlaylistID: "",
     numberOfSongsPerUser: -1
+}
+
+export interface ConstitutionArchived {
+    saison: number;
+    round: number;
+    name: string;
+    
+    ownerName: string;
+    winnerName: string;
+    youtubePlaylistID: string;
+
+    winnerSongURL: string;
+    winnerSongTitle: string;
+    winnerSongAuthor: string;
 }
 
 export function compareConstitutionASC(c1: Constitution, c2: Constitution): number {

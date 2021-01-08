@@ -11,9 +11,10 @@ import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song, compareSongIdASC } from 'src/app/types/song';
 import { compareUserNameASC, User } from 'src/app/types/user';
-import { compareResultScoreDSC, EMPTY_GRADE_VOTE, extractValuesOfVotesSOC, GradeVote, ResultGradeVote} from 'src/app/types/vote';
+import { EMPTY_GRADE_VOTE, extractValuesOfVotesSOC, GradeVote, ResultGradeVote} from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from '../song-window/song-window.component';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-constitution-page',
@@ -34,6 +35,7 @@ export class ConstitutionPageComponent implements OnInit {
   public isUserLoading: boolean = true;
 
   public votes: GradeVote[];
+  public results: ResultGradeVote[];
 
   ngOnInit() {
     this.constitutionManager.constitutions.subscribe(newList => {
@@ -53,30 +55,37 @@ export class ConstitutionPageComponent implements OnInit {
           }
         });
         this.users = this.users.sort(compareUserNameASC);
-      })
+        
+        // Songs
+        this.constitution.songs = this.songManager.songList.getValue();
+        this.songManager.songList.subscribe(newSongs => {
+          this.constitution.songs = [];
+          newSongs.forEach(async song => {
+            this.constitution.songs.push(song);
+          });
+          this.constitution.songs.sort(compareSongIdASC);
+  
+          // Votes
+          this.votes = this.voteManager.votes.getValue();
+          this.voteManager.votes.subscribe(newVotes => {
+            this.votes = [];
+            newVotes.forEach(async vote => {
+              this.votes.push(vote);
+            });
+  
+            // Results
+            if (this.constitution.isShowingResult) {
+              this.results = this.calculateResults();
+            }
 
-      // Songs
-      this.constitution.songs = this.songManager.songList.getValue();
-      this.songManager.songList.subscribe(newSongs => {
-        this.constitution.songs = [];
-        newSongs.forEach(async song => {
-          this.constitution.songs.push(song);
-        });
-        this.constitution.songs.sort(compareSongIdASC);
-      });
+            this.isConstitutionLoading = false;
 
-      // Votes
-      this.votes = this.voteManager.votes.getValue();
-      this.voteManager.votes.subscribe(newVotes => {
-        this.votes = [];
-        newVotes.forEach(async vote => {
-          this.votes.push(vote);
+          });
         });
-      })
-      
-      this.isConstitutionLoading = false;
+      });      
     });
 
+    // Current User
     this.auth.user$.subscribe(newUser => {
       this.currentUser = newUser;
       if (newUser) {this.isUserLoading = false;}
@@ -118,6 +127,49 @@ export class ConstitutionPageComponent implements OnInit {
     this.dialog.open(SongWindowComponent, dialogConfig);
   }
 
+  sortDataSong(sort: Sort) {
+    const data = this.constitution.songs.slice();
+    if(!sort.active || sort.direction === '') {
+      this.constitution.songs = data;
+      return;
+    }
+
+    this.constitution.songs = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case "id": return this.compare(a.id, b.id, isAsc);
+        case "title": return this.compare(a.shortTitle, b.shortTitle, isAsc);
+        case "author": return this.compare(a.author, b.author, isAsc);
+        case "username": return this.compare(this.showDisplayName(a.patron), this.showDisplayName(b.patron), isAsc);
+        case "grade": return this.compare(this.returnVote(a)+1, this.returnVote(b)+1, isAsc);
+        default: return 0;
+      }
+    });
+  }
+
+  sortDataResult(sort: Sort) {
+    if(!sort.active || sort.direction === '') {
+      return;
+    }
+
+    const data = this.results.slice();
+    this.results = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case "id": return this.compare(a.id, b.id, isAsc);
+        case "title": return this.compare(a.title, b.title, isAsc);
+        case "author": return this.compare(a.author, b.author, isAsc);
+        case "user": return this.compare(a.user, b.user, isAsc);
+        case "score": return this.compare(a.score, b.score, isAsc);
+        default: return 0;
+      }
+    });
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
   returnVote(song: Song): number {
     const vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
     if (vote !== undefined) {
@@ -137,6 +189,7 @@ export class ConstitutionPageComponent implements OnInit {
   }
 
   userMeanSongs(uid: string): number {
+    if (this.constitution.songs === undefined) return 0;
     const currentUserSongsVote: GradeVote[] = [];
     for (const vote of this.votes) {
       if (this.constitution.songs.find(x => x.id === vote.songID && x.patron === uid)) {
@@ -184,7 +237,6 @@ export class ConstitutionPageComponent implements OnInit {
         });
       }
     }
-    results.sort(compareResultScoreDSC);
     return results;
   }
 
@@ -198,6 +250,7 @@ export class ConstitutionPageComponent implements OnInit {
   }
 
   numberOfSongsOfUser(uid: string): number {
+    if (this.constitution.songs === undefined) return 0;
     let i = 0;
     for (const song of this.constitution.songs) {
       if (song.patron == uid) {
@@ -235,6 +288,10 @@ export class ConstitutionPageComponent implements OnInit {
     this.afs.collection("constitutions/").doc(this.constitution.id).update({
       isShowingResult: status
     });
+
+    if (status) {
+      this.results = this.calculateResults();
+    }
   }
 
   changeLockStatus(status: boolean): void {

@@ -102,7 +102,7 @@ export class NewConstitutionWindowComponent {
         round: this.newConstitutionParameter.round,
         name: this.newConstitutionParameter.name,
         isPublic: this.newConstitutionParameter.isPublic? this.newConstitutionParameter.isPublic : false,
-        type: ConstitutionType.SOC,
+        type: ConstitutionType.GRADE,
         isLocked: false,
         isShowingResult: false,
         owner: this.currentUser.uid,

@@ -14,10 +14,11 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from "@angular/material/input";
-import { MatDialogModule } from "@angular/material/dialog"
-import { MatCheckboxModule } from "@angular/material/checkbox"
-import { MatSidenavModule } from "@angular/material/sidenav"
-
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatSortModule } from "@angular/material/sort";
+ 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
@@ -77,6 +78,7 @@ const firebaseConfig = {
     MatInputModule,
     MatSidenavModule,
     MatFormFieldModule,
+    MatSortModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],
