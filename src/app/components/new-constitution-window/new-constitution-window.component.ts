@@ -106,12 +106,12 @@ export class NewConstitutionWindowComponent {
         isLocked: false,
         isShowingResult: false,
         owner: this.currentUser.uid,
-        winnerUserIndex: -1,
+        winnerUserID: '',
         numberMaxOfUser: this.newConstitutionParameter.numberMaxOfUser,
         users: [this.currentUser.uid],
         isAnonymous: this.newConstitutionParameter.isAnonymous? this.newConstitutionParameter.isAnonymous : false,
         songs: [],
-        winnerSongIndex: -1,
+        winnerSongID: -1,
         youtubePlaylistID: this.newConstitutionParameter.youtubePlaylistID? this.newConstitutionParameter.youtubePlaylistID : "",
         numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser
       }

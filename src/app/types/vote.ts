@@ -8,12 +8,12 @@ export interface GradeVote {
 }
 
 export interface ResultGradeVote {
-    id: number,
+    songID: number,
     title: string,
     author: string,
     url: string,
     score: number,
-    user: string
+    userID: string
 }
 
 export const EMPTY_GRADE_VOTE = {

@@ -51,9 +51,13 @@ table {
 
 td, th {
     border: 1px solid #434647;
-    text-align: center;
+    
     padding: 8px;
     width: 1%;
+}
+
+td {
+    text-align: center;
 }
 
 #t01 th {

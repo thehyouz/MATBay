@@ -19,7 +19,7 @@ export class CurrentConstitutionsPageComponent implements OnInit{
 
   private users: User[];
 
-  ngOnInit() {
+  ngOnInit(): void {
     // get all users
     this.afs.collection("users/").get().toPromise().then(newUsers => {
       this.users = [];
@@ -47,9 +47,9 @@ export class CurrentConstitutionsPageComponent implements OnInit{
   }
 
   constructor(
-    public constitutionManager: ConstitutionManagerService,
-    public afs: AngularFirestore,
-    public auth: AuthService,
+    private constitutionManager: ConstitutionManagerService,
+    private afs: AngularFirestore,
+    private auth: AuthService,
   ) {}
 
   showDisplayName(uid: string): string {

@@ -10,7 +10,6 @@ export enum ConstitutionType {
 
 export interface Constitution {
     id: string;
-
     season: number;
     round: number;
     name: string;
@@ -22,13 +21,13 @@ export interface Constitution {
     // Users
     owner: string;
     users: string[];
-    winnerUserIndex: number;
+    winnerUserID: string;
     numberMaxOfUser: number;
     isAnonymous: boolean;
 
     // Songs
     songs: Song[];
-    winnerSongIndex: number;
+    winnerSongID: number;
     youtubePlaylistID: string;
     numberOfSongsPerUser: number;
 }
@@ -44,30 +43,29 @@ export const EMPTY_CONSTITUTION: Constitution = {
     type: 0,
     owner: "",
     users: [],
-    winnerUserIndex: -1,
+    winnerUserID: '',
     numberMaxOfUser: -1,
     isAnonymous: false,
     songs: [],
-    winnerSongIndex: -1,
+    winnerSongID: -1,
     youtubePlaylistID: "",
     numberOfSongsPerUser: -1
 }
 
 export interface ConstitutionArchived {
-    saison: number;
+    season: number;
     round: number;
     name: string;
-    
-    ownerName: string;
-    winnerName: string;
     youtubePlaylistID: string;
+    ownerName: string;
 
+    winnerName: string;
     winnerSongURL: string;
     winnerSongTitle: string;
     winnerSongAuthor: string;
 }
 
-export function compareConstitutionASC(c1: Constitution, c2: Constitution): number {
+export function compareConstitutionASC(c1: Constitution | ConstitutionArchived, c2: Constitution | ConstitutionArchived): number {
     if (c1.season > c2.season) { return 1; }
     if (c1.season < c2.season) { return -1; }
     else {

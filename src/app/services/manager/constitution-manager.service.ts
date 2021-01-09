@@ -10,7 +10,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class ConstitutionManagerService {
 
   private constitutionsObservable: Observable<Constitution[]>;
-  constitutions: BehaviorSubject<Constitution[]>;
+  public constitutions: BehaviorSubject<Constitution[]>;
 
   constructor(private afs: AngularFirestore) {
     this.constitutionsObservable = this.afs.collection<Constitution>('constitutions/').valueChanges();
