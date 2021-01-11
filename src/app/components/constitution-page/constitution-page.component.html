@@ -196,6 +196,9 @@
                 </tr>
             </table>
         </div>
+
+        <app-export-section *ngIf="currentSection === SelectionType.Export" [constitution]="constitution"> </app-export-section>
+
     </div>
 </div>
 

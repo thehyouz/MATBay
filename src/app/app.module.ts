@@ -33,6 +33,7 @@ import { ConstitutionsHistoryPageComponent } from './components/constitutions-hi
 import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
 import { ManageSongsWindowComponent } from './components/manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from './components/song-window/song-window.component';
+import { ExportSectionComponent } from './components/constitution-page/export-section/export-section.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
@@ -61,7 +62,8 @@ const firebaseConfig = {
     NewConstitutionWindowComponent,
     ConstitutionPageComponent,
     ManageSongsWindowComponent,
-    SongWindowComponent
+    SongWindowComponent,
+    ExportSectionComponent
   ],
   imports: [
     BrowserModule,
