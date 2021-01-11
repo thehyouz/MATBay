@@ -14,3 +14,15 @@ export const EMPTY_USER: User = {
     photoURL: '',
     timestamp: null
 }
+
+export function compareUserNameASC(user1: User, user2: User): number {
+    if (user1.displayName > user2.displayName) {return 1;}
+    if (user1.displayName < user2.displayName) {return -1;}
+    return 0;
+}
+
+export function compareUserNameDSC(user1: User, user2: User): number {
+    if (user1.displayName > user2.displayName) {return -1;}
+    if (user1.displayName < user2.displayName) {return 1;}
+    return 0;
+}

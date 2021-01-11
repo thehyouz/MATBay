@@ -1,77 +1,205 @@
-<mat-sidenav-container class="sidenav">
-    <div>
-        <h4> {{constitution.name}} </h4>
-        <span class="custom-br"></span>
-        <div *ngIf="constitution.songs.length == 0"> Aucune chanson </div>
-        <div *ngIf="constitution.songs.length != 0"> {{constitution.songs.length}} chansons </div>
-        Vous avez:
-        {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
-        <br>
-        <br>
-        Membres :
-        <div *ngFor="let user of users">
-            <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+<!-- Content -->
+<div *ngIf="!(isUserLoading || isConstitutionLoading)">
+    <mat-sidenav-container class="sidenav">
+        <div>
+            <h4> {{constitution.name}} </h4>
+            <span class="custom-br"></span>
+            <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
+            <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
+            <div *ngIf="constitution.songs?.length > 1"> {{constitution.songs.length}} chansons </div>
+            Vous avez:
+            {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
             <br>
+            <br>
+            Membres :
+            <div *ngFor="let user of users">
+                <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+                <br>
+            </div>
+            <span class="custom-br"></span>
+            <br>
+            <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
+            <br>
+            <br>
+            <button mat-stroked-button [disabled]="currentUser.uid === constitution.owner" color="warn" (click)="leaveConstitution()"> Quitter la constitution </button>
+            <br>
+            <span *ngIf="currentUser.uid === constitution.owner" class="warning"> Vous ne pouvez pas quitter votre constitution </span>
         </div>
-        <span class="custom-br"></span>
-        <br>
-        <button mat-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
-    </div>
-</mat-sidenav-container>
-
-<div class="content">
+    </mat-sidenav-container>
     
+    <div class="content">
+        <!-- Navbar -->
+        <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
+            <!-- Navbar brand -->
+            <mdb-navbar-brand><a class="navbar-brand" routerLink="/"></a></mdb-navbar-brand>
+            <links>
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto">
+                    <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> Liste Chansons </button>
+                    </li>
+                    <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Vote}">
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Vote)"> Zone Électorale </button>
+                    </li>
+                    <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
+                        <button *ngIf="constitution.owner === currentUser.uid" mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
+                    </li>
+                    <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Result}">
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Result)"> Resultats </button>
+                    </li>
+                    <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> Exporter </button>
+                    </li>
+                </ul>
+            </links>
+        </mdb-navbar>
+        <br>
+        <!-- Table Song List-->
+        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.SongList" id="t01">
+            <tr>
+                <th mat-sort-header="id"> ID </th>
+                <th mat-sort-header="title"> Titre </th>
+                <th mat-sort-header="author"> Auteur </th>
+                <th> URL </th>
+                <th mat-sort-header="username" *ngIf="!constitution.isAnonymous"> Ajouté par </th>
+            </tr>
+            <tr *ngFor="let song of constitution.songs">
+                <td > {{song.id}} </td>
+                <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+                <td> {{song.author}} </td>
+                <td> 
+                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
+                </td>
+                <td *ngIf="!constitution.isAnonymous"> {{showDisplayName(song.patron)}} </td>
+            </tr>
+        </table>
+        <!-- Vote List -->
+        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.Vote" id="t01">
+            <tr>
+                <th mat-sort-header="id"> ID </th>
+                <th mat-sort-header="title"> Titre </th>
+                <th mat-sort-header="author"> URL </th>
+                <th mat-sort-header="grade"> Note </th>
+            </tr>
+            <tr *ngFor="let song of constitution.songs">
+                <td> {{song.id}} </td>
+                <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+                <td> 
+                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
+                </td>
+                <td *ngIf="currentUser.uid === song.patron"> / </td>
+                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) !== -1)"> {{returnVote(song)+1}} </td>
+                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) === -1)"> </td>
+            </tr>
+        </table>
+        <!-- Owner Info -->
+        <div *ngIf="showOwnerInfo()">
+            <h3> Statistiques </h3> 
+            <span class="custom-br"></span>
+            <br>
+            <li> Saison {{constitution.season}} - Partie {{constitution.round}} </li>
+            <li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
+            <li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser}}</li>
+            <li> Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}} </li>
+            <br>
+            <h3> Options </h3> 
+            <span class="custom-br"></span>
+            <br>
+            <li>
+                <span *ngIf="!constitution.isLocked">
+                    <button mat-raised-button [disabled]="!canLockSongList()" color="primary" class="nav-link waves-light" (click)="changeLockStatus(true)"> Vérouiller {{constitution.name}} </button>
+                    - Empêcher la modification de la liste de chansons.
+                </span>
+                <span *ngIf="constitution.isLocked">
+                    <button mat-raised-button color="primary" [disabled]="!canLockSongList()" class="nav-link waves-light" (click)="changeLockStatus(false)"> Dévérouiller {{constitution.name}} </button>
+                    - Permet la modification de la liste de chansons.
+                </span>
+                <span *ngIf="!canLockSongList()" class="warning"> (Il manque des chansons) </span>
+            </li>
+            <br>
+            <li>
+                <span *ngIf="!constitution.isShowingResult">
+                    <button mat-raised-button [disabled]="!canPublishResults()" color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
+                    - Afficher les résultats de la Constitution.
+                </span>
+                <span *ngIf="constitution.isShowingResult">
+                    <button mat-raised-button [disabled]="!canPublishResults()" color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>
+                    - Cacher les résultats de la Constitution.
+                </span>
+                <span *ngIf="!canPublishResults()" class="warning"> (Toutes les chansons doivent être votés) </span>
+            </li>
+            <br>
+            <li>
+                <button mat-raised-button [disabled]="!canFinishConstitution()" color="primary" class="nav-link waves-light" (click)="finishConstitution()"> Terminer {{constitution.name}} </button>
+                - Archiver la Constiution dans l'historique des Constitutions. Elle sera supprimée.
+                <span *ngIf="!canFinishConstitution()" class="warning"> (Les résultats doivent être publiés) </span>
+            </li>
+            <br>
+            <li>
+                <button mat-raised-button color="primary" class="nav-link waves-light" (click)="deleteConstitution()"> Supprimer {{constitution.name}} </button>
+                - Attention : les données seront perdus à jamais.
+            </li>
+        </div>
+        <!-- Result Info -->
+        <div *ngIf="currentSection === SelectionType.Result">
+            <!-- -->
+            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
+            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>
+            <h4> Mes Résultats </h4>
+            <span class="custom-br"></span>
+            <br>
+            <li> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
+            <li> Moyenne de mes chansons : 
+                <span *ngIf="constitution.isShowingResult"> {{userMeanSongs(currentUser.uid).toFixed(2)}} </span>
+                <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            </li>
+            <br>
+            <h4> Résultats Globaux </h4>
+            <span class="custom-br"></span>
+            <br>
+            Moyenne des utilisateurs entre eux :
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <table *ngIf="constitution.isShowingResult" id="t01">
+                <tr>
+                    <th> Utilisateur </th>
+                    <th *ngFor="let user of users"> {{user.displayName}} </th>
+                </tr>
+                <tr *ngFor="let user of users">
+                    <td style="background-color: #2E2E2E;"> {{user.displayName}} </td>
+                    <td *ngFor="let user2 of users"> 
+                        <span *ngIf="user.uid === user2.uid"> / </span>
+                        <span *ngIf="user.uid !== user2.uid"> {{userMeanUser(user2.uid, user.uid).toFixed(2)}} </span>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            Classement globale chansons :
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01" >
+                <tr>
+                    <th mat-sort-header="id" > ID </th>
+                    <th mat-sort-header="title"> Titre </th>
+                    <th mat-sort-header="author"> Auteur </th>
+                    <th> URL </th>
+                    <th mat-sort-header="score"> Score </th>
+                    <th mat-sort-header="user"> Ajouté par </th>
+                </tr>
+                <tr *ngFor="let result of results">
+                    <td> {{result.songID}} </td>
+                    <td> {{result.title}} </td>
+                    <td> {{result.author}} </td>
+                    <td>
+                        <a href="{{result.url}}" target="_blank"> {{result.url}} </a>
+                    </td>
+                    <td> {{result.score.toFixed(2)}} </td>
+                    <td> {{showDisplayName(result.userID)}} </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 
-<div class="content">
-    <!-- Navbar -->
-    <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
-        <!-- Navbar brand -->
-        <mdb-navbar-brand><a class="navbar-brand" routerLink="/"></a></mdb-navbar-brand>
-        <links>
-            <!-- Links -->
-            <ul class="navbar-nav mr-auto">
-                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
-                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> Liste Chansons </button>
-                </li>
-                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
-                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
-                </li>
-                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Stats}">
-                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Stats)"> Statistiques </button>
-                </li>
-                <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
-                    <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> Exporter </button>
-                </li>
-            </ul>
-        </links>
-    </mdb-navbar>
-    <br>
-    <!-- Table Song List-->
-    <table *ngIf="currentSection === SelectionType.SongList" id="t01">
-        <tr>
-            <th> Index </th>
-            <th> Titre </th>
-            <th> Auteur </th>
-            <th> URL </th>
-            <th> Ajouté par </th>
-        </tr>
-        <tr *ngFor="let song of constitution.songs">
-            <td> {{song.id}} </td>
-            <td> <button mat-button color="primary" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
-            <td> {{song.author}} </td>
-            <td> 
-                <a href="{{song.url}}"> {{song.url}} </a>
-            </td>
-            <td> {{showDisplayName(song.patron)}} </td>
-        </tr>
-    </table>
-    <!-- Owner Info -->
-    <div *ngIf="showOwnerInfo()">
-        <h3> {{constitution.name}} </h3> 
-        <span class="custom-br"></span>
-        
-        <button mat-button class="nav-link waves-light"> Terminer {{constitution.name}} </button>
-        <button mat-button class="nav-link waves-light"> Supprimer {{constitution.name}} </button>
-    </div>
+<!-- If not ready-->
+<div *ngIf="isUserLoading || isConstitutionLoading">
+    Page en cours de chargement...
 </div>

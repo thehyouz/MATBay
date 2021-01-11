@@ -1,13 +1,24 @@
 <div class="title">
-    <a href="{{song.url}}">
+    <a href="{{song.url}}" target="_blank">
         <h3> {{song.shortTitle}} - {{song.author}} </h3>
     </a>
     <span class="custom-br"></span>
 </div>
 <br>
-<div>
+<div class="alignment">
     <iframe width="720" height="480" frameborder="0"
-        [src]="safeUrl" 
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
+    [src]="safeUrl"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+<div *ngIf="canVote()" class="alignment">
+    <br>
+    <span *ngFor="let button of array(10) ; index as i">
+        <button *ngIf="!isSelected(i)" mat-raised-button class="vote-button" (click)="updateGrade(i)"> {{i+1}} </button>
+        <button *ngIf="isSelected(i)" mat-raised-button color="primary" (click)="updateGrade(i)"> {{i+1}} </button>
+    </span>
+</div>
+<br>
+<div>
+    <button mat-stroked-button color="warn" (click)="closeWindow()"> Annuler </button>
 </div>

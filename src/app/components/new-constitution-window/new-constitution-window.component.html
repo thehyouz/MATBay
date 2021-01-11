@@ -4,7 +4,8 @@
 </div>
 <div class="content">
     <br>
-    <form [formGroup]="newConstitution">
+    <form [formGroup]="newConstitutionForm">
+        Information Globale:
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Saison </mat-label>
             <input matInput type="number" min = "0"  formControlName="formSeason">
@@ -14,22 +15,28 @@
             <mat-label> Partie </mat-label>
             <input matInput type="number" min = "0"  formControlName="formRound">
         </mat-form-field>
-        <span class="custom-br"></span>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nom </mat-label>
             <input matInput type="text"  formControlName="formName">
         </mat-form-field>
+        <span class="custom-br"></span>
         <br>
+        Youtube ID:
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Youtube Playlist ID </mat-label>
             <input matInput type="text"  formControlName="formYoutubePlaylist">
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
+        Utilisateurs:
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Nombre d'utilisateurs </mat-label>
+            <input matInput type="number" formControlName="formNumberMaxOfUser">
+        </mat-form-field>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nombre de chansons par utilisateur </mat-label>
-            <input matInput type="number" min = "1" max="25"  formControlName="formNumberOfSongsPerUser">
+            <input matInput type="number" formControlName="formNumberOfSongsPerUser">
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
@@ -51,7 +58,7 @@
                     <mat-label> Les utilisateurs sont anonymes: </mat-label>
                 </td>
                 <td>
-                    <mat-checkbox color="primary"> </mat-checkbox>
+                    <mat-checkbox color="primary" formControlName="formIsAnonymous"> </mat-checkbox>
                 </td>
             </tr>
         </table>

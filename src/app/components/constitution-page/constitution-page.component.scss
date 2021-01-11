@@ -1,3 +1,8 @@
+.song-name {
+    background-color: #2E2E2E;
+    color: whitesmoke;
+}
+
 .content {
     margin-left: 22%;
     margin-right: 3%;
@@ -42,12 +47,17 @@ table {
     margin-left: auto;
     margin-right: auto;
     width: 95%;
-}
+}.grow {width: 100%;}
 
 td, th {
     border: 1px solid #434647;
-    text-align: center;
+    
     padding: 8px;
+    width: 1%;
+}
+
+td {
+    text-align: center;
 }
 
 #t01 th {
@@ -60,4 +70,8 @@ td, th {
 }
 #t01 tr:nth-child(odd) {
    background-color: #353738;
+}
+
+.warning {
+    color: red
 }

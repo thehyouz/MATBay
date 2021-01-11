@@ -36,7 +36,7 @@
     <form [formGroup]="deleteSongForm">
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Index de la chanson à retirer </mat-label>
-            <input matInput type="number" formControlName="formSongId">
+            <input matInput type="number" formControlName="formSongConstitutionNumber">
         </mat-form-field>
     </form>
     <div class="error" *ngIf="currentStatusDelete.error">

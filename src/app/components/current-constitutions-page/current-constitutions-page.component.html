@@ -1,30 +1,40 @@
-<hr>
-<div class="title">
-    <h4> CONSTITUTIONS EN COURS </h4>
-    <span class="custom-br"></span>
+<div *ngIf="!(isUserLoading || areConstitutionsLoading)">
+    <hr>
+    <div class="title">
+        <h4> CONSTITUTIONS EN COURS </h4>
+        <span class="custom-br"></span>
+    </div>
+    <hr>
+    <div class="title">
+        <table id="t01">
+            <tr>
+                <th> Saison </th>
+                <th> Partie </th>
+                <th> Nom </th>
+                <th> Président </th>
+                <th> Youtube Playlist </th>
+                <th> Statut </th>
+            </tr>
+            <tr *ngFor="let constitution of constitutions">
+                <td> {{constitution.season}} </td>
+                <td> {{constitution.round}} </td>
+                <td> {{constitution.name}} </td>
+                <td> {{showDisplayName(constitution.owner)}}</td>
+                <td>
+                    <div *ngIf="constitution.youtubePlaylistID != ''"> 
+                        <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
+                        target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}} </a>
+                    </div>
+                    <div *ngIf="constitution.youtubePlaylistID == ''"> Pas de lien Youtube Playlist disponible </div>
+                </td>
+                <button *ngIf="!isUserAlreadyAMember(constitution) && !isConstitutionFull(constitution)" mat-button routerLink="{{constitution.id}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
+                <div class="title" *ngIf="!isUserAlreadyAMember(constitution) && isConstitutionFull(constitution)"> Complet </div>
+                <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.id}}"> Voir </button>
+            </tr>
+        </table>
+    </div>
 </div>
-<hr>
-<div class="title">
-    <table id="t01">
-        <tr>
-            <th> Saison </th>
-            <th> Partie </th>
-            <th> Nom </th>
-            <th> Président </th>
-            <th> Youtube Playlist </th>
-            <th> Statut </th>
-        </tr>
-        <tr *ngFor="let constitution of constitutionManager.constitutions">
-            <td> {{constitution.season}} </td>
-            <td> {{constitution.round}} </td>
-            <td> {{constitution.name}} </td>
-            <td> {{constitution.owner}}</td>
-            <td>
-                <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
-                    target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}</a>
-            </td>
-            <button *ngIf="!isUserAlreadyAMember(constitution)" mat-button routerLink="{{removeSpaceInString(constitution.name)}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
-            <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{removeSpaceInString(constitution.name)}}"> Voir </button>
-        </tr>
-    </table>
+
+<div *ngIf="(isUserLoading || areConstitutionsLoading)">
+    Page en cours de chargement...
 </div>

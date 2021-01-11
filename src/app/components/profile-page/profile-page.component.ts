@@ -10,7 +10,6 @@ import { Status } from 'src/app/types/status';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent {
-
   public currentStatus: Status;
   public profileForm: FormGroup;
   private currentUser: User;

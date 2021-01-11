@@ -7,6 +7,14 @@ export enum CurrentSection {
 export enum CurrentSectionConstitution {
     Owner,
     SongList,
-    Stats,
-    Export
+    Result,
+    Export,
+    Vote
+}
+
+export enum CurrentSectionTableSongList {
+    Index,
+    Title,
+    Author,
+    User
 }
