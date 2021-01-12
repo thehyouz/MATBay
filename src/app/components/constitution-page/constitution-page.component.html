@@ -60,24 +60,9 @@
         </mdb-navbar>
         <br>
         <!-- Song List-->
-        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.SongList" id="t01">
-            <tr>
-                <th mat-sort-header="id"> ID </th>
-                <th mat-sort-header="title"> Titre </th>
-                <th mat-sort-header="author"> Auteur </th>
-                <th> URL </th>
-                <th mat-sort-header="username" *ngIf="!constitution.isAnonymous"> Ajouté par </th>
-            </tr>
-            <tr *ngFor="let song of constitution.songs">
-                <td > {{song.id}} </td>
-                <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
-                <td> {{song.author}} </td>
-                <td> 
-                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
-                </td>
-                <td *ngIf="!constitution.isAnonymous"> {{showDisplayName(song.patron)}} </td>
-            </tr>
-        </table>
+        <app-song-list-section *ngIf="currentSection === SelectionType.SongList" 
+            [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes"> 
+        </app-song-list-section>
         <!-- Vote List -->
         <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.Vote" id="t01">
             <tr>
@@ -103,6 +88,7 @@
             <span class="custom-br"></span>
             <br>
             <li> Saison {{constitution.season}} - Partie {{constitution.round}} </li>
+            <li> ID : {{constitution.id}} </li>
             <li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
             <li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser}}</li>
             <li> Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}} </li>
