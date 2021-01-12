@@ -108,6 +108,11 @@ export class ConstitutionPageComponent implements OnInit {
       constitution: this.constitution,
       votes: this.votes
     }
+
+    dialogConfig.hasBackdrop = true;
+    dialogConfig.maxWidth = '60%';
+    dialogConfig.maxHeight = '70%';
+
     this.dialog.open(ManageSongsWindowComponent, dialogConfig);
   }
 
@@ -123,6 +128,11 @@ export class ConstitutionPageComponent implements OnInit {
       currentSection: this.currentSection,
       vote: vote,
     }
+
+    dialogConfig.hasBackdrop = true;
+    dialogConfig.maxWidth = '80%';
+    dialogConfig.maxHeight = '60%';
+
     this.dialog.open(SongWindowComponent, dialogConfig);
   }
 

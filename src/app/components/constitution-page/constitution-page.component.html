@@ -142,9 +142,8 @@
         </div>
         <!-- Result Info -->
         <div *ngIf="currentSection === SelectionType.Result">
-            <!-- -->
-            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
-            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>
+            <!-- <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
+            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>-->
             <h4> Mes Résultats </h4>
             <span class="custom-br"></span>
             <br>
@@ -196,9 +195,8 @@
                 </tr>
             </table>
         </div>
-
-        <app-export-section *ngIf="currentSection === SelectionType.Export" [constitution]="constitution"> </app-export-section>
-
+        <!-- Export Option -->
+        <app-export-section *ngIf="currentSection === SelectionType.Export" [constitution]="constitution" [users]="users"> </app-export-section>
     </div>
 </div>
 
