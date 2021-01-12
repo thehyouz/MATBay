@@ -59,29 +59,17 @@
             </links>
         </mdb-navbar>
         <br>
+
         <!-- Song List-->
         <app-song-list-section *ngIf="currentSection === SelectionType.SongList" 
             [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes"> 
         </app-song-list-section>
+
         <!-- Vote List -->
-        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.Vote" id="t01">
-            <tr>
-                <th mat-sort-header="id"> ID </th>
-                <th mat-sort-header="title"> Titre </th>
-                <th mat-sort-header="author"> URL </th>
-                <th mat-sort-header="grade"> Note </th>
-            </tr>
-            <tr *ngFor="let song of constitution.songs">
-                <td> {{song.id}} </td>
-                <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
-                <td> 
-                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
-                </td>
-                <td *ngIf="currentUser.uid === song.patron"> / </td>
-                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) !== -1)"> {{returnVote(song)+1}} </td>
-                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) === -1)"> </td>
-            </tr>
-        </table>
+        <app-vote-list-section *ngIf="currentSection === SelectionType.Vote"
+            [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
+        </app-vote-list-section>
+
         <!-- Owner Info -->
         <div *ngIf="showOwnerInfo()">
             <h3> Statistiques </h3> 
@@ -89,6 +77,7 @@
             <br>
             <li> Saison {{constitution.season}} - Partie {{constitution.round}} </li>
             <li> ID : {{constitution.id}} </li>
+            <br>
             <li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
             <li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser}}</li>
             <li> Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}} </li>
@@ -131,6 +120,7 @@
                 - Attention : les données seront perdus à jamais.
             </li>
         </div>
+
         <!-- Result Info -->
         <div *ngIf="currentSection === SelectionType.Result">
             <!-- <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
@@ -186,6 +176,7 @@
                 </tr>
             </table>
         </div>
+        
         <!-- Export Option -->
         <app-export-section *ngIf="currentSection === SelectionType.Export" [constitution]="constitution" [users]="users"> </app-export-section>
     </div>

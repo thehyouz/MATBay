@@ -11,9 +11,8 @@ import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song, compareSongIdASC } from 'src/app/types/song';
 import { compareUserNameASC, User } from 'src/app/types/user';
-import { compareResultScoreDSC, EMPTY_GRADE_VOTE, extractValuesOfVotesSOC, GradeVote, ResultGradeVote} from 'src/app/types/vote';
+import { compareResultScoreDSC, extractValuesOfVotesSOC, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
-import { SongWindowComponent } from '../song-window/song-window.component';
 import { Sort } from '@angular/material/sort';
 
 @Component({
@@ -116,50 +115,8 @@ export class ConstitutionPageComponent implements OnInit {
     this.dialog.open(ManageSongsWindowComponent, dialogConfig);
   }
 
-  openDialogSong(song: Song): void {
-    const dialogConfig = new MatDialogConfig;
-
-    let vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
-    if (vote === undefined) { vote = EMPTY_GRADE_VOTE; }
-
-    dialogConfig.data = {
-      song: song,
-      constitution: this.constitution,
-      currentSection: this.currentSection,
-      vote: vote,
-    }
-
-    dialogConfig.hasBackdrop = true;
-    dialogConfig.maxWidth = '80%';
-    dialogConfig.maxHeight = '60%';
-
-    this.dialog.open(SongWindowComponent, dialogConfig);
-  }
-
-  sortDataSong(sort: Sort) {
-    const data = this.constitution.songs.slice();
-    if(!sort.active || sort.direction === '') {
-      this.constitution.songs = data;
-      return;
-    }
-
-    this.constitution.songs = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case "id": return this.compare(a.id, b.id, isAsc);
-        case "title": return this.compare(a.shortTitle, b.shortTitle, isAsc);
-        case "author": return this.compare(a.author, b.author, isAsc);
-        case "username": return this.compare(this.showDisplayName(a.patron), this.showDisplayName(b.patron), isAsc);
-        case "grade": return this.compare(this.returnVote(a)+1, this.returnVote(b)+1, isAsc);
-        default: return 0;
-      }
-    });
-  }
-
   sortDataResult(sort: Sort) {
-    if(!sort.active || sort.direction === '') {
-      return;
-    }
+    if(!sort.active || sort.direction === '') { return; }
 
     const data = this.results.slice();
     this.results = data.sort((a, b) => {
@@ -260,11 +217,8 @@ export class ConstitutionPageComponent implements OnInit {
   }
 
   showDisplayName(uid: string): string {
-    for (const user of this.users) {
-      if (user.uid == uid) {
-        return user.displayName;
-      }
-    }
+    const user = this.users.find(x => x.uid === uid);
+    if (user !== undefined) { return user.displayName; }
     return "";
   }
 
