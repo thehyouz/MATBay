@@ -43,6 +43,10 @@
     border-radius: 30px;    
 }
 
+.owner {
+    color: orange;
+}
+
 table {
     margin-left: auto;
     margin-right: auto;
@@ -51,7 +55,6 @@ table {
 
 td, th {
     border: 1px solid #434647;
-    
     padding: 8px;
     width: 1%;
 }

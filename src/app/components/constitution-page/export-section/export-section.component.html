@@ -2,5 +2,10 @@
     <h4> EXPORTER LA CONSTITUTION </h4>
     <span class="custom-br"></span>
 </div>
-
-<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt()"> Exporter {{constitution.name}} </button>
+<br>
+<br>
+<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt('song-list')"> Exporter {{constitution.name}} (Liste chanson) </button>
+<br>
+<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt('json')"> Exporter {{constitution.name}} (Format JSON) </button>
+<br>
+<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt('sheets')"> Exporter {{constitution.name}} (Google Sheets) </button>

@@ -5,7 +5,7 @@
 <div class="content">
     <br>
     <form [formGroup]="newConstitutionForm">
-        Information Globale:
+        Information Globale: <span class="warning"> * </span>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Saison </mat-label>
             <input matInput type="number" min = "0"  formControlName="formSeason">
@@ -29,7 +29,7 @@
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
-        Utilisateurs:
+        Utilisateurs: <span class="warning"> * </span>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nombre d'utilisateurs </mat-label>
             <input matInput type="number" formControlName="formNumberMaxOfUser">

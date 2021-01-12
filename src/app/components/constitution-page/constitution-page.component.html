@@ -2,7 +2,10 @@
 <div *ngIf="!(isUserLoading || isConstitutionLoading)">
     <mat-sidenav-container class="sidenav">
         <div>
-            <h4> {{constitution.name}} </h4>
+            <h4> 
+                <a *ngIf="constitution.youtubePlaylistID !== ''" href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}" target="_blank"> {{constitution.name}} </a>
+                <span *ngIf="constitution.youtubePlaylistID === ''"> {{constitution.name}} </span>
+            </h4>
             <span class="custom-br"></span>
             <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
             <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
@@ -13,7 +16,9 @@
             <br>
             Membres :
             <div *ngFor="let user of users">
-                <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+                <img class="picture" [src]="user.photoURL" [alt]="user.displayName">
+                <span *ngIf="user.uid === constitution.owner" class="owner"> [Président] </span>
+                {{user.displayName}}
                 <br>
             </div>
             <span class="custom-br"></span>
@@ -54,7 +59,7 @@
             </links>
         </mdb-navbar>
         <br>
-        <!-- Table Song List-->
+        <!-- Song List-->
         <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.SongList" id="t01">
             <tr>
                 <th mat-sort-header="id"> ID </th>
