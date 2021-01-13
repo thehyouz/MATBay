@@ -136,12 +136,12 @@ export class ConstitutionPageComponent implements OnInit {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  returnVote(song: Song): number {
-    const vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
-    if (vote !== undefined) {
-      return vote.grade;
+  returnOwner(): User {
+    const user = this.users.find(x => x.uid === this.constitution.owner);
+    if (user !== undefined) {
+      return user;
     }
-    return -1;
+    return this.users[0];
   }
 
   userMeanVotes(uid: string): number {

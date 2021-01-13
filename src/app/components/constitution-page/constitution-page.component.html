@@ -14,12 +14,17 @@
             {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
             <br>
             <br>
-            Membres :
+            <div>
+                <span class="owner"> [Président] </span>
+                <img class="picture" [src]="returnOwner().photoURL" [alt]="returnOwner().displayName"> {{returnOwner().displayName}}
+            </div>
+            <br>
+            [Membres]
             <div *ngFor="let user of users">
-                <img class="picture" [src]="user.photoURL" [alt]="user.displayName">
-                <span *ngIf="user.uid === constitution.owner" class="owner"> [Président] </span>
-                {{user.displayName}}
-                <br>
+                <span *ngIf="user.uid !== constitution.owner"> 
+                    <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+                    <br>
+                </span>
             </div>
             <span class="custom-br"></span>
             <br>
