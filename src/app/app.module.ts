@@ -36,6 +36,7 @@ import { SongWindowComponent } from './components/song-window/song-window.compon
 import { ExportSectionComponent } from './components/constitution-page/export-section/export-section.component';
 import { SongListSectionComponent } from './components/constitution-page/song-list-section/song-list-section.component';
 import { VoteListSectionComponent } from './components/constitution-page/vote-list-section/vote-list-section.component';
+import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
@@ -67,7 +68,8 @@ const firebaseConfig = {
     SongWindowComponent,
     ExportSectionComponent,
     SongListSectionComponent,
-    VoteListSectionComponent
+    VoteListSectionComponent,
+    JoinConstitutionWindowComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,7 @@ const firebaseConfig = {
   ],
   exports: [RouterModule],
   providers: [ConstitutionManagerService],
-  entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent],
+  entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent, JoinConstitutionWindowComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,8 +1,8 @@
-<div class="title">
-    <h2> CRÉER UNE NOUVELLE CONSTITUTION </h2>
-    <span class="custom-br"></span>
-</div>
-<div class="content">
+<div mat-dialog-content class="content">
+    <div class="title">
+        <h2> CRÉER UNE NOUVELLE CONSTITUTION </h2>
+        <span class="custom-br"></span>
+    </div>
     <br>
     <form [formGroup]="newConstitutionForm">
         Information Globale: <span class="warning"> * </span>
@@ -66,9 +66,10 @@
     <div class="error" *ngIf="currentStatus.error">
         {{currentStatus.message}}
     </div>
-</div>
-<br>
-<div class="alignmentButton">
-    <button mat-raised-button color="primary" (click)="createNewConstitution()"> Créer </button>
-    <button mat-stroked-button color="warn" (click)="closeWindow()"> Annuler </button>
+
+    <br>
+    <div class="alignmentButton">
+        <button mat-raised-button color="primary" (click)="createNewConstitution()"> Créer </button>
+        <button mat-stroked-button color="warn" (click)="closeWindow()"> Annuler </button>
+    </div>
 </div>

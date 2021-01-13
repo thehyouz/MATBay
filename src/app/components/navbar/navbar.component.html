@@ -17,8 +17,8 @@
                 <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect (click)="changeCurrentSection(SelectionType.Constitutions)">
                 Constitutions<span class="caret"></span></a>
                 <div *dropdownMenu class="dropdown-menu dropdown elegant-color dropdown-primary" role="menu">
-                    <button mat-button class="dropdown-item waves-dark"  (click)="openDialog()"id="content"> Créer une Constitution </button>
-                    <button mat-button class="dropdown-item waves-light"  id="content" > Joindre une Constitution </button>
+                    <button mat-button class="dropdown-item waves-dark"  (click)="openDialogNewConstitution()" id="content"> Créer une Constitution </button>
+                    <button mat-button class="dropdown-item waves-light" (click)="openDialogJoinConstitution()" id="content" > Joindre une Constitution </button>
                     <div id="divider "class="divider dark dropdown-divider"></div>
                     <button mat-button class="dropdown-item waves-light"  routerLink="/current-constitutions" id="content"> Voir les Constitutions en cours </button>
                     <button mat-button class="dropdown-item waves-light"  routerLink="/constitutions-history" id="content"> Voir l'historique des Constitutions </button>

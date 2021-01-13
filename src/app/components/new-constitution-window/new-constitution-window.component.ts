@@ -49,7 +49,7 @@ export class NewConstitutionWindowComponent {
       formNumberOfSongsPerUser: new FormControl(),
       formIsAnonymous: new FormControl(),
       formNumberMaxOfUser: new FormControl()
-    })
+    });
   }
 
   isMissingParameters(): boolean {
