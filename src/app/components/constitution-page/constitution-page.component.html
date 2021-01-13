@@ -127,60 +127,9 @@
         </div>
 
         <!-- Result Info -->
-        <div *ngIf="currentSection === SelectionType.Result">
-            <!-- <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
-            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>-->
-            <h4> Mes Résultats </h4>
-            <span class="custom-br"></span>
-            <br>
-            <li> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
-            <li> Moyenne de mes chansons : 
-                <span *ngIf="constitution.isShowingResult"> {{userMeanSongs(currentUser.uid).toFixed(2)}} </span>
-                <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-            </li>
-            <br>
-            <h4> Résultats Globaux </h4>
-            <span class="custom-br"></span>
-            <br>
-            Moyenne des utilisateurs entre eux :
-            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-            <table *ngIf="constitution.isShowingResult" id="t01">
-                <tr>
-                    <th> Utilisateur </th>
-                    <th *ngFor="let user of users"> {{user.displayName}} </th>
-                </tr>
-                <tr *ngFor="let user of users">
-                    <td style="background-color: #2E2E2E;"> {{user.displayName}} </td>
-                    <td *ngFor="let user2 of users"> 
-                        <span *ngIf="user.uid === user2.uid"> / </span>
-                        <span *ngIf="user.uid !== user2.uid"> {{userMeanUser(user2.uid, user.uid).toFixed(2)}} </span>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            Classement globale chansons :
-            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-            <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01" >
-                <tr>
-                    <th mat-sort-header="id" > ID </th>
-                    <th mat-sort-header="title"> Titre </th>
-                    <th mat-sort-header="author"> Auteur </th>
-                    <th> URL </th>
-                    <th mat-sort-header="score"> Score </th>
-                    <th mat-sort-header="user"> Ajouté par </th>
-                </tr>
-                <tr *ngFor="let result of results">
-                    <td> {{result.songID}} </td>
-                    <td> {{result.title}} </td>
-                    <td> {{result.author}} </td>
-                    <td>
-                        <a href="{{result.url}}" target="_blank"> {{result.url}} </a>
-                    </td>
-                    <td> {{result.score.toFixed(2)}} </td>
-                    <td> {{showDisplayName(result.userID)}} </td>
-                </tr>
-            </table>
-        </div>
+        <app-result-section *ngIf="currentSection === SelectionType.Result"
+           [constitution]="constitution" [users]="users" [votes]="votes" [results]="results" [currentUser]="currentUser"> 
+        </app-result-section>
         
         <!-- Export Option -->
         <app-export-section *ngIf="currentSection === SelectionType.Export" [constitution]="constitution" [users]="users"> </app-export-section>

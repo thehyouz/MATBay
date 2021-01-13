@@ -41,6 +41,7 @@ import { JoinConstitutionWindowComponent } from './components/join-constitution-
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
+import { ResultSectionComponent } from './components/constitution-page/result-section/result-section.component';
 
 
 const firebaseConfig = {
@@ -69,7 +70,8 @@ const firebaseConfig = {
     ExportSectionComponent,
     SongListSectionComponent,
     VoteListSectionComponent,
-    JoinConstitutionWindowComponent
+    JoinConstitutionWindowComponent,
+    ResultSectionComponent
   ],
   imports: [
     BrowserModule,
