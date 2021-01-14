@@ -6,8 +6,8 @@ import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 
-const BASIC_TXT_HEADER: string = " ID |        Titre       |       Auteur       |     Ajouté Par      \n";
-const TXT_SEPARATOR: string = "================================================================ \n"
+const BASIC_TXT_HEADER: string = " ID |        Titre       |       Auteur       |     Ajouté Par     |\n";
+const TXT_SEPARATOR: string = "==================================================================== \n"
 
 @Component({
   selector: 'app-export-section',
@@ -18,18 +18,28 @@ export class ExportSectionComponent {
   @Input() constitution: Constitution;
   @Input() users: User[];
 
+  EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
+  selectedExportFormat: string;
+
   private setting = {
     element: {
       dynamicDownload: null as HTMLElement
     }
   }
 
-  constructor() { }
+  constructor() {
+    this.selectedExportFormat = this.EXPORT_FORMAT[0];
+  }
+
+  updateSelectedFormat(event: Event): void {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.selectedExportFormat = eventCast.value;
+  }
 
   convertSongArrayToString(songs: Song[]): string {
     let text = BASIC_TXT_HEADER + TXT_SEPARATOR;
     for (const song of songs) {
-      text += this.correctStringLength(song.id.toString(), 5) + "|" + this.correctStringLength(song.shortTitle, 26) + "|" + this.correctStringLength(song.author, 26) + "|" + this.correctStringLength(this.showDisplayName(song.patron), 25) + "\n";
+      text += this.correctStringLength(song.id.toString(), 4) + "|" + this.correctStringLength(song.shortTitle, 20) + "|" + this.correctStringLength(song.author, 20) + "|" + this.correctStringLength(this.showDisplayName(song.patron), 20) + "|" + "\n";
     }
     return text;
   }
@@ -43,14 +53,12 @@ export class ExportSectionComponent {
   }
 
   correctStringLength(string: string, length: number): string {
-    console.log("string l:", string.length);
-    console.log("l", length);
-    console.log("d", length - string.length);
-
     if (string.length < length) {
-      for (let i = 0; i < length - string.length + 1; i++) {
+      while (string.length !== length) {
         string += " ";
       }
+    } else if (string.length > length) {
+      string = string.slice(0, length);
     }
     return string;
   }
@@ -62,19 +70,19 @@ export class ExportSectionComponent {
   dynamicDownloadTxt(format: string) {
     this.returnConstitutionData().subscribe((songs) => {
       switch (format) {
-        case "song-list":
+        case "Liste des chansons":
           this.dyanmicDownloadByHtmlTag({
             fileName: this.constitution.name,
             text: this.convertSongArrayToString(songs)
           });
           break;
-        case "json":
+        case "Objet JSON":
           this.dyanmicDownloadByHtmlTag({
             fileName: this.constitution.name,
             text: JSON.stringify(songs, null, 2)
           });
           break;
-        case "sheets":
+        case "Google Sheets":
           this.dyanmicDownloadByHtmlTag({
             fileName: this.constitution.name,
             text: this.convertSongArrayToGoogleSheets(songs)

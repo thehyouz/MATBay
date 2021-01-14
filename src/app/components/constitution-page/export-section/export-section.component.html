@@ -3,9 +3,10 @@
     <span class="custom-br"></span>
 </div>
 <br>
+Choisissez la représentation des données :
+<select (change)="updateSelectedFormat($event)">
+    <option *ngFor="let filter of EXPORT_FORMAT" [value]="filter"> {{filter}} </option>
+</select>
 <br>
-<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt('song-list')"> Exporter {{constitution.name}} (Liste chanson) </button>
 <br>
-<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt('json')"> Exporter {{constitution.name}} (Format JSON) </button>
-<br>
-<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt('sheets')"> Exporter {{constitution.name}} (Google Sheets) </button>
+<button mat-raised-button color="primary" class="nav-link waves-light" (click)="dynamicDownloadTxt(selectedExportFormat)"> Exporter {{constitution.name}} </button>
