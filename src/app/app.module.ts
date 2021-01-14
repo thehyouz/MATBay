@@ -18,6 +18,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSortModule } from "@angular/material/sort";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
  
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -89,6 +91,8 @@ const firebaseConfig = {
     MatSidenavModule,
     MatFormFieldModule,
     MatSortModule,
+    MatIconModule,
+    MatTooltipModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],

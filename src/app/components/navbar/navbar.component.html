@@ -10,15 +10,15 @@
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
             <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Home}">
-                <a class="nav-link waves-light" routerLink="/" mdbWavesEffect (click)="changeCurrentSection(SelectionType.Home)">Accueil</a>
+                <a class="nav-link waves-light" routerLink="/" (click)="changeCurrentSection(SelectionType.Home)"> Accueil</a>
             </li>
             <!-- Dropdown -->
             <li class="nav-item dropdown" class="{'nav-item':true, 'active': currentSection === SelectionType.Constitutions}" dropdown>
-                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect (click)="changeCurrentSection(SelectionType.Constitutions)">
-                Constitutions<span class="caret"></span></a>
+                <a dropdownToggle type="button" class="nav-link dropdown-toggle waves-light" (click)="changeCurrentSection(SelectionType.Constitutions)">
+                    Constitutions <span class="caret"></span> </a>
                 <div *dropdownMenu class="dropdown-menu dropdown elegant-color dropdown-primary" role="menu">
                     <button mat-button class="dropdown-item waves-dark"  (click)="openDialogNewConstitution()" id="content"> Créer une Constitution </button>
-                    <button mat-button class="dropdown-item waves-light" (click)="openDialogJoinConstitution()" id="content" > Joindre une Constitution </button>
+                    <button mat-button class="dropdown-item waves-light" (click)="openDialogJoinConstitution()" id="content"> Joindre une Constitution </button>
                     <div id="divider "class="divider dark dropdown-divider"></div>
                     <button mat-button class="dropdown-item waves-light"  routerLink="/current-constitutions" id="content"> Voir les Constitutions en cours </button>
                     <button mat-button class="dropdown-item waves-light"  routerLink="/constitutions-history" id="content"> Voir l'historique des Constitutions </button>
@@ -44,15 +44,15 @@
 <!-- User is logged in -->
 <ng-template #authenticated>
     <li class="nav-item avatar dropdown" dropdown>
-        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+        <a dropdownToggle type="button" class="nav-link dropdown-toggle waves-light">
             <span *ngIf="auth.user$ | async as user">
                 <img class="img-fluid rounded-circle z-depth-0 profile-picture" [src]="user.photoURL"
                     [alt]="user.displayName">
             </span>
         </a>
         <div *dropdownMenu class="dropdown-menu dropdown-menu-right elegant-color dropdown dropdown-primary" role="menu">
-            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/profile" id="content">Profil</a>
-            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/" id="content" (click)="auth.signOut();">Déconnexion</a>
+            <a class="dropdown-item waves-light" routerLink="/profile" id="content">Profil</a>
+            <a class="dropdown-item waves-light" routerLink="/" id="content" (click)="auth.signOut();">Déconnexion</a>
         </div>
     </li>
 </ng-template>

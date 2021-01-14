@@ -2,7 +2,9 @@
 <div *ngIf="!(isUserLoading || isConstitutionLoading)">
     <mat-sidenav-container class="sidenav">
         <div>
-            <h4> 
+            <h4>
+                <mat-icon *ngIf="constitution.isLocked" matTooltip="La constitution est verouillée">lock</mat-icon>
+                <mat-icon *ngIf="!constitution.isLocked" matTooltip="La constitution est déverouillée">lock_open</mat-icon>
                 <a *ngIf="constitution.youtubePlaylistID !== ''" href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}" target="_blank"> {{constitution.name}} </a>
                 <span *ngIf="constitution.youtubePlaylistID === ''"> {{constitution.name}} </span>
             </h4>
@@ -46,19 +48,19 @@
                 <!-- Links -->
                 <ul class="navbar-nav mr-auto">
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> Liste Chansons </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> <mat-icon>list</mat-icon> Liste Chansons </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Vote}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Vote)"> Zone Électorale </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Vote)"> <mat-icon>how_to_vote</mat-icon> Zone Électorale </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
-                        <button *ngIf="constitution.owner === currentUser.uid" mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
+                        <button *ngIf="constitution.owner === currentUser.uid" mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> <mat-icon>account_balance</mat-icon> Présidence </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Result}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Result)"> Resultats </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Result)"> <mat-icon>equalizer</mat-icon> Resultats </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> Exporter </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> <mat-icon>get_app</mat-icon> Exporter </button>
                     </li>
                 </ul>
             </links>
