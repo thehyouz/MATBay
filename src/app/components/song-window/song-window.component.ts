@@ -8,7 +8,7 @@ import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform';
 import { User } from 'src/app/types/user';
-import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
+import { GradeVote } from 'src/app/types/vote';
 
 
 @Component({

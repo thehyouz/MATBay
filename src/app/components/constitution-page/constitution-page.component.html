@@ -2,7 +2,12 @@
 <div *ngIf="!(isUserLoading || isConstitutionLoading)">
     <mat-sidenav-container class="sidenav">
         <div>
-            <h4> {{constitution.name}} </h4>
+            <h4>
+                <mat-icon *ngIf="constitution.isLocked" matTooltip="La constitution est verouillée">lock</mat-icon>
+                <mat-icon *ngIf="!constitution.isLocked" matTooltip="La constitution est déverouillée">lock_open</mat-icon>
+                <a *ngIf="constitution.youtubePlaylistID !== ''" href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}" target="_blank"> {{constitution.name}} </a>
+                <span *ngIf="constitution.youtubePlaylistID === ''"> {{constitution.name}} </span>
+            </h4>
             <span class="custom-br"></span>
             <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
             <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
@@ -11,10 +16,17 @@
             {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
             <br>
             <br>
-            Membres :
+            <div>
+                <span class="owner"> [Président] </span>
+                <img class="picture" [src]="returnOwner().photoURL" [alt]="returnOwner().displayName"> {{returnOwner().displayName}}
+            </div>
+            <br>
+            [Membres]
             <div *ngFor="let user of users">
-                <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
-                <br>
+                <span *ngIf="user.uid !== constitution.owner"> 
+                    <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+                    <br>
+                </span>
             </div>
             <span class="custom-br"></span>
             <br>
@@ -36,68 +48,43 @@
                 <!-- Links -->
                 <ul class="navbar-nav mr-auto">
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> Liste Chansons </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)"> <mat-icon>list</mat-icon> Liste Chansons </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Vote}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Vote)"> Zone Électorale </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Vote)"> <mat-icon>how_to_vote</mat-icon> Zone Électorale </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Owner}">
-                        <button *ngIf="constitution.owner === currentUser.uid" mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> Présidence </button>
+                        <button *ngIf="constitution.owner === currentUser.uid" mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Owner)"> <mat-icon>account_balance</mat-icon> Présidence </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Result}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Result)"> Resultats </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Result)"> <mat-icon>equalizer</mat-icon> Resultats </button>
                     </li>
                     <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
-                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> Exporter </button>
+                        <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Export)"> <mat-icon>get_app</mat-icon> Exporter </button>
                     </li>
                 </ul>
             </links>
         </mdb-navbar>
         <br>
-        <!-- Table Song List-->
-        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.SongList" id="t01">
-            <tr>
-                <th mat-sort-header="id"> ID </th>
-                <th mat-sort-header="title"> Titre </th>
-                <th mat-sort-header="author"> Auteur </th>
-                <th> URL </th>
-                <th mat-sort-header="username" *ngIf="!constitution.isAnonymous"> Ajouté par </th>
-            </tr>
-            <tr *ngFor="let song of constitution.songs">
-                <td > {{song.id}} </td>
-                <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
-                <td> {{song.author}} </td>
-                <td> 
-                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
-                </td>
-                <td *ngIf="!constitution.isAnonymous"> {{showDisplayName(song.patron)}} </td>
-            </tr>
-        </table>
+
+        <!-- Song List-->
+        <app-song-list-section *ngIf="currentSection === SelectionType.SongList" 
+            [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes"> 
+        </app-song-list-section>
+
         <!-- Vote List -->
-        <table matSort (matSortChange)="sortDataSong($event)" *ngIf="currentSection === SelectionType.Vote" id="t01">
-            <tr>
-                <th mat-sort-header="id"> ID </th>
-                <th mat-sort-header="title"> Titre </th>
-                <th mat-sort-header="author"> URL </th>
-                <th mat-sort-header="grade"> Note </th>
-            </tr>
-            <tr *ngFor="let song of constitution.songs">
-                <td> {{song.id}} </td>
-                <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
-                <td> 
-                    <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
-                </td>
-                <td *ngIf="currentUser.uid === song.patron"> / </td>
-                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) !== -1)"> {{returnVote(song)+1}} </td>
-                <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) === -1)"> </td>
-            </tr>
-        </table>
+        <app-vote-list-section *ngIf="currentSection === SelectionType.Vote"
+            [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
+        </app-vote-list-section>
+
         <!-- Owner Info -->
         <div *ngIf="showOwnerInfo()">
             <h3> Statistiques </h3> 
             <span class="custom-br"></span>
             <br>
             <li> Saison {{constitution.season}} - Partie {{constitution.round}} </li>
+            <li> ID : {{constitution.id}} </li>
+            <br>
             <li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
             <li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser}}</li>
             <li> Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)}} </li>
@@ -140,62 +127,14 @@
                 - Attention : les données seront perdus à jamais.
             </li>
         </div>
+
         <!-- Result Info -->
-        <div *ngIf="currentSection === SelectionType.Result">
-            <!-- -->
-            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
-            <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>
-            <h4> Mes Résultats </h4>
-            <span class="custom-br"></span>
-            <br>
-            <li> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
-            <li> Moyenne de mes chansons : 
-                <span *ngIf="constitution.isShowingResult"> {{userMeanSongs(currentUser.uid).toFixed(2)}} </span>
-                <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-            </li>
-            <br>
-            <h4> Résultats Globaux </h4>
-            <span class="custom-br"></span>
-            <br>
-            Moyenne des utilisateurs entre eux :
-            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-            <table *ngIf="constitution.isShowingResult" id="t01">
-                <tr>
-                    <th> Utilisateur </th>
-                    <th *ngFor="let user of users"> {{user.displayName}} </th>
-                </tr>
-                <tr *ngFor="let user of users">
-                    <td style="background-color: #2E2E2E;"> {{user.displayName}} </td>
-                    <td *ngFor="let user2 of users"> 
-                        <span *ngIf="user.uid === user2.uid"> / </span>
-                        <span *ngIf="user.uid !== user2.uid"> {{userMeanUser(user2.uid, user.uid).toFixed(2)}} </span>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            Classement globale chansons :
-            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-            <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01" >
-                <tr>
-                    <th mat-sort-header="id" > ID </th>
-                    <th mat-sort-header="title"> Titre </th>
-                    <th mat-sort-header="author"> Auteur </th>
-                    <th> URL </th>
-                    <th mat-sort-header="score"> Score </th>
-                    <th mat-sort-header="user"> Ajouté par </th>
-                </tr>
-                <tr *ngFor="let result of results">
-                    <td> {{result.songID}} </td>
-                    <td> {{result.title}} </td>
-                    <td> {{result.author}} </td>
-                    <td>
-                        <a href="{{result.url}}" target="_blank"> {{result.url}} </a>
-                    </td>
-                    <td> {{result.score.toFixed(2)}} </td>
-                    <td> {{showDisplayName(result.userID)}} </td>
-                </tr>
-            </table>
-        </div>
+        <app-result-section *ngIf="currentSection === SelectionType.Result"
+           [constitution]="constitution" [users]="users" [votes]="votes" [results]="results" [currentUser]="currentUser"> 
+        </app-result-section>
+        
+        <!-- Export Option -->
+        <app-export-section *ngIf="currentSection === SelectionType.Export" [constitution]="constitution" [users]="users"> </app-export-section>
     </div>
 </div>
 
