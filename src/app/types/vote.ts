@@ -23,7 +23,7 @@ export const EMPTY_GRADE_VOTE = {
     grade: -1
 }
 
-export function extractValuesOfVotesSOC(votes: GradeVote[]): number[] {
+export function extractValuesOfVotes(votes: GradeVote[]): number[] {
     let array: number[] = [];
     for (const vote of votes) {
       array.push(vote.grade + 1);   // + 1 --> les notes stockés sur Firebase vont de 0 à 9

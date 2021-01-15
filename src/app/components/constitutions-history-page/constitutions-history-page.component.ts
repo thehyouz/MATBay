@@ -15,7 +15,6 @@ export class ConstitutionsHistoryPageComponent implements OnInit {
 
   ngOnInit(): void {
     // update history
-
     this.constitutions = this.constitutionsHistoryManager.constitutions.getValue();
     this.constitutionsHistoryManager.constitutions.subscribe(newList => {
       this.constitutions = newList;
@@ -24,7 +23,6 @@ export class ConstitutionsHistoryPageComponent implements OnInit {
         this.constitutions.sort(compareConstitutionASC);
       }
     });
-
   }
 
   constructor(private afs: AngularFirestore,

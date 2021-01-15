@@ -9,12 +9,10 @@ import { SongListManagerService } from 'src/app/services/manager/song-list-manag
 import { VoteManagerService } from 'src/app/services/manager/vote-manager.service';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
-import { Song, compareSongIdASC } from 'src/app/types/song';
+import { compareSongIdASC } from 'src/app/types/song';
 import { compareUserNameASC, User } from 'src/app/types/user';
-import { compareResultScoreDSC, EMPTY_GRADE_VOTE, extractValuesOfVotesSOC, GradeVote, ResultGradeVote} from 'src/app/types/vote';
+import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
-import { SongWindowComponent } from '../song-window/song-window.component';
-import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-constitution-page',
@@ -108,110 +106,20 @@ export class ConstitutionPageComponent implements OnInit {
       constitution: this.constitution,
       votes: this.votes
     }
+
+    dialogConfig.hasBackdrop = true;
+    dialogConfig.maxWidth = '60%';
+    dialogConfig.maxHeight = '70%';
+
     this.dialog.open(ManageSongsWindowComponent, dialogConfig);
   }
 
-  openDialogSong(song: Song): void {
-    const dialogConfig = new MatDialogConfig;
-
-    let vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
-    if (vote === undefined) { vote = EMPTY_GRADE_VOTE; }
-
-    dialogConfig.data = {
-      song: song,
-      constitution: this.constitution,
-      currentSection: this.currentSection,
-      vote: vote,
+  returnOwner(): User {
+    const user = this.users.find(x => x.uid === this.constitution.owner);
+    if (user !== undefined) {
+      return user;
     }
-    this.dialog.open(SongWindowComponent, dialogConfig);
-  }
-
-  sortDataSong(sort: Sort) {
-    const data = this.constitution.songs.slice();
-    if(!sort.active || sort.direction === '') {
-      this.constitution.songs = data;
-      return;
-    }
-
-    this.constitution.songs = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case "id": return this.compare(a.id, b.id, isAsc);
-        case "title": return this.compare(a.shortTitle, b.shortTitle, isAsc);
-        case "author": return this.compare(a.author, b.author, isAsc);
-        case "username": return this.compare(this.showDisplayName(a.patron), this.showDisplayName(b.patron), isAsc);
-        case "grade": return this.compare(this.returnVote(a)+1, this.returnVote(b)+1, isAsc);
-        default: return 0;
-      }
-    });
-  }
-
-  sortDataResult(sort: Sort) {
-    if(!sort.active || sort.direction === '') {
-      return;
-    }
-
-    const data = this.results.slice();
-    this.results = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case "id": return this.compare(a.songID, b.songID, isAsc);
-        case "title": return this.compare(a.title, b.title, isAsc);
-        case "author": return this.compare(a.author, b.author, isAsc);
-        case "user": return this.compare(this.showDisplayName(a.userID), this.showDisplayName(b.userID), isAsc);
-        case "score": return this.compare(a.score, b.score, isAsc);
-        default: return 0;
-      }
-    });
-  }
-
-  compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  }
-
-  returnVote(song: Song): number {
-    const vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
-    if (vote !== undefined) {
-      return vote.grade;
-    }
-    return -1;
-  }
-
-  userMeanVotes(uid: string): number {
-    const currentUserVote: GradeVote[] = [];
-    for (const vote of this.votes) {
-      if (vote.userID === uid) {
-        currentUserVote.push(vote);
-      }
-    }
-    return this.math.mean(extractValuesOfVotesSOC(currentUserVote));
-  }
-
-  userMeanSongs(uid: string): number {
-    if (this.constitution.songs === undefined) return 0;
-    const currentUserSongsVote: GradeVote[] = [];
-    for (const vote of this.votes) {
-      if (this.constitution.songs.find(x => x.id === vote.songID && x.patron === uid)) {
-        currentUserSongsVote.push(vote);
-      }
-    }
-    return this.math.mean(extractValuesOfVotesSOC(currentUserSongsVote));
-  }
-
-  userMeanUser(uid1: string, uid2: string): number {
-    const user1Songs: Song[] = [];
-    for (const song of this.constitution.songs) {
-      if (song.patron === uid1) {
-        user1Songs.push(song);
-      }
-    }
-    const user2Votes: GradeVote[] = [];
-    for (const vote of this.votes) {
-      if (user1Songs.find(x => x.id === vote.songID && x.patron === uid1 && vote.userID === uid2)) { 
-        user2Votes.push(vote);
-      }
-    }
-    return this.math.mean(extractValuesOfVotesSOC(user2Votes));
+    return this.users[0];
   }
 
   calculateResults(): ResultGradeVote[] {
@@ -223,7 +131,7 @@ export class ConstitutionPageComponent implements OnInit {
           selectedVotes.push(vote);
         }
       }
-      const mean = this.math.mean(extractValuesOfVotesSOC(selectedVotes));
+      const mean = this.math.mean(extractValuesOfVotes(selectedVotes));
       const user = this.users.find(x => {return x.uid === song.patron});
       if (user !== undefined) {
         results.push({
@@ -250,11 +158,8 @@ export class ConstitutionPageComponent implements OnInit {
   }
 
   showDisplayName(uid: string): string {
-    for (const user of this.users) {
-      if (user.uid == uid) {
-        return user.displayName;
-      }
-    }
+    const user = this.users.find(x => x.uid === uid);
+    if (user !== undefined) { return user.displayName; }
     return "";
   }
 
