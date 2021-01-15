@@ -5,12 +5,36 @@ service cloud.firestore {
     	allow read, write: if false;
     }
     match /users/{userid} {
-    	allow read;
+    	allow read: if isConnected();
       allow write: if
       	resource == null ||
       	isConnected() &&
         belongsTo(userid) &&
         isNotTimeLimited();
+    }
+    match /constitutions {
+    	allow read: if isConnected();
+      allow write: if isConnected();
+    }
+    match /constitutions/{constitutionid} {
+    	allow read: if isConnected();
+      allow write: if isConnected();
+    }
+      match /constitutions/{constitutionid}/songs/{songid} {
+    	allow read: if isConnected();
+      allow write: if isConnected();
+    }
+    	match /constitutions/{constitutionid}/votes/{voteid} {
+    	allow read: if isConnected();
+      allow write: if isConnected();
+    }
+    match /history {
+    	allow read: if isConnected();
+      allow write: if isConnected();
+    }
+    match /history/{constitutionid} {
+    	allow read: if isConnected();
+      allow write: if isConnected();
     }
   }
 }
