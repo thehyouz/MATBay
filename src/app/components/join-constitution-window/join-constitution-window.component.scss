@@ -2,12 +2,6 @@
     text-align: center;
 }
 
-button {
-    margin: 1%;
-    background-color: #2E2E2E;
-    color: whitesmoke;
-}
-
 .content {
     color: whitesmoke;
     text-align: left;
@@ -26,13 +20,6 @@ button {
 .error {
     color: darkred;
     background-color: lightcoral;
-    text-align: center;
-}
-
-form {
-    color: whitesmoke;
-    width: 100%;
-    text-align: left;
 }
 
 mat-form-field {
@@ -61,26 +48,7 @@ mat-form-field {
     }
 }
 
-table {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-}
-td, th {
-    border: 1px  whitesmoke;
-    text-align: center;
-    padding: 8px;
-}
-
-th {
-    background-color: #2E2E2E;
-}
-
 .title {
     color: whitesmoke;
     text-align: center;
-}
-
-.warning {
-    color: red
 }

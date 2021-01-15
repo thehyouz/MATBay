@@ -16,20 +16,22 @@
                 <th> Statut </th>
             </tr>
             <tr *ngFor="let constitution of constitutions">
-                <td> {{constitution.season}} </td>
-                <td> {{constitution.round}} </td>
-                <td> {{constitution.name}} </td>
-                <td> {{showDisplayName(constitution.owner)}}</td>
-                <td>
+                <td *ngIf="constitution.isPublic || isUserAlreadyAMember(constitution)"> {{constitution.season}} </td>
+                <td *ngIf="constitution.isPublic || isUserAlreadyAMember(constitution)"> {{constitution.round}} </td>
+                <td *ngIf="constitution.isPublic || isUserAlreadyAMember(constitution)"> {{constitution.name}} </td>
+                <td *ngIf="constitution.isPublic || isUserAlreadyAMember(constitution)"> {{showDisplayName(constitution.owner)}}</td>
+                <td *ngIf="constitution.isPublic || isUserAlreadyAMember(constitution)">
                     <div *ngIf="constitution.youtubePlaylistID != ''"> 
                         <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
                         target="_blank">https://youtube.com/playlist?list={{constitution.youtubePlaylistID}} </a>
                     </div>
                     <div *ngIf="constitution.youtubePlaylistID == ''"> Pas de lien Youtube Playlist disponible </div>
                 </td>
-                <button *ngIf="!isUserAlreadyAMember(constitution) && !isConstitutionFull(constitution)" mat-button routerLink="{{constitution.id}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
-                <div class="title" *ngIf="!isUserAlreadyAMember(constitution) && isConstitutionFull(constitution)"> Complet </div>
-                <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.id}}"> Voir </button>
+                <td *ngIf="constitution.isPublic || isUserAlreadyAMember(constitution)">
+                    <button *ngIf="!isUserAlreadyAMember(constitution) && !isConstitutionFull(constitution)" mat-button routerLink="{{constitution.id}}" (click)="joinConstitution(constitution)"> Rejoindre </button>
+                    <div class="title" *ngIf="!isUserAlreadyAMember(constitution) && isConstitutionFull(constitution)"> Complet </div>
+                    <button *ngIf="isUserAlreadyAMember(constitution)" mat-button routerLink="{{constitution.id}}"> Voir </button>
+                </td>
             </tr>
         </table>
     </div>

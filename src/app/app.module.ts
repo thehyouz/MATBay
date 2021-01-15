@@ -18,6 +18,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSortModule } from "@angular/material/sort";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
  
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -33,10 +35,15 @@ import { ConstitutionsHistoryPageComponent } from './components/constitutions-hi
 import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
 import { ManageSongsWindowComponent } from './components/manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from './components/song-window/song-window.component';
+import { ExportSectionComponent } from './components/constitution-page/export-section/export-section.component';
+import { SongListSectionComponent } from './components/constitution-page/song-list-section/song-list-section.component';
+import { VoteListSectionComponent } from './components/constitution-page/vote-list-section/vote-list-section.component';
+import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
+import { ResultSectionComponent } from './components/constitution-page/result-section/result-section.component';
 
 
 const firebaseConfig = {
@@ -61,7 +68,12 @@ const firebaseConfig = {
     NewConstitutionWindowComponent,
     ConstitutionPageComponent,
     ManageSongsWindowComponent,
-    SongWindowComponent
+    SongWindowComponent,
+    ExportSectionComponent,
+    SongListSectionComponent,
+    VoteListSectionComponent,
+    JoinConstitutionWindowComponent,
+    ResultSectionComponent
   ],
   imports: [
     BrowserModule,
@@ -79,11 +91,13 @@ const firebaseConfig = {
     MatSidenavModule,
     MatFormFieldModule,
     MatSortModule,
+    MatIconModule,
+    MatTooltipModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],
   providers: [ConstitutionManagerService],
-  entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent],
+  entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent, JoinConstitutionWindowComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
