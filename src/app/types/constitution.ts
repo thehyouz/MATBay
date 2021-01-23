@@ -5,7 +5,8 @@ export const MAX_USER_LIMIT = 10;
 export const MAX_SONG_LIMIT = 100;
 
 export enum ConstitutionType {
-    GRADE //, RANKING, ELIMINATION, TOURNAMENT
+    GRADE, //, RANKING, ELIMINATION, TOURNAMENT
+    RANK
 }
 
 export interface Constitution {

@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConstitutionPageComponent } from '../components/constitution-page/constitution-page.component';
+import { GradedConstitutionPageComponent } from '../components/constitution-page/graded-constitution/constitution-page.component';
 import { ROUTES } from "../constants/routes";
 
 @Injectable({
@@ -18,7 +18,7 @@ export class RoutingService {
       }
     }
 
-    const newRoute: Route = { path: "current-constitutions/" + constitutionID, component: ConstitutionPageComponent };
+    const newRoute: Route = { path: "current-constitutions/" + constitutionID, component: GradedConstitutionPageComponent };
     ROUTES.push(newRoute);
     this.router.config.push(newRoute);
   }

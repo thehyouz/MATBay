@@ -1,0 +1,18 @@
+<table matSort (matSortChange)="sortDataSong($event)" id="t01">
+     <tr>
+        <th mat-sort-header="id"> ID </th>
+        <th mat-sort-header="title"> Titre </th>
+        <th mat-sort-header="author"> URL </th>
+        <th mat-sort-header="grade"> Note </th>
+    </tr>
+    <tr *ngFor="let song of constitution.songs">
+        <td> {{song.id}} </td>
+        <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+        <td> 
+            <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
+        </td>
+        <td *ngIf="currentUser.uid === song.patron"> / </td>
+        <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) !== -1)"> {{returnVote(song)+1}} </td>
+        <td *ngIf="(currentUser.uid !== song.patron && returnVote(song) === -1)">  </td>
+    </tr>
+</table>
