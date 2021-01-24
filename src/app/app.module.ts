@@ -36,10 +36,12 @@ import { ManageSongsWindowComponent } from './components/manage-songs-window/man
 import { SongWindowComponent } from './components/song-window/song-window.component';
 import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
 
+// ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
 import { SongListSectionComponent } from './components/constitution-page/section/song-list-section/song-list-section.component';
 import { GradedExportSectionComponent } from './components/constitution-page/section/graded-constitution/export-section/export-section.component';
 import { GradedVoteListSectionComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/vote-list-section.component';
+import { GradedOwnerSectionComponent } from './components/constitution-page/section/graded-constitution/owner-section/owner-section.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
@@ -74,7 +76,8 @@ const firebaseConfig = {
     JoinConstitutionWindowComponent,
     ConstitutionPageComponent,
     GradedResultSectionComponent,
-    SongListSectionComponent
+    SongListSectionComponent,
+    GradedOwnerSectionComponent
   ],
   imports: [
     BrowserModule,

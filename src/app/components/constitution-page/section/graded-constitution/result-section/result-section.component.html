@@ -31,7 +31,7 @@
     <br>
     Classement globale chansons :
     <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-    <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01" >
+    <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01">
         <tr>
             <th mat-sort-header="id" > ID </th>
             <th mat-sort-header="title"> Titre </th>

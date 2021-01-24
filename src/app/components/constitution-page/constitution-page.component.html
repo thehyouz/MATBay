@@ -85,17 +85,20 @@
       [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
     </song-list-section>
 
-    <!-- Owner Info -->
-
-    <!-- Result Info -->
-    <graded-result-section *ngIf="currentSection === SelectionType.Result" 
-      [constitution]="constitution" [users]="users" [votes]="votes"  [currentUser]="currentUser">
-    </graded-result-section>
-
     <!-- Vote List -->
     <graded-vote-list-section *ngIf="currentSection === SelectionType.Vote" 
       [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
     </graded-vote-list-section>
+
+    <!-- Owner Info -->
+    <graded-owner-section *ngIf="currentSection === SelectionType.Owner"
+      [constitution]="constitution" [users]="users" [votes]="votes" [currentUser]="currentUser">
+    </graded-owner-section>
+
+    <!-- Result Info -->
+    <graded-result-section *ngIf="currentSection === SelectionType.Result" 
+      [constitution]="constitution" [users]="users" [votes]="votes" [currentUser]="currentUser">
+    </graded-result-section>
 
     <!-- Export Option -->
     <graded-export-section *ngIf="currentSection === SelectionType.Export" 

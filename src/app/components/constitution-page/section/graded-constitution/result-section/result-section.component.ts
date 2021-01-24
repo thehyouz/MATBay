@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Sort } from '@angular/material/sort';
 import { MathService } from 'src/app/services/math.service';
@@ -12,15 +12,21 @@ import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote
   templateUrl: './result-section.component.html',
   styleUrls: ['./result-section.component.scss']
 })
-export class GradedResultSectionComponent {
+export class GradedResultSectionComponent implements OnInit {
   @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
-  public results: ResultGradeVote[];
   @Input() currentUser: User;
+  
+  public results: ResultGradeVote[];
+
+  ngOnInit() {
+    this.results = this.calculateResults();
+  }
 
   constructor(private math: MathService,
-              private afs: AngularFirestore) {}
+              private afs: AngularFirestore) {
+  }
 
   userMeanVotes(uid: string): number {
     const currentUserVote: GradeVote[] = [];
@@ -60,6 +66,10 @@ export class GradedResultSectionComponent {
   }
 
   sortDataResult(sort: Sort) {
+    if (this.results === undefined) {
+      this.results = this.calculateResults();
+    }
+    
     if(!sort.active || sort.direction === '') { return; }
 
     const data = this.results.slice();
