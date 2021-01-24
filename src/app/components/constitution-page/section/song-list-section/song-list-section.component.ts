@@ -9,11 +9,11 @@ import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
 import { SongWindowComponent } from '../../../song-window/song-window.component';
 
 @Component({
-  selector: 'graded-song-list-section',
+  selector: 'song-list-section',
   templateUrl: './song-list-section.component.html',
   styleUrls: ['./song-list-section.component.scss']
 })
-export class GradedSongListSectionComponent {
+export class SongListSectionComponent {
   @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];

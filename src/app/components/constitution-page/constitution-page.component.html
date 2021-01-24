@@ -1,56 +1,53 @@
 <!-- Content -->
 <div *ngIf="!(isUserLoading || isConstitutionLoading)">
+  <!-- Sidenav -->
   <mat-sidenav-container class="sidenav">
+    <h4>
+      <mat-icon *ngIf="constitution.isLocked" matTooltip="La constitution est verouillée">lock</mat-icon>
+      <mat-icon *ngIf="!constitution.isLocked" matTooltip="La constitution est déverouillée">lock_open</mat-icon>
+      <a *ngIf="constitution.youtubePlaylistID !== ''"
+        href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}" target="_blank">
+        {{constitution.name}} </a>
+      <span *ngIf="constitution.youtubePlaylistID === ''"> {{constitution.name}} </span>
+    </h4>
+    <span class="custom-br"></span>
+    <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
+    <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
+    <div *ngIf="constitution.songs?.length > 1"> {{constitution.songs.length}} chansons </div>
+    Vous avez:
+    {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
+    <br>
+    <br>
     <div>
-      <h4>
-        <mat-icon *ngIf="constitution.isLocked" matTooltip="La constitution est verouillée">lock</mat-icon>
-        <mat-icon *ngIf="!constitution.isLocked" matTooltip="La constitution est déverouillée">lock_open</mat-icon>
-        <a *ngIf="constitution.youtubePlaylistID !== ''"
-          href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}" target="_blank">
-          {{constitution.name}} </a>
-        <span *ngIf="constitution.youtubePlaylistID === ''"> {{constitution.name}} </span>
-      </h4>
-      <span class="custom-br"></span>
-      <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
-      <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
-      <div *ngIf="constitution.songs?.length > 1"> {{constitution.songs.length}} chansons </div>
-      Vous avez:
-      {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
-      <br>
-      <br>
-      <div>
-        <span class="owner"> [Président] </span>
-        <img class="picture" [src]="returnOwner().photoURL" [alt]="returnOwner().displayName">
-        {{returnOwner().displayName}}
-      </div>
-      <br>
-      [Membres]
-      <div *ngFor="let user of users">
-        <span *ngIf="user.uid !== constitution.owner">
-          <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
-          <br>
-        </span>
-      </div>
-      <span class="custom-br"></span>
-      <br>
-      <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
-      <br>
-      <br>
-      <button mat-stroked-button [disabled]="currentUser.uid === constitution.owner" color="warn"
-        (click)="leaveConstitution()"> Quitter la constitution </button>
-      <br>
-      <span *ngIf="currentUser.uid === constitution.owner" class="warning"> Vous ne pouvez pas quitter votre
-        constitution </span>
+      <span class="owner"> [Président] </span>
+      <img class="picture" [src]="returnOwner().photoURL" [alt]="returnOwner().displayName">
+      {{returnOwner().displayName}}
     </div>
+    <br>
+    [Membres]
+    <div *ngFor="let user of users">
+      <span *ngIf="user.uid !== constitution.owner">
+        <img class="picture" [src]="user.photoURL" [alt]="user.displayName"> {{user.displayName}}
+        <br>
+      </span>
+    </div>
+    <span class="custom-br"></span>
+    <br>
+    <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
+    <br>
+    <br>
+    <button mat-stroked-button [disabled]="currentUser.uid === constitution.owner" color="warn"
+      (click)="leaveConstitution()"> Quitter la constitution </button>
+    <br>
+    <span *ngIf="currentUser.uid === constitution.owner" class="warning"> Vous ne pouvez pas quitter votre
+      constitution </span>
   </mat-sidenav-container>
 
   <div class="content">
     <!-- Navbar -->
     <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
-      <!-- Navbar brand -->
       <mdb-navbar-brand><a class="navbar-brand" routerLink="/"></a></mdb-navbar-brand>
       <links>
-        <!-- Links -->
         <ul class="navbar-nav mr-auto">
           <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.SongList}">
             <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.SongList)">
@@ -84,29 +81,29 @@
     <br>
 
     <!-- Song List-->
-    <graded-song-list-section *ngIf="currentSection === SelectionType.SongList" [constitution]="constitution"
-      [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
-    </graded-song-list-section>
-
-    <!-- Vote List -->
-    <graded-vote-list-section *ngIf="currentSection === SelectionType.Vote" [constitution]="constitution"
-      [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
-    </graded-vote-list-section>
+    <song-list-section *ngIf="currentSection === SelectionType.SongList" 
+      [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
+    </song-list-section>
 
     <!-- Owner Info -->
 
-
     <!-- Result Info -->
-    <graded-result-section *ngIf="currentSection === SelectionType.Result" [constitution]="constitution" [users]="users"
-      [votes]="votes" [results]="results" [currentUser]="currentUser">
+    <graded-result-section *ngIf="currentSection === SelectionType.Result" 
+      [constitution]="constitution" [users]="users" [votes]="votes"  [currentUser]="currentUser">
     </graded-result-section>
 
+    <!-- Vote List -->
+    <graded-vote-list-section *ngIf="currentSection === SelectionType.Vote" 
+      [constitution]="constitution" [users]="users" [currentUser]="currentUser" [currentSection]="currentSection" [votes]="votes">
+    </graded-vote-list-section>
+
     <!-- Export Option -->
-    <graded-export-section *ngIf="currentSection === SelectionType.Export" [constitution]="constitution"
-      [users]="users">
+    <graded-export-section *ngIf="currentSection === SelectionType.Export" 
+      [constitution]="constitution" [users]="users">
     </graded-export-section>
   </div>
 </div>
+
 
 <!-- If not ready-->
 <div *ngIf="isUserLoading || isConstitutionLoading">

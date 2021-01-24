@@ -6,7 +6,7 @@ import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
-import { SongWindowComponent } from '../../../song-window/song-window.component';
+import { SongWindowComponent } from '../../../../song-window/song-window.component';
 
 @Component({
   selector: 'graded-vote-list-section',

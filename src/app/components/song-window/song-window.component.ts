@@ -10,7 +10,6 @@ import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform
 import { User } from 'src/app/types/user';
 import { GradeVote } from 'src/app/types/vote';
 
-
 @Component({
   selector: 'app-song-window',
   templateUrl: './song-window.component.html',
@@ -61,6 +60,7 @@ export class SongWindowComponent {
   canVote(): boolean {
     const isUserThePatron = (this.song.patron == this.currentUser.uid);
     const isInVoteMode = (this.currentSection == CurrentSectionConstitution.Vote);
+
     return isInVoteMode && !isUserThePatron;
   }
 

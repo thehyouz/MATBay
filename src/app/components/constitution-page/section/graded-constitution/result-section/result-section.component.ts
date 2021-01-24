@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Sort } from '@angular/material/sort';
 import { MathService } from 'src/app/services/math.service';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
-import { extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
+import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 
 @Component({
   selector: 'graded-result-section',
@@ -18,7 +19,8 @@ export class GradedResultSectionComponent {
   public results: ResultGradeVote[];
   @Input() currentUser: User;
 
-  constructor(private math: MathService) {}
+  constructor(private math: MathService,
+              private afs: AngularFirestore) {}
 
   userMeanVotes(uid: string): number {
     const currentUserVote: GradeVote[] = [];

@@ -26,7 +26,6 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 // Component
 import { AppComponent } from './app.component';
-import { GradedConstitutionPageComponent } from './components/constitution-page/graded-constitution/constitution-page.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -35,16 +34,17 @@ import { ConstitutionsHistoryPageComponent } from './components/constitutions-hi
 import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
 import { ManageSongsWindowComponent } from './components/manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from './components/song-window/song-window.component';
-import { GradedExportSectionComponent } from './components/constitution-page/graded-constitution/export-section/export-section.component';
-import { GradedSongListSectionComponent } from './components/constitution-page/graded-constitution/song-list-section/song-list-section.component';
-import { GradedVoteListSectionComponent } from './components/constitution-page/graded-constitution/vote-list-section/vote-list-section.component';
 import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
+
+import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
+import { SongListSectionComponent } from './components/constitution-page/section/song-list-section/song-list-section.component';
+import { GradedExportSectionComponent } from './components/constitution-page/section/graded-constitution/export-section/export-section.component';
+import { GradedVoteListSectionComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/vote-list-section.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
-import { GradedResultSectionComponent } from './components/constitution-page/graded-constitution/result-section/result-section.component';
-import { OwnerSectionComponent } from './constitution-page/graded-constitution/owner-section/owner-section.component';
+import { GradedResultSectionComponent } from './components/constitution-page/section/graded-constitution/result-section/result-section.component';
 
 
 const firebaseConfig = {
@@ -67,15 +67,14 @@ const firebaseConfig = {
     CurrentConstitutionsPageComponent,
     ConstitutionsHistoryPageComponent,
     NewConstitutionWindowComponent,
-    GradedConstitutionPageComponent,
+    SongWindowComponent,
     ManageSongsWindowComponent,
-    GradedExportSectionComponent
-    ExportSectionComponent,
-    GradedSongListSectionComponent,
+    GradedExportSectionComponent,
     GradedVoteListSectionComponent,
     JoinConstitutionWindowComponent,
+    ConstitutionPageComponent,
     GradedResultSectionComponent,
-    OwnerSectionComponent
+    SongListSectionComponent
   ],
   imports: [
     BrowserModule,
