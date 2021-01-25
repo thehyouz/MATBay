@@ -18,8 +18,8 @@ export class GradedExportSectionComponent {
   @Input() constitution: Constitution;
   @Input() users: User[];
 
-  EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
-  selectedExportFormat: string;
+  public EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
+  public selectedExportFormat: string;
 
   private setting = {
     element: {

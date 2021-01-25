@@ -7,7 +7,7 @@ import { ConstitutionManagerService } from 'src/app/services/manager/constitutio
 import { MathService } from 'src/app/services/math.service';
 import { SongListManagerService } from 'src/app/services/manager/song-list-manager.service';
 import { VoteManagerService } from 'src/app/services/manager/vote-manager.service';
-import { Constitution } from 'src/app/types/constitution';
+import { Constitution, ConstitutionType } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { compareUserNameASC, User } from 'src/app/types/user';
 import { GradeVote } from 'src/app/types/vote';
@@ -15,7 +15,7 @@ import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-
 import { compareSongIdASC } from 'src/app/types/song';
 
 @Component({
-  selector: 'graded-constitution-page',
+  selector: 'app-constitution-page',
   templateUrl: './constitution-page.component.html',
   styleUrls: ['./constitution-page.component.scss'],
   providers: [ SongListManagerService, VoteManagerService ]
@@ -28,12 +28,12 @@ export class ConstitutionPageComponent implements OnInit {
   public currentUser: User;
   public currentSection: CurrentSectionConstitution = CurrentSectionConstitution.SongList;
   public SelectionType: typeof CurrentSectionConstitution = CurrentSectionConstitution;
+  public constitutionType: typeof ConstitutionType = ConstitutionType;
 
   public isConstitutionLoading: boolean = true;
   public isUserLoading: boolean = true;
 
-  public votes: GradeVote[] // | RankVote[];
-  // public results: ResultGradeVote[];
+  public votes: GradeVote[];
 
   constructor(private constitutionManager: ConstitutionManagerService,
               private afs: AngularFirestore,
@@ -82,11 +82,6 @@ export class ConstitutionPageComponent implements OnInit {
             newVotes.forEach(async vote => {
               this.votes.push(vote);
             });
-
-            // Results
-            if (this.constitution.isShowingResult) {
-              // this.results = this.calculateResults();
-            }
 
             this.isConstitutionLoading = false;
           });

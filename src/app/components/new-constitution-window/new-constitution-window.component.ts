@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
+// import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution, ConstitutionType, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
 import { YOUTUBE_PLAYLIST_HEADER_LENGTH } from 'src/app/types/song-platform';
@@ -23,8 +23,11 @@ export class NewConstitutionWindowComponent {
   public newConstitutionForm: FormGroup;
   private newConstitutionParameter: Constitution;
 
+  public CONSTITUTION_TYPE: string [] = ["Note (1 à 10)", "Classement"];
+  public selectedType: string;
+
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-              private constitutionManager: ConstitutionManagerService,
+              // private constitutionManager: ConstitutionManagerService,
               public auth: AuthService,
               private routing: RoutingService,
               public afs: AngularFirestore) {
@@ -50,6 +53,8 @@ export class NewConstitutionWindowComponent {
       formIsAnonymous: new FormControl(),
       formNumberMaxOfUser: new FormControl()
     });
+
+    this.selectedType = this.CONSTITUTION_TYPE[0];
   }
 
   isMissingParameters(): boolean {
@@ -61,7 +66,6 @@ export class NewConstitutionWindowComponent {
 
     return seasonIsMissing || roundIsMissing || nameIsMissing || numberOfSongsPerUserIsMissing || numberMaxOfUserIsMissing;
   }
-
 
   parametersAreValid(): boolean {
     const numberMaxOfUserIsValid = (this.newConstitutionParameter.numberMaxOfUser <= MAX_USER_LIMIT) && (this.newConstitutionParameter.numberMaxOfUser >= MIN_USER_LIMIT);
@@ -83,6 +87,22 @@ export class NewConstitutionWindowComponent {
     this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];
   }
 
+  /* updateSelectedType(event: Event): void {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.selectedType = eventCast.value;
+
+    console.log(eventCast);
+    console.log(this.selectedType);
+  } */
+
+  returnConstitutionTypeEnum(type: string): number {
+    switch (type) {
+      case this.CONSTITUTION_TYPE[0]: return ConstitutionType.GRADE;
+      case this.CONSTITUTION_TYPE[1]: return ConstitutionType.RANK;
+      default: return ConstitutionType.GRADE;
+    }
+  }
+
   async createNewConstitution(): Promise<void> {
     this.updateParameters();
 
@@ -102,7 +122,7 @@ export class NewConstitutionWindowComponent {
         round: this.newConstitutionParameter.round,
         name: this.newConstitutionParameter.name,
         isPublic: this.newConstitutionParameter.isPublic? this.newConstitutionParameter.isPublic : false,
-        type: ConstitutionType.GRADE,
+        type: this.returnConstitutionTypeEnum(this.selectedType),
         isLocked: false,
         isShowingResult: false,
         owner: this.currentUser.uid,
@@ -115,6 +135,10 @@ export class NewConstitutionWindowComponent {
         youtubePlaylistID: this.newConstitutionParameter.youtubePlaylistID? this.newConstitutionParameter.youtubePlaylistID : "",
         numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser
       }
+
+      console.log("selectedtype", this.selectedType);
+      console.log("newConstitution", newConstitution);
+      console.log("returnCTE", this.returnConstitutionTypeEnum(this.selectedType));
 
       this.afs.collection('constitutions/').doc(newConstitutionID).set({
         id: newConstitution.id,

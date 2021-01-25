@@ -20,6 +20,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSortModule } from "@angular/material/sort";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatSelectModule } from "@angular/material/select";
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -42,11 +43,15 @@ import { SongListSectionComponent } from './components/constitution-page/section
 import { GradedExportSectionComponent } from './components/constitution-page/section/graded-constitution/export-section/export-section.component';
 import { GradedVoteListSectionComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/vote-list-section.component';
 import { GradedOwnerSectionComponent } from './components/constitution-page/section/graded-constitution/owner-section/owner-section.component';
+import { GradedResultSectionComponent } from './components/constitution-page/section/graded-constitution/result-section/result-section.component';
+import { RankedVoteListSectionComponent } from './components/constitution-page/section/ranked-constitution/vote-list-section/vote-list-section.component'
+import { RankedResultSectionComponent } from './components/constitution-page/section/ranked-constitution/result-section/result-section.component';
+import { RankedExportSectionComponent } from './components/constitution-page/section/ranked-constitution/export-section/export-section.component';
+import { RankedOwnerSectionComponent } from './components/constitution-page/section/ranked-constitution/owner-section/owner-section.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
-import { GradedResultSectionComponent } from './components/constitution-page/section/graded-constitution/result-section/result-section.component';
 
 
 const firebaseConfig = {
@@ -77,7 +82,11 @@ const firebaseConfig = {
     ConstitutionPageComponent,
     GradedResultSectionComponent,
     SongListSectionComponent,
-    GradedOwnerSectionComponent
+    GradedOwnerSectionComponent,
+    RankedVoteListSectionComponent,
+    RankedResultSectionComponent,
+    RankedExportSectionComponent,
+    RankedOwnerSectionComponent
   ],
   imports: [
     BrowserModule,
@@ -97,6 +106,7 @@ const firebaseConfig = {
     MatSortModule,
     MatIconModule,
     MatTooltipModule,
+    MatSelectModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],

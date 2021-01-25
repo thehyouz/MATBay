@@ -1,28 +1,28 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
+import { SongWindowComponent } from 'src/app/components/song-window/song-window.component';
 import { Constitution } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
-import { SongWindowComponent } from '../../../song-window/song-window.component';
 
 @Component({
-  selector: 'app-vote-list-section',
+  selector: 'ranked-vote-list-section',
   templateUrl: './vote-list-section.component.html',
   styleUrls: ['./vote-list-section.component.scss']
 })
-export class VoteListSectionComponent  {
-  @Input() constitution: Constitution;
+export class RankedVoteListSectionComponent  {
+  /* @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
   @Input() currentUser: User;
-  @Input() currentSection: CurrentSectionConstitution;
+  @Input() currentSection: CurrentSectionConstitution; */
 
-  constructor(private dialog: MatDialog) { }
+  constructor(/* private dialog: MatDialog */) { }
 
-  openDialogSong(song: Song): void {
+  /* openDialogSong(song: Song): void {
     const dialogConfig = new MatDialogConfig;
 
     let vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
@@ -78,6 +78,6 @@ export class VoteListSectionComponent  {
     const user = this.users.find(x => x.uid === uid);
     if (user !== undefined) { return user.displayName; }
     return "";
-  }
+  } */
 
 }

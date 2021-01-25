@@ -6,16 +6,16 @@ import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 
-const BASIC_TXT_HEADER: string = " ID |        Titre       |       Auteur       |     Ajouté Par     |\n";
-const TXT_SEPARATOR: string = "==================================================================== \n"
+/* const BASIC_TXT_HEADER: string = " ID |        Titre       |       Auteur       |     Ajouté Par     |\n";
+const TXT_SEPARATOR: string = "==================================================================== \n" */
 
 @Component({
-  selector: 'app-export-section',
+  selector: 'ranked-export-section',
   templateUrl: './export-section.component.html',
   styleUrls: ['./export-section.component.scss']
 })
-export class ExportSectionComponent {
-  @Input() constitution: Constitution;
+export class RankedExportSectionComponent {
+  /* @Input() constitution: Constitution;
   @Input() users: User[];
 
   EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
@@ -25,13 +25,13 @@ export class ExportSectionComponent {
     element: {
       dynamicDownload: null as HTMLElement
     }
-  }
+  } */
 
   constructor() {
-    this.selectedExportFormat = this.EXPORT_FORMAT[0];
+    // this.selectedExportFormat = this.EXPORT_FORMAT[0];
   }
 
-  updateSelectedFormat(event: Event): void {
+  /* updateSelectedFormat(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedExportFormat = eventCast.value;
   }
@@ -115,6 +115,6 @@ export class ExportSectionComponent {
     const user = this.users.find(x => x.uid === uid);
     if (user !== undefined) { return user.displayName; }
     return "";
-  }
+  } */
 
 }

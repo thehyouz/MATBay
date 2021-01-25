@@ -7,20 +7,20 @@ import { User } from 'src/app/types/user';
 import { extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 
 @Component({
-  selector: 'app-result-section',
+  selector: 'ranked-result-section',
   templateUrl: './result-section.component.html',
   styleUrls: ['./result-section.component.scss']
 })
-export class ResultSectionComponent {
-  @Input() constitution: Constitution;
+export class RankedResultSectionComponent {
+  /* @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
   @Input() results: ResultGradeVote[];
-  @Input() currentUser: User;
+  @Input() currentUser: User; */
 
-  constructor(private math: MathService) {}
+  constructor(/*private math: MathService*/) {}
 
-  userMeanVotes(uid: string): number {
+  /* userMeanVotes(uid: string): number {
     const currentUserVote: GradeVote[] = [];
     for (const vote of this.votes) {
       if (vote.userID === uid) {
@@ -82,6 +82,6 @@ export class ResultSectionComponent {
     const user = this.users.find(x => x.uid === uid);
     if (user !== undefined) { return user.displayName; }
     return "";
-  }
+  } */
 
 }

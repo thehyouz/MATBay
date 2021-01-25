@@ -38,5 +38,3 @@ export function compareResultScoreDSC(result1: ResultGradeVote, result2: ResultG
 }
 
 // RankingVote
-// EliminationVote
-// TournamentVote

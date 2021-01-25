@@ -8,17 +8,24 @@
         Information Globale: <span class="warning"> * </span>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Saison </mat-label>
-            <input matInput type="number" min = "0"  formControlName="formSeason">
+            <input matInput type="number" min = "0"  formControlName="formSeason" required> 
         </mat-form-field>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Partie </mat-label>
-            <input matInput type="number" min = "0"  formControlName="formRound">
+            <input matInput type="number" min = "0"  formControlName="formRound" required>
         </mat-form-field>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nom </mat-label>
-            <input matInput type="text"  formControlName="formName">
+            <input matInput type="text"  formControlName="formName" required>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Type </mat-label>
+            <mat-select [(value)]="selectedType">
+                <mat-option *ngFor="let type of CONSTITUTION_TYPE" [value]="type"> {{type}} </mat-option>
+            </mat-select>
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
@@ -32,11 +39,11 @@
         Utilisateurs: <span class="warning"> * </span>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nombre d'utilisateurs </mat-label>
-            <input matInput type="number" formControlName="formNumberMaxOfUser">
+            <input matInput type="number" formControlName="formNumberMaxOfUser" required>
         </mat-form-field>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nombre de chansons par utilisateur </mat-label>
-            <input matInput type="number" formControlName="formNumberOfSongsPerUser">
+            <input matInput type="number" formControlName="formNumberOfSongsPerUser" required>
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
