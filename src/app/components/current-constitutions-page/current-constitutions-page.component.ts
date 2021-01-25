@@ -12,7 +12,7 @@ import { User } from 'src/app/types/user';
 })
 export class CurrentConstitutionsPageComponent implements OnInit{
   public currentUser: User;
-  public constitutions:Constitution[];
+  public constitutions: Constitution[];
 
   public isUserLoading: boolean = true;
   public areConstitutionsLoading: boolean = true;
@@ -51,6 +51,16 @@ export class CurrentConstitutionsPageComponent implements OnInit{
     private afs: AngularFirestore,
     private auth: AuthService,
   ) {}
+
+  getCurrentUserConstitutions() {
+    const currentUserConstitutions: Constitution[] = [];
+    for (const constitution of this.constitutions) {
+      if (constitution.isPublic || this.isUserAlreadyAMember(constitution)) {
+        currentUserConstitutions.push(constitution);
+      }
+    }
+    return currentUserConstitutions;
+  }
 
   showDisplayName(uid: string): string {
     let name = ""

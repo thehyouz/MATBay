@@ -1,20 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RankedExportSectionComponent } from './export-section.component';
 
-import { ExportSectionComponent } from './export-section.component';
 
-describe('ExportSectionComponent', () => {
-  let component: ExportSectionComponent;
-  let fixture: ComponentFixture<ExportSectionComponent>;
+
+describe('RankedExportSectionComponent', () => {
+  let component: RankedExportSectionComponent;
+  let fixture: ComponentFixture<RankedExportSectionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExportSectionComponent ]
+      declarations: [ RankedExportSectionComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExportSectionComponent);
+    fixture = TestBed.createComponent(RankedExportSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

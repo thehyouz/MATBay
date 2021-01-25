@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
-// import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution, ConstitutionType, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
 import { YOUTUBE_PLAYLIST_HEADER_LENGTH } from 'src/app/types/song-platform';
@@ -27,7 +26,6 @@ export class NewConstitutionWindowComponent {
   public selectedType: string;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-              // private constitutionManager: ConstitutionManagerService,
               public auth: AuthService,
               private routing: RoutingService,
               public afs: AngularFirestore) {
@@ -87,13 +85,6 @@ export class NewConstitutionWindowComponent {
     this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];
   }
 
-  /* updateSelectedType(event: Event): void {
-    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.selectedType = eventCast.value;
-
-    console.log(eventCast);
-    console.log(this.selectedType);
-  } */
 
   returnConstitutionTypeEnum(type: string): number {
     switch (type) {
@@ -136,10 +127,6 @@ export class NewConstitutionWindowComponent {
         numberOfSongsPerUser: this.newConstitutionParameter.numberOfSongsPerUser
       }
 
-      console.log("selectedtype", this.selectedType);
-      console.log("newConstitution", newConstitution);
-      console.log("returnCTE", this.returnConstitutionTypeEnum(this.selectedType));
-
       this.afs.collection('constitutions/').doc(newConstitutionID).set({
         id: newConstitution.id,
         season:  newConstitution.season,
@@ -150,12 +137,12 @@ export class NewConstitutionWindowComponent {
         isLocked: newConstitution.isLocked,
         isShowingResult: newConstitution.isShowingResult,
         owner: this.currentUser.uid,
-        winnerUserIndex: -1,
+        winnerUserID: newConstitution.winnerUserID,
         numberMaxOfUser: newConstitution.numberMaxOfUser,
         users: [this.currentUser.uid],
         isAnonymous: newConstitution.isAnonymous? newConstitution.isAnonymous : false,
         songs: [],
-        winnerSongIndex: -1,
+        winnerSongID: newConstitution.winnerSongID,
         youtubePlaylistID: newConstitution.youtubePlaylistID? newConstitution.youtubePlaylistID : "",
         numberOfSongsPerUser: newConstitution.numberOfSongsPerUser
       });

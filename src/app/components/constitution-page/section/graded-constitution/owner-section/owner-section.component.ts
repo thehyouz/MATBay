@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { User } from 'firebase';
+import { User } from '../../../../../types/user';
 import { Constitution } from 'src/app/types/constitution';
-import { GradeVote } from 'src/app/types/vote';
+import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
+import { MathService } from 'src/app/services/math.service';
 
 @Component({
   selector: 'graded-owner-section',
@@ -19,7 +20,8 @@ export class GradedOwnerSectionComponent {
 
   constructor(
     private afs: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private math: MathService
   ) { }
 
   canLockSongList(): boolean {
@@ -53,9 +55,50 @@ export class GradedOwnerSectionComponent {
     return "";
   }
 
+  calculateResults(): ResultGradeVote[] {
+    const results: ResultGradeVote[] = [];
+    for(const song of this.constitution.songs) {
+      const selectedVotes = [];
+      for(const vote of this.votes) {
+        if (vote.songID === song.id) {
+          selectedVotes.push(vote);
+        }
+      }
+      const mean = this.math.mean(extractValuesOfVotes(selectedVotes));
+      const user = this.users.find(x => {return x.uid === song.patron});
+      if (user !== undefined) {
+        results.push({
+          songID: song.id,
+          title: song.shortTitle,
+          author: song.author,
+          url: song.url,
+          score: mean,
+          userID: user.uid
+        });
+      }
+    }
+
+    results.sort(compareResultScoreDSC);
+
+    if (this.constitution.winnerSongID !== results[0].songID && this.constitution.winnerUserID !== results[0].userID) {
+      this.afs.collection("constitutions/").doc(this.constitution.id).update({
+        winnerSongID: results[0].userID,
+        winnerUserID: results[0].songID
+      });
+    }
+
+    return results;
+  }
+
   finishConstitution(): void {
-    // this.results.sort(compareResultScoreDSC);
-    // const winnerResult = this.results[0];
+    if (this.constitution.winnerUserID === '' || this.constitution.winnerSongID === -1) {
+      this.calculateResults();
+    }
+    
+    console.log(this.constitution);
+
+    let winnerSong = this.constitution.songs.find(x => x.id === this.constitution.winnerSongID);
+    let winnerUser = this.users.find(x => x.uid === this.constitution.winnerUserID);
 
     this.afs.collection("history").add({
       season: this.constitution.season,
@@ -63,10 +106,11 @@ export class GradedOwnerSectionComponent {
       name: this.constitution.name,
       ownerName: this.showDisplayName(this.constitution.owner),
       youtubePlaylistID: this.constitution.youtubePlaylistID,
-      // winnerName: this.showDisplayName(winnerResult.userID),
-      // winnerSongURL: winnerResult.url,
-      // winnerSongTitle: winnerResult.title,
-      // winnerSongAuthor: winnerResult.author
+
+      winnerName: this.showDisplayName(winnerUser.uid),
+      winnerSongURL: winnerSong.url,
+      winnerSongTitle: winnerSong.shortTitle,
+      winnerSongAuthor: winnerSong.author
     });
 
     this.deleteConstitution();

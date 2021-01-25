@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VoteListSectionComponent } from './vote-list-section.component';
+import { RankedVoteListSectionComponent } from './vote-list-section.component';
 
-describe('VoteListSectionComponent', () => {
-  let component: VoteListSectionComponent;
-  let fixture: ComponentFixture<VoteListSectionComponent>;
+describe('RankedVoteListSectionComponent', () => {
+  let component: RankedVoteListSectionComponent;
+  let fixture: ComponentFixture<RankedVoteListSectionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VoteListSectionComponent ]
+      declarations: [ RankedVoteListSectionComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VoteListSectionComponent);
+    fixture = TestBed.createComponent(RankedVoteListSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

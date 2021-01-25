@@ -121,11 +121,10 @@ export class GradedResultSectionComponent implements OnInit {
 
     results.sort(compareResultScoreDSC);
 
-    //TODO À DÉPLACER DANS OWNER
     if (this.constitution.winnerSongID !== results[0].songID && this.constitution.winnerUserID !== results[0].userID) {
       this.afs.collection("constitutions/").doc(this.constitution.id).update({
-        winnerSongID: results[0].userID,
-        winnerUserID: results[0].songID
+        winnerSongID: results[0].songID,
+        winnerUserID: results[0].userID
       });
     }
 
