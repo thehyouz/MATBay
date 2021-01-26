@@ -43,7 +43,7 @@ export class NewConstitutionWindowComponent {
 
     this.newConstitutionForm = new FormGroup({
       formSeason: new FormControl(),
-      formRound: new FormControl(),
+      formPart: new FormControl(),
       formName: new FormControl(),
       formIsPublic: new FormControl(),
       formYoutubePlaylist: new FormControl(),
@@ -57,12 +57,12 @@ export class NewConstitutionWindowComponent {
 
   isMissingParameters(): boolean {
     const seasonIsMissing = (this.newConstitutionParameter.season === null);
-    const roundIsMissing = (this.newConstitutionParameter.round === null);
+    const partIsMissing = (this.newConstitutionParameter.part === null);
     const nameIsMissing = (this.newConstitutionParameter.name === null);
     const numberOfSongsPerUserIsMissing = (this.newConstitutionParameter.numberOfSongsPerUser === null);
     const numberMaxOfUserIsMissing = (this.newConstitutionParameter.numberMaxOfUser === null)
 
-    return seasonIsMissing || roundIsMissing || nameIsMissing || numberOfSongsPerUserIsMissing || numberMaxOfUserIsMissing;
+    return seasonIsMissing || partIsMissing || nameIsMissing || numberOfSongsPerUserIsMissing || numberMaxOfUserIsMissing;
   }
 
   parametersAreValid(): boolean {
@@ -73,7 +73,7 @@ export class NewConstitutionWindowComponent {
 
   updateParameters(): void {
     this.newConstitutionParameter.season = this.newConstitutionForm.value['formSeason'];
-    this.newConstitutionParameter.round = this.newConstitutionForm.value['formRound'];
+    this.newConstitutionParameter.part = this.newConstitutionForm.value['formPart'];
     this.newConstitutionParameter.name = this.newConstitutionForm.value['formName'];
     this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
     this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'];
@@ -110,7 +110,7 @@ export class NewConstitutionWindowComponent {
       let newConstitution: Constitution = {
         id: newConstitutionID,
         season:  this.newConstitutionParameter.season,
-        round: this.newConstitutionParameter.round,
+        part: this.newConstitutionParameter.part,
         name: this.newConstitutionParameter.name,
         isPublic: this.newConstitutionParameter.isPublic? this.newConstitutionParameter.isPublic : false,
         type: this.returnConstitutionTypeEnum(this.selectedType),
@@ -130,7 +130,7 @@ export class NewConstitutionWindowComponent {
       this.afs.collection('constitutions/').doc(newConstitutionID).set({
         id: newConstitution.id,
         season:  newConstitution.season,
-        round: newConstitution.round,
+        part: newConstitution.part,
         name: newConstitution.name,
         isPublic: newConstitution.isPublic? newConstitution.isPublic : false,
         type: newConstitution.type,

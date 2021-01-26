@@ -8,7 +8,7 @@
     </tr>
     <tr *ngFor="let song of constitution.songs">
         <td > {{song.id}} </td>
-        <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
+        <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)" matTooltip="Cliquez pour voir la chanson" [matTooltipShowDelay]="1000"> {{song.shortTitle}} </button> </td>
         <td> {{song.author}} </td>
         <td> 
             <a href="{{song.url}}" target="_blank"> {{song.url}} </a>

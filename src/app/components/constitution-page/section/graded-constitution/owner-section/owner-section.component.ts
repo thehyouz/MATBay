@@ -102,7 +102,7 @@ export class GradedOwnerSectionComponent {
 
     this.afs.collection("history").add({
       season: this.constitution.season,
-      round: this.constitution.round,
+      part: this.constitution.part,
       name: this.constitution.name,
       ownerName: this.showDisplayName(this.constitution.owner),
       youtubePlaylistID: this.constitution.youtubePlaylistID,

@@ -12,12 +12,16 @@ export enum ConstitutionType {
 export interface Constitution {
     id: string;
     season: number;
-    round: number;
+    part: number;
     name: string;
     isPublic: boolean;
     type: ConstitutionType;
     isLocked: boolean;
     isShowingResult: boolean;
+
+    // userTurnID: string;
+    // startDate: Date;
+    // round: number;
 
     // Users
     owner: string;
@@ -36,7 +40,7 @@ export interface Constitution {
 export const EMPTY_CONSTITUTION: Constitution = {
     id: "",
     season: -1,
-    round: -1,
+    part: -1,
     name: "",
     isPublic: false,
     isLocked: false,
@@ -55,7 +59,7 @@ export const EMPTY_CONSTITUTION: Constitution = {
 
 export interface ConstitutionArchived {
     season: number;
-    round: number;
+    part: number;
     name: string;
     youtubePlaylistID: string;
     ownerName: string;
@@ -70,7 +74,7 @@ export function compareConstitutionASC(c1: Constitution | ConstitutionArchived, 
     if (c1.season > c2.season) { return 1; }
     if (c1.season < c2.season) { return -1; }
     else {
-        if (c1.round > c2.round) { return 1; }
-        if (c1.round < c2.round ) { return -1; }
+        if (c1.part > c2.part) { return 1; }
+        if (c1.part < c2.part ) { return -1; }
     }
 }
