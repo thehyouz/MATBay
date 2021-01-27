@@ -5,14 +5,18 @@
     <span class="custom-br"></span>
 </div>
 <br>
-<div >
+<div class="alignment">
     <iframe width="720" height="480" frameborder="0"
     [src]="safeUrl"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
+</div>
+<div *ngIf="song.patron !== currentUser.uid" class="alignment">
     <br>
-    <button mat-button class="previous-button" [disabled]="!previousSongExist()" (click)="changeSong(-1)"> <mat-icon>keyboard_arrow_left</mat-icon> </button>
-    <button mat-button class="next-button" [disabled]="!nextSongExist()" (click)="changeSong(1)"> <mat-icon>keyboard_arrow_right</mat-icon> </button>
+    <span *ngFor="let button of array(10) ; index as i">
+        <button *ngIf="!isSelected(i)" mat-raised-button class="vote-button" (click)="updateGrade(i)"> {{i+1}} </button>
+        <button *ngIf="isSelected(i)" mat-raised-button color="primary" (click)="updateGrade(i)"> {{i+1}} </button>
+    </span>
 </div>
 <br>
 <div>

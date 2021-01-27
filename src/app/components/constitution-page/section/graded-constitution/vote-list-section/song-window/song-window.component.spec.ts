@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SongListSectionComponent } from './song-list-section.component';
+import { GradedSongWindowComponent } from './song-window.component';
 
-describe('SongListSectionComponent', () => {
-  let component: SongListSectionComponent;
-  let fixture: ComponentFixture<SongListSectionComponent>;
+describe('GradedSongWindowComponent', () => {
+  let component: GradedSongWindowComponent;
+  let fixture: ComponentFixture<GradedSongWindowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SongListSectionComponent ]
+      declarations: [ GradedSongWindowComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SongListSectionComponent);
+    fixture = TestBed.createComponent(GradedSongWindowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

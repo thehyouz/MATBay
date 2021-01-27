@@ -6,7 +6,7 @@ import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
-import { SongWindowComponent } from '../../../../song-window/song-window.component';
+import { GradedSongWindowComponent } from './song-window/song-window.component';
 
 @Component({
   selector: 'graded-vote-list-section',
@@ -39,7 +39,7 @@ export class GradedVoteListSectionComponent  {
     dialogConfig.maxWidth = '80%';
     dialogConfig.maxHeight = '60%';
 
-    this.dialog.open(SongWindowComponent, dialogConfig);
+    this.dialog.open(GradedSongWindowComponent, dialogConfig);
   }
 
   sortDataSong(sort: Sort) {
