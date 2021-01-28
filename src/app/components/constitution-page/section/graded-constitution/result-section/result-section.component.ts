@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatAccordion } from '@angular/material/expansion';
 import { Sort } from '@angular/material/sort';
 import { MathService } from 'src/app/services/math.service';
 import { Constitution } from 'src/app/types/constitution';
@@ -19,13 +20,28 @@ export class GradedResultSectionComponent implements OnInit {
   @Input() currentUser: User;
   
   public results: ResultGradeVote[];
+  public winner: ResultGradeVote;
+
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   ngOnInit() {
     this.results = this.calculateResults();
+    this.winner = this.results[0];
   }
 
   constructor(private math: MathService,
               private afs: AngularFirestore) {
+  }
+
+  returnGrade(user: User, song: Song): number {
+    const vote = this.votes.find(x => (x.songID === song.id) && (x.userID === user.uid));
+    if (vote !== undefined) {
+      return vote.grade;
+    }
+  }
+
+  returnUser(uid: string): User {
+    return this.users.find(x => x.uid === uid);
   }
 
   userMeanVotes(uid: string): number {

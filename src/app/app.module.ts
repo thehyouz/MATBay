@@ -21,6 +21,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSelectModule } from "@angular/material/select";
+import { MatExpansionModule } from"@angular/material/expansion";
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -109,6 +110,7 @@ const firebaseConfig = {
     MatIconModule,
     MatTooltipModule,
     MatSelectModule,
+    MatExpansionModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],

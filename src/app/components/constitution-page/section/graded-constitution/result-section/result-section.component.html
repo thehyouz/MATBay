@@ -1,6 +1,4 @@
 <div>
-    <!-- <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(true)"> Publier les résultats </button>
-    <button mat-raised-button color="primary" class="nav-link waves-light" (click)="changeResultsStatus(false)"> Cacher les résultats </button>-->
     <h4> Mes Résultats </h4>
     <span class="custom-br"></span>
     <br>
@@ -13,42 +11,107 @@
     <h4> Résultats Globaux </h4>
     <span class="custom-br"></span>
     <br>
-    Moyenne des utilisateurs entre eux :
-    <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-    <table *ngIf="constitution.isShowingResult" id="t01">
-        <tr>
-            <th> Utilisateur </th>
-            <th *ngFor="let user of users"> {{user.displayName}} </th>
-        </tr>
-        <tr *ngFor="let user of users">
-            <td style="background-color: #2E2E2E;"> {{user.displayName}} </td>
-            <td *ngFor="let user2 of users"> 
-                <span *ngIf="user.uid === user2.uid"> / </span>
-                <span *ngIf="user.uid !== user2.uid"> {{userMeanUser(user2.uid, user.uid).toFixed(2)}} </span>
-            </td>
-        </tr>
-    </table>
+    <div>
+        <button mat-button class="button" (click)="accordion.openAll()"> Tous afficher </button>
+        <button mat-button class="button" (click)="accordion.closeAll()"> Tous cacher </button>
+    </div>
     <br>
-    Classement globale chansons :
-    <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
-    <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01">
-        <tr>
-            <th mat-sort-header="id" > ID </th>
-            <th mat-sort-header="title"> Titre </th>
-            <th mat-sort-header="author"> Auteur </th>
-            <th> URL </th>
-            <th mat-sort-header="score"> Score </th>
-            <th mat-sort-header="user"> Ajouté par </th>
-        </tr>
-        <tr *ngFor="let result of results">
-            <td> {{result.songID}} </td>
-            <td> {{result.title}} </td>
-            <td> {{result.author}} </td>
-            <td>
-                <a href="{{result.url}}" target="_blank"> {{result.url}} </a>
-            </td>
-            <td> {{result.score.toFixed(2)}} </td>
-            <td> {{showDisplayName(result.userID)}} </td>
-        </tr>
-    </table>
+    <mat-accordion multi>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header> 
+                <mat-panel-title> Chanson Gagnante </mat-panel-title>
+            </mat-expansion-panel-header>
+                <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+                 <table *ngIf="constitution.isShowingResult" id="t02">
+                    <tr>
+                        <th> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> </th>
+                        <th> <a href="{{winner.url}}" target="_blank"> {{winner.title}} - {{winner.author}} </a> </th>
+                        <th> {{winner.score.toFixed(2)}} </th>
+                        <th> <img class="picture" [src]="returnUser(winner.userID).photoURL"> {{showDisplayName(winner.userID)}} </th>
+                        <th> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> </th>
+                    </tr>
+                </table>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header> 
+                <mat-panel-title> Classement Globale Chansons </mat-panel-title>
+            </mat-expansion-panel-header>
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01">
+                <tr>
+                    <th mat-sort-header="id" > ID </th>
+                    <th mat-sort-header="title"> Titre </th>
+                    <th mat-sort-header="author"> Auteur </th>
+                    <th> URL </th>
+                    <th mat-sort-header="score"> Score </th>
+                    <th mat-sort-header="user"> Ajouté par </th>
+                </tr>
+                <tr *ngFor="let result of results">
+                    <td> {{result.songID}} </td>
+                    <td> {{result.title}} </td>
+                    <td> {{result.author}} </td>
+                    <td>
+                        <a href="{{result.url}}" target="_blank"> {{result.url}} </a>
+                    </td>
+                    <td> {{result.score.toFixed(2)}} </td>
+                    <td> {{showDisplayName(result.userID)}} </td>
+                </tr>
+            </table>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header> 
+                <mat-panel-title> Moyenne des utilisateurs entre eux </mat-panel-title>
+            </mat-expansion-panel-header>
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <table *ngIf="constitution.isShowingResult" id="t03">
+                <tr>
+                    <th> </th>
+                    <th *ngFor="let user of users"> {{user.displayName}} </th>
+                </tr>
+                <tr *ngFor="let user of users">
+                    <td style="background-color: #2E2E2E;"> {{user.displayName}} </td>
+                    <td *ngFor="let user2 of users"> 
+                        <span *ngIf="user.uid === user2.uid"> / </span>
+                        <span *ngIf="user.uid !== user2.uid"> {{userMeanUser(user2.uid, user.uid).toFixed(2)}} </span>
+                    </td>
+                </tr>
+            </table>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header> 
+                <mat-panel-title> Notes des utilisateurs </mat-panel-title>
+            </mat-expansion-panel-header>
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <table *ngIf="constitution.isShowingResult" id="t03">
+                <tr>
+                    <th> </th>
+                    <th *ngFor="let user of users"> {{user.displayName}} </th>
+                </tr>
+                <tr *ngFor="let song of constitution.songs">
+                    <td style="background-color: #2E2E2E;"> {{song.shortTitle}}</td>
+                    <td *ngFor="let user of users">
+                        <span *ngIf="user.uid === song.patron"> / </span>
+                        <span *ngIf="user.uid !== song.patron"> {{returnGrade(user, song)}} </span>
+                    </td>
+                </tr>
+            </table>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header> 
+                <mat-panel-title> Moyennes de chaque utilisateur </mat-panel-title>
+            </mat-expansion-panel-header>
+            <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+                <table *ngIf="constitution.isShowingResult" style="width: 45%" id="t03">
+                    <tr>
+                        <th> Utilisateur </th>
+                        <th> Moyenne </th>
+                    </tr>
+                    <tr *ngFor="let user of users">
+                         <td> {{showDisplayName(user.uid)}} </td>
+                         <td> {{userMeanSongs(user.uid).toFixed(2)}} </td>
+                    </tr>
+                </table>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <br>
 </div>
