@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Constitution } from 'src/app/types/constitution';
+import { User } from 'src/app/types/user';
 
 @Component({
   selector: 'ranked-owner-section',
@@ -7,6 +10,19 @@ import { Component } from '@angular/core';
 })
 export class RankedOwnerSectionComponent {
 
-  constructor() {}
+  @Input() constitution: Constitution;
+  @Input() users: User[];
+
+  constructor(private afs: AngularFirestore) {}
+
+  canLockSongList(): boolean {
+    return this.constitution.songs.length === this.constitution.numberMaxOfUser * this.constitution.numberOfSongsPerUser;
+  }
+
+  changeLockStatus(status: boolean): void {
+    this.afs.collection("constitutions/").doc(this.constitution.id).update({
+      isLocked: status
+    });
+  }
   
 }

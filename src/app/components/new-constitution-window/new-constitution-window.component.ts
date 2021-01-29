@@ -22,7 +22,7 @@ export class NewConstitutionWindowComponent {
   public newConstitutionForm: FormGroup;
   private newConstitutionParameter: Constitution;
 
-  public CONSTITUTION_TYPE: string [] = ["Note (1 à 10)", "Classement"];
+  public CONSTITUTION_TYPE: string[] = ["Note", "Classement"];
   public selectedType: string;
 
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
@@ -75,14 +75,21 @@ export class NewConstitutionWindowComponent {
     this.newConstitutionParameter.season = this.newConstitutionForm.value['formSeason'];
     this.newConstitutionParameter.part = this.newConstitutionForm.value['formPart'];
     this.newConstitutionParameter.name = this.newConstitutionForm.value['formName'];
-    this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
     this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'];
     if (this.newConstitutionParameter.youtubePlaylistID !== null) {
       this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionParameter.youtubePlaylistID.slice(YOUTUBE_PLAYLIST_HEADER_LENGTH);
     }
-    this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
+    this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
     this.newConstitutionParameter.isAnonymous = this.newConstitutionForm.value['formIsAnonymous'];
-    this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];
+
+    if (this.selectedType === this.CONSTITUTION_TYPE[1]) {
+      this.newConstitutionParameter.numberOfSongsPerUser = 25;
+      this.newConstitutionParameter.numberMaxOfUser = 4;
+    } else {
+      this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
+      this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];
+    }
+
   }
 
 

@@ -3,6 +3,8 @@
 <br>
 <li> Saison {{constitution.season}} - Partie {{constitution.part}} </li>
 <li> ID : {{constitution.id}} </li>
+<li *ngIf="constitution.isPublic"> Public </li>
+<li *ngIf="!constitution.isPublic"> Privée </li>
 <br>
 <li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
 <li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser *

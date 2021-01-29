@@ -64,6 +64,8 @@ export interface ConstitutionArchived {
     youtubePlaylistID: string;
     ownerName: string;
 
+    // usernames: string[];
+
     winnerName: string;
     winnerSongURL: string;
     winnerSongTitle: string;

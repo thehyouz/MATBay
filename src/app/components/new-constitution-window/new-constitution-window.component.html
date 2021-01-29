@@ -36,15 +36,35 @@
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
-        Utilisateurs: <span class="warning"> * </span>
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Nombre d'utilisateurs </mat-label>
-            <input matInput type="number" formControlName="formNumberMaxOfUser" required>
-        </mat-form-field>
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Nombre de chansons par utilisateur </mat-label>
-            <input matInput type="number" formControlName="formNumberOfSongsPerUser" required>
-        </mat-form-field>
+        Utilisateurs:
+        <span *ngIf="selectedType === CONSTITUTION_TYPE[1]">
+            <br>
+            <table>
+                <tr>
+                    <th> Option </th>
+                    <th> Statut </th>
+                </tr>
+                <tr>
+                    <td> <mat-label> Nombre d'utilisateurs: </mat-label> </td>
+                    <td> <mat-label> 4 </mat-label> </td>
+                </tr>
+                <tr>
+                    <td> <mat-label> Nombre de chansons par utilisateur: </mat-label> </td>
+                    <td> <mat-label> 25 </mat-label> </td>
+                </tr>
+            </table>
+        </span>
+        <span *ngIf="selectedType !== CONSTITUTION_TYPE[1]">
+            <span class="warning"> * </span>
+            <mat-form-field appearance="outline" [floatLabel]="true">
+                <mat-label> Nombre d'utilisateurs </mat-label>
+                <input matInput type="number" formControlName="formNumberMaxOfUser" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" [floatLabel]="true">
+                <mat-label> Nombre de chansons par utilisateur </mat-label>
+                <input matInput type="number" formControlName="formNumberOfSongsPerUser" required>
+            </mat-form-field>
+        </span>
         <span class="custom-br"></span>
         <br>
         <table>
@@ -53,20 +73,12 @@
                 <th> Statut </th>
             </tr>
             <tr>
-                <td>
-                    <mat-label> La constitution est publique: </mat-label>
-                </td>
-                <td>
-                    <mat-checkbox color="primary" formControlName="formIsPublic"> </mat-checkbox>
-                </td>
+                <td> <mat-label> La constitution est publique: </mat-label> </td>
+                <td> <mat-checkbox color="primary" formControlName="formIsPublic"> </mat-checkbox> </td>
             </tr>
             <tr>
-                <td>
-                    <mat-label> Les utilisateurs sont anonymes: </mat-label>
-                </td>
-                <td>
-                    <mat-checkbox color="primary" formControlName="formIsAnonymous"> </mat-checkbox>
-                </td>
+                <td> <mat-label> Les utilisateurs sont anonymes: </mat-label> </td>
+                <td> <mat-checkbox color="primary" formControlName="formIsAnonymous"> </mat-checkbox> </td>
             </tr>
         </table>
     </form>

@@ -98,7 +98,8 @@
       [constitution]="constitution" [users]="users" [votes]="votes" [currentUser]="currentUser">
     </graded-owner-section>
 
-    <ranked-owner-section *ngIf="currentSection === SelectionType.Owner && constitution.type === constitutionType.RANK">
+    <ranked-owner-section *ngIf="currentSection === SelectionType.Owner && constitution.type === constitutionType.RANK"
+      [constitution]="constitution" [users]="users">
     </ranked-owner-section>
 
     <!-- Result Info -->

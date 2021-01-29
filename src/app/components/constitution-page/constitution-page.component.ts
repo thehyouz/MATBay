@@ -4,7 +4,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
-import { MathService } from 'src/app/services/math.service';
 import { SongListManagerService } from 'src/app/services/manager/song-list-manager.service';
 import { VoteManagerService } from 'src/app/services/manager/vote-manager.service';
 import { Constitution, ConstitutionType } from 'src/app/types/constitution';
@@ -41,7 +40,6 @@ export class ConstitutionPageComponent implements OnInit {
               private dialog: MatDialog,
               private router: Router,
               private routes: ActivatedRoute,
-              private math: MathService,
               private songManager: SongListManagerService,
               private voteManager: VoteManagerService
   ) {}

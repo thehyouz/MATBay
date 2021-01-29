@@ -36,7 +36,7 @@ export class GradedResultSectionComponent implements OnInit {
   returnGrade(user: User, song: Song): number {
     const vote = this.votes.find(x => (x.songID === song.id) && (x.userID === user.uid));
     if (vote !== undefined) {
-      return vote.grade;
+      return vote.grade + 1;
     }
   }
 
