@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExportSectionComponent } from './export-section.component';
+import { GradedSongWindowComponent } from './song-window.component';
 
-describe('ExportSectionComponent', () => {
-  let component: ExportSectionComponent;
-  let fixture: ComponentFixture<ExportSectionComponent>;
+describe('GradedSongWindowComponent', () => {
+  let component: GradedSongWindowComponent;
+  let fixture: ComponentFixture<GradedSongWindowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExportSectionComponent ]
+      declarations: [ GradedSongWindowComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExportSectionComponent);
+    fixture = TestBed.createComponent(GradedSongWindowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

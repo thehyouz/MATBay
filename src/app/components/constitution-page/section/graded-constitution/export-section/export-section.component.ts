@@ -10,16 +10,16 @@ const BASIC_TXT_HEADER: string = " ID |        Titre       |       Auteur       
 const TXT_SEPARATOR: string = "==================================================================== \n"
 
 @Component({
-  selector: 'app-export-section',
+  selector: 'graded-export-section',
   templateUrl: './export-section.component.html',
   styleUrls: ['./export-section.component.scss']
 })
-export class ExportSectionComponent {
+export class GradedExportSectionComponent {
   @Input() constitution: Constitution;
   @Input() users: User[];
 
-  EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
-  selectedExportFormat: string;
+  public EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
+  public selectedExportFormat: string;
 
   private setting = {
     element: {
@@ -94,7 +94,7 @@ export class ExportSectionComponent {
           text: this.convertSongArrayToString(songs)
         });
       }
-      
+
     });
   }
 

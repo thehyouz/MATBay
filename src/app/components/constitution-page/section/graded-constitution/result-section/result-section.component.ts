@@ -1,24 +1,48 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { MatAccordion } from '@angular/material/expansion';
 import { Sort } from '@angular/material/sort';
 import { MathService } from 'src/app/services/math.service';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
-import { extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
+import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 
 @Component({
-  selector: 'app-result-section',
+  selector: 'graded-result-section',
   templateUrl: './result-section.component.html',
   styleUrls: ['./result-section.component.scss']
 })
-export class ResultSectionComponent {
+export class GradedResultSectionComponent implements OnInit {
   @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
-  @Input() results: ResultGradeVote[];
   @Input() currentUser: User;
+  
+  public results: ResultGradeVote[];
+  public winner: ResultGradeVote;
 
-  constructor(private math: MathService) {}
+  @ViewChild(MatAccordion) accordion: MatAccordion;
+
+  ngOnInit() {
+    this.results = this.calculateResults();
+    this.winner = this.results[0];
+  }
+
+  constructor(private math: MathService,
+              private afs: AngularFirestore) {
+  }
+
+  returnGrade(user: User, song: Song): number {
+    const vote = this.votes.find(x => (x.songID === song.id) && (x.userID === user.uid));
+    if (vote !== undefined) {
+      return vote.grade + 1;
+    }
+  }
+
+  returnUser(uid: string): User {
+    return this.users.find(x => x.uid === uid);
+  }
 
   userMeanVotes(uid: string): number {
     const currentUserVote: GradeVote[] = [];
@@ -50,7 +74,7 @@ export class ResultSectionComponent {
     }
     const user2Votes: GradeVote[] = [];
     for (const vote of this.votes) {
-      if (user1Songs.find(x => x.id === vote.songID && x.patron === uid1 && vote.userID === uid2)) { 
+      if (user1Songs.find(x => x.id === vote.songID && x.patron === uid1 && vote.userID === uid2)) {
         user2Votes.push(vote);
       }
     }
@@ -58,6 +82,10 @@ export class ResultSectionComponent {
   }
 
   sortDataResult(sort: Sort) {
+    if (this.results === undefined) {
+      this.results = this.calculateResults();
+    }
+    
     if(!sort.active || sort.direction === '') { return; }
 
     const data = this.results.slice();
@@ -82,6 +110,41 @@ export class ResultSectionComponent {
     const user = this.users.find(x => x.uid === uid);
     if (user !== undefined) { return user.displayName; }
     return "";
+  }
+
+  calculateResults(): ResultGradeVote[] {
+    const results: ResultGradeVote[] = [];
+    for(const song of this.constitution.songs) {
+      const selectedVotes = [];
+      for(const vote of this.votes) {
+        if (vote.songID === song.id) {
+          selectedVotes.push(vote);
+        }
+      }
+      const mean = this.math.mean(extractValuesOfVotes(selectedVotes));
+      const user = this.users.find(x => {return x.uid === song.patron});
+      if (user !== undefined) {
+        results.push({
+          songID: song.id,
+          title: song.shortTitle,
+          author: song.author,
+          url: song.url,
+          score: mean,
+          userID: user.uid
+        });
+      }
+    }
+
+    results.sort(compareResultScoreDSC);
+
+    if (this.constitution.winnerSongID !== results[0].songID && this.constitution.winnerUserID !== results[0].userID) {
+      this.afs.collection("constitutions/").doc(this.constitution.id).update({
+        winnerSongID: results[0].songID,
+        winnerUserID: results[0].userID
+      });
+    }
+
+    return results;
   }
 
 }

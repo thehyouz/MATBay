@@ -6,20 +6,20 @@ import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
-import { SongWindowComponent } from '../../song-window/song-window.component';
+import { GradedSongWindowComponent } from './song-window/song-window.component';
 
 @Component({
-  selector: 'app-vote-list-section',
+  selector: 'graded-vote-list-section',
   templateUrl: './vote-list-section.component.html',
   styleUrls: ['./vote-list-section.component.scss']
 })
-export class VoteListSectionComponent  {
+export class GradedVoteListSectionComponent  {
   @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
   @Input() currentUser: User;
   @Input() currentSection: CurrentSectionConstitution;
-  
+
   constructor(private dialog: MatDialog) { }
 
   openDialogSong(song: Song): void {
@@ -39,7 +39,7 @@ export class VoteListSectionComponent  {
     dialogConfig.maxWidth = '80%';
     dialogConfig.maxHeight = '60%';
 
-    this.dialog.open(SongWindowComponent, dialogConfig);
+    this.dialog.open(GradedSongWindowComponent, dialogConfig);
   }
 
   sortDataSong(sort: Sort) {

@@ -4,15 +4,14 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
-import { MathService } from 'src/app/services/math.service';
 import { SongListManagerService } from 'src/app/services/manager/song-list-manager.service';
 import { VoteManagerService } from 'src/app/services/manager/vote-manager.service';
-import { Constitution } from 'src/app/types/constitution';
+import { Constitution, ConstitutionType } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
-import { compareSongIdASC } from 'src/app/types/song';
 import { compareUserNameASC, User } from 'src/app/types/user';
-import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
+import { GradeVote } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
+import { compareSongIdASC } from 'src/app/types/song';
 
 @Component({
   selector: 'app-constitution-page',
@@ -28,14 +27,25 @@ export class ConstitutionPageComponent implements OnInit {
   public currentUser: User;
   public currentSection: CurrentSectionConstitution = CurrentSectionConstitution.SongList;
   public SelectionType: typeof CurrentSectionConstitution = CurrentSectionConstitution;
-  
+  public constitutionType: typeof ConstitutionType = ConstitutionType;
+
   public isConstitutionLoading: boolean = true;
   public isUserLoading: boolean = true;
 
   public votes: GradeVote[];
-  public results: ResultGradeVote[];
 
-  ngOnInit() {
+  constructor(private constitutionManager: ConstitutionManagerService,
+              private afs: AngularFirestore,
+              private auth: AuthService,
+              private dialog: MatDialog,
+              private router: Router,
+              private routes: ActivatedRoute,
+              private songManager: SongListManagerService,
+              private voteManager: VoteManagerService
+  ) {}
+
+  ngOnInit()
+  {
     this.constitutionManager.constitutions.subscribe(newList => {
       if (newList === null) return;
       this.constitution = newList.find(x => {return x.id === this.routes.snapshot.paramMap.get('id')});
@@ -49,11 +59,11 @@ export class ConstitutionPageComponent implements OnInit {
         this.users = [];
         users.forEach(async user => {
           if (this.constitution.users.find(newUserID => newUserID === (user.data() as User).uid)) {
-            this.users.push(user.data() as User);  
+            this.users.push(user.data() as User);
           }
         });
         this.users = this.users.sort(compareUserNameASC);
-        
+
         // Songs
         this.constitution.songs = this.songManager.songList.getValue();
         this.songManager.songList.subscribe(newSongs => {
@@ -62,7 +72,7 @@ export class ConstitutionPageComponent implements OnInit {
             this.constitution.songs.push(song);
           });
           this.constitution.songs.sort(compareSongIdASC);
-  
+
           // Votes
           this.votes = this.voteManager.votes.getValue();
           this.voteManager.votes.subscribe(newVotes => {
@@ -70,16 +80,11 @@ export class ConstitutionPageComponent implements OnInit {
             newVotes.forEach(async vote => {
               this.votes.push(vote);
             });
-  
-            // Results
-            if (this.constitution.isShowingResult) {
-              this.results = this.calculateResults();
-            }
 
             this.isConstitutionLoading = false;
           });
         });
-      });      
+      });
     });
 
     // Current User
@@ -88,17 +93,6 @@ export class ConstitutionPageComponent implements OnInit {
       if (newUser) {this.isUserLoading = false;}
     });
   }
-
-  constructor(private constitutionManager: ConstitutionManagerService,
-              private afs: AngularFirestore,
-              private auth: AuthService,
-              private dialog: MatDialog,
-              private routes: ActivatedRoute,
-              private router: Router,
-              private math: MathService,
-              private songManager: SongListManagerService,
-              private voteManager: VoteManagerService
-  ) {}
 
   openDialogManageSongs(): void {
     const dialogConfig = new MatDialogConfig;
@@ -120,41 +114,6 @@ export class ConstitutionPageComponent implements OnInit {
       return user;
     }
     return this.users[0];
-  }
-
-  calculateResults(): ResultGradeVote[] {
-    const results: ResultGradeVote[] = [];
-    for(const song of this.constitution.songs) {
-      const selectedVotes = [];
-      for(const vote of this.votes) {
-        if (vote.songID === song.id) {
-          selectedVotes.push(vote);
-        }
-      }
-      const mean = this.math.mean(extractValuesOfVotes(selectedVotes));
-      const user = this.users.find(x => {return x.uid === song.patron});
-      if (user !== undefined) {
-        results.push({
-          songID: song.id,
-          title: song.shortTitle,
-          author: song.author,
-          url: song.url,
-          score: mean,
-          userID: user.uid
-        });
-      }
-    }
-
-    results.sort(compareResultScoreDSC);
-
-    if (this.constitution.winnerSongID !== results[0].songID && this.constitution.winnerUserID !== results[0].userID) {
-      this.afs.collection("constitutions/").doc(this.constitution.id).update({
-        winnerSongID: results[0].userID,
-        winnerUserID: results[0].songID
-      });
-    }
-    
-    return results;
   }
 
   showDisplayName(uid: string): string {
@@ -185,38 +144,9 @@ export class ConstitutionPageComponent implements OnInit {
     return isCorrectSection && isOwner;
   }
 
-  canLockSongList(): boolean {
-    return this.constitution.songs.length === this.constitution.numberMaxOfUser * this.constitution.numberOfSongsPerUser;
-  }
-
-  canPublishResults(): boolean {
-    const numberOfVotes = this.constitution.numberOfSongsPerUser * this.constitution.numberMaxOfUser * (this.constitution.numberMaxOfUser - 1);
-    return this.votes.length === numberOfVotes;
-  }
-
-  canFinishConstitution(): boolean {
-    return this.constitution.winnerSongID !== -1 && this.constitution.winnerUserID !== '' && this.constitution.isShowingResult;
-  }
-
-  changeResultsStatus(status: boolean): void {
-    this.afs.collection("constitutions/").doc(this.constitution.id).update({
-      isShowingResult: status
-    });
-
-    if (status) {
-      this.results = this.calculateResults();
-    }
-  }
-
-  changeLockStatus(status: boolean): void {
-    this.afs.collection("constitutions/").doc(this.constitution.id).update({
-      isLocked: status
-    });
-  }
-
   leaveConstitution(): void {
     if (this.constitution.owner === this.currentUser.uid) return;
-    
+
     const index = this.constitution.users.findIndex(x => x === this.currentUser.uid);
     this.constitution.users.splice(index);
 
@@ -240,39 +170,6 @@ export class ConstitutionPageComponent implements OnInit {
         this.afs.collection("constitutions/").doc(this.constitution.id).collection("/votes").doc(vote.id).delete();
       }
     }
-
-    this.router.navigate(['current-constitutions']);
-  }
-
-  finishConstitution(): void {
-    this.results.sort(compareResultScoreDSC);
-    const winnerResult = this.results[0];
-
-    this.afs.collection("history").add({
-      season: this.constitution.season,
-      round: this.constitution.round,
-      name: this.constitution.name,
-      ownerName: this.showDisplayName(this.constitution.owner),
-      youtubePlaylistID: this.constitution.youtubePlaylistID,
-      winnerName: this.showDisplayName(winnerResult.userID),
-      winnerSongURL: winnerResult.url,
-      winnerSongTitle: winnerResult.title,
-      winnerSongAuthor: winnerResult.author
-    });
-    
-    this.deleteConstitution();
-  }
-
-  deleteConstitution(): void {
-    for (const vote of this.votes) {
-      this.afs.collection("constitutions/").doc(this.constitution.id).collection("/votes").doc(vote.id).delete();
-    }
-    
-    for (const song of this.constitution.songs) {
-      this.afs.collection("constitutions/").doc(this.constitution.id).collection("/songs").doc(song.id.toString()).delete();
-    }
-
-    this.afs.collection("constitutions/").doc(this.constitution.id).delete();
 
     this.router.navigate(['current-constitutions']);
   }

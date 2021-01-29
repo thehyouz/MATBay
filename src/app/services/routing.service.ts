@@ -1,8 +1,8 @@
 import { Route } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConstitutionPageComponent } from '../components/constitution-page/constitution-page.component';
 import { ROUTES } from "../constants/routes";
+import { ConstitutionPageComponent } from '../components/constitution-page/constitution-page.component';
 
 @Injectable({
   providedIn: 'root'
