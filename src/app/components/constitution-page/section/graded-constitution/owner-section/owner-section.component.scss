@@ -1,3 +1,9 @@
+.button {
+    background-color: #2E2E2E;
+    color: whitesmoke;
+    text-align: center;
+}
+
 .custom-br {
     width: 95%;
     height: 2px;
@@ -8,4 +14,13 @@
 
 .warning {
     color: red
+}
+
+mat-expansion-panel {
+    background-color: #2E2E2E;
+    color: whitesmoke;
+}
+
+mat-panel-title {
+    color: whitesmoke;
 }

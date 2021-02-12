@@ -1,5 +1,4 @@
 // GradeVote
-
 export interface GradeVote {
     id: string,
     userID: string,
@@ -16,7 +15,7 @@ export interface ResultGradeVote {
     userID: string
 }
 
-export const EMPTY_GRADE_VOTE = {
+export const EMPTY_GRADE_VOTE: GradeVote = {
     id: "",
     userID: "",
     songID: -1,
@@ -38,3 +37,20 @@ export function compareResultScoreDSC(result1: ResultGradeVote, result2: ResultG
 }
 
 // RankVote
+export interface RankVote {
+    id: string,
+    userID: string,
+    songID: number,
+    round: number,
+    rank: number,
+    rankScore: number
+}
+
+export const EMPTY_RANK_VOTE: RankVote = {
+    id: "",
+    userID: "",
+    songID: -1,
+    round: -1,
+    rank: -1,
+    rankScore: -1
+}

@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../../../../../types/user';
 import { Constitution } from 'src/app/types/constitution';
 import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 import { MathService } from 'src/app/services/math.service';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'graded-owner-section',
@@ -17,6 +18,9 @@ export class GradedOwnerSectionComponent {
   @Input() users: User[];
   @Input() votes: GradeVote[];
   @Input() currentUser: User;
+
+
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     private afs: AngularFirestore,

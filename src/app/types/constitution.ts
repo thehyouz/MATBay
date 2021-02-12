@@ -21,7 +21,7 @@ export interface Constitution {
 
     // userTurnID: string;
     // startDate: Date;
-    // round: number;
+    round: number;
 
     // Users
     owner: string;
@@ -46,6 +46,7 @@ export const EMPTY_CONSTITUTION: Constitution = {
     isLocked: false,
     isShowingResult: false,
     type: 0,
+    round: 0,
     owner: "",
     users: [],
     winnerUserID: '',

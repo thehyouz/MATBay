@@ -117,6 +117,7 @@ export class GradedResultSectionComponent implements OnInit {
     for(const song of this.constitution.songs) {
       const selectedVotes = [];
       for(const vote of this.votes) {
+        // Add all votes for a song
         if (vote.songID === song.id) {
           selectedVotes.push(vote);
         }

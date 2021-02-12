@@ -1,16 +1,38 @@
 <h3> Statistiques </h3>
 <span class="custom-br"></span>
 <br>
-<li> Saison {{constitution.season}} - Partie {{constitution.part}} </li>
-<li> ID : {{constitution.id}} </li>
-<li *ngIf="constitution.isPublic"> Public </li>
-<li *ngIf="!constitution.isPublic"> Privée </li>
+<div>
+  <button mat-button class="button" (click)="accordion.openAll()"> Tous afficher </button>
+  <button mat-button class="button" (click)="accordion.closeAll()"> Tous cacher </button>
+</div>
 <br>
-<li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
-<li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser *
-  constitution.numberMaxOfUser}}</li>
-<li> Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser *
-  (constitution.numberMaxOfUser - 1)}} </li>
+<mat-accordion multi>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header> 
+        <mat-panel-title> General </mat-panel-title>
+    </mat-expansion-panel-header>
+    <li> Saison {{constitution.season}} - Partie {{constitution.part}} </li>
+    <li> ID : {{constitution.id}} </li>
+    <li *ngIf="constitution.isPublic"> Public </li>
+    <li *ngIf="!constitution.isPublic"> Privée </li>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header> 
+        <mat-panel-title> État </mat-panel-title>
+    </mat-expansion-panel-header>
+    Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}}
+    <mat-progress-bar mode="determinate" value="{{constitution.users.length/constitution.numberMaxOfUser*100}}"></mat-progress-bar>
+    <br>
+    Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser *
+      constitution.numberMaxOfUser}}
+    <mat-progress-bar mode="determinate" value="{{(constitution.songs.length)/ (constitution.numberOfSongsPerUser *
+      constitution.numberMaxOfUser) * 100}}"> </mat-progress-bar>
+    <br>
+    Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser *
+      (constitution.numberMaxOfUser - 1)}}
+    <mat-progress-bar mode="determinate" value="{{votes.length / (constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)) * 100}}"></mat-progress-bar>
+  </mat-expansion-panel>
+</mat-accordion>
 <br>
 <h3> Options </h3>
 <span class="custom-br"></span>
