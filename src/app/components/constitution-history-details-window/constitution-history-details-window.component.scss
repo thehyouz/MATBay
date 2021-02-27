@@ -1,3 +1,7 @@
+.alignment {
+    text-align: center;
+}
+
 .button {
     background-color: #2E2E2E;
     color: whitesmoke;
@@ -12,40 +16,41 @@
     display:table;
 }
 
+.title {
+    color: whitesmoke;
+    text-align: center;
+}
+
+.close-button {
+    color:red;
+    background-color: #2E2E2E;
+    float: left;
+}
+
 .picture {
-    width: 45px;
-    height: 45px;
-    -moz-border-radius: 25px;
-    border-radius: 25px;    
+    display: block;
+    margin: 0 auto;
+
+    width: 60px;
+    height: 60px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;    
 }
 
 table {
     margin-left: auto;
     margin-right: auto;
     width: 95%;
+    text-align: center;
 }.grow {width: 100%;}
 
 td, th {
-    border: 1px solid #434647;
     padding: 8px;
     width: 1%;
 }
 
-td {
-    text-align: center;
-}
-
-#t03 th {
-    text-align: center;
-}
-
-#t02 th {
-    background-color: #434647;
-    color: whitesmoke;
-    text-align: center;
-}
-
 #t01 th {
+    border: 1px solid #434647;
     background-color: #2E2E2E;
     color: whitesmoke;
 }
@@ -57,20 +62,9 @@ td {
    background-color: #353738;
 }
 
-#t03 th {
-    background-color: #2E2E2E;
+#t02 th {
     color: whitesmoke;
-}
-
-#t03 tr:nth-child(even) {
-    background-color: #434647;
-}
-#t03 tr:nth-child(odd) {
-   background-color: #353738;
-}
-
-.warning {
-    color: red
+    text-align: center;
 }
 
 mat-expansion-panel {

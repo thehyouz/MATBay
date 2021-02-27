@@ -38,6 +38,7 @@ import { NewConstitutionWindowComponent } from './components/new-constitution-wi
 import { ManageSongsWindowComponent } from './components/manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from './components/song-window/song-window.component';
 import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
+import { ConstitutionHistoryDetailsWindowComponent } from './components/constitution-history-details-window/constitution-history-details-window.component';
 
 // ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
@@ -90,7 +91,8 @@ const firebaseConfig = {
     RankedResultSectionComponent,
     RankedExportSectionComponent,
     RankedOwnerSectionComponent,
-    GradedSongWindowComponent
+    GradedSongWindowComponent,
+    ConstitutionHistoryDetailsWindowComponent
   ],
   imports: [
     BrowserModule,

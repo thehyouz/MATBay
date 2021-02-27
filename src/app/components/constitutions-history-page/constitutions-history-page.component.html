@@ -15,13 +15,14 @@
                 <th> Gagnant </th>
                 <th> Youtube Playlist </th>
                 <th> Chanson Gagnante </th>
+                <th> Détails </th>
             </tr>
             <tr *ngFor="let constitution of constitutions">
                 <td> {{constitution.season}} </td>
                 <td> {{constitution.part}} </td>
                 <td> {{constitution.name}} </td>
-                <td> {{constitution.ownerName}} </td>
-                <td> {{constitution.winnerName}} </td>
+                <td> {{showDisplayName(constitution.ownerID)}} </td>
+                <td> {{showDisplayName(constitution.winnerID)}} </td>
                 <td>
                     <div *ngIf="constitution.youtubePlaylistID != ''"> 
                         <a href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}"
@@ -32,6 +33,8 @@
                 <td> <a href="{{constitution.winnerSongURL}}" target="_blank"> 
                         {{constitution.winnerSongTitle}} - {{constitution.winnerSongAuthor}} </a> 
                 </td>
+                <td> <button mat-stroked-button class="detail" (click)="openDialogDetail(constitution)" 
+                    matTooltip="Cliquez pour voir les détails de la constitution" [matTooltipShowDelay]="1000"> Détails </button> </td>
             </tr>
         </table>
     </div>
