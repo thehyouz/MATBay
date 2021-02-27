@@ -3,7 +3,7 @@ export interface User {
     email: string;
     displayName: string;
     photoURL: string;
-
+    isAuthorized: boolean;
     timestamp: firebase.firestore.FieldValue;
 }
 
@@ -12,6 +12,7 @@ export const EMPTY_USER: User = {
     email: '',
     displayName: '',
     photoURL: '',
+    isAuthorized: false,
     timestamp: null
 }
 

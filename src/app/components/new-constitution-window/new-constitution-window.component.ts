@@ -15,7 +15,7 @@ import { User } from 'src/app/types/user';
   styleUrls: ['./new-constitution-window.component.scss']
 })
 export class NewConstitutionWindowComponent {
-  private currentUser: User;
+  public currentUser: User;
   public currentStatus: Status;
   public formIsMissingParameters: boolean;
 

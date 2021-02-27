@@ -1,12 +1,9 @@
 <!--Navbar https://mdbootstrap.com/docs/angular/navigation/navbar/ -->
 <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
-
     <!-- Navbar brand -->
     <mdb-navbar-brand><a class="navbar-brand" routerLink="/">MATBay!</a></mdb-navbar-brand>
-
     <!-- Collapsible content -->
     <links>
-
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
             <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Home}">
@@ -25,7 +22,6 @@
                 </div>
             </li>
         </ul>
-
         <ul class="navbar-nav ml-auto nav-flex-icons">
             <li [ngClass]="{'nav-item': true, 'avatar': true, 'dropdown': true, 'active': currentSection === SelectionType.Profile}"
                 dropdown>
@@ -33,7 +29,6 @@
             </li>
         </ul>
     </links>
-
 </mdb-navbar>
 
 <!-- User is NOT logged in -->

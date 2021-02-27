@@ -22,6 +22,9 @@
             </mat-form-field>
         </form>
         <button mat-raised-button (click)="testUpdate()"> Actualiser </button>
+
+        <span *ngIf="currentUser.isAuthorized"> Vous faites partis du personnel authorisé </span>
+        <span *ngIf="!currentUser.isAuthorized"> Vous êtes un invité </span>
     </div>
     <ng-template #error class="picture">
         ERREUR: Les informations utilisateur n'ont pas pu être récupérée.
