@@ -59,7 +59,7 @@ export class AuthService {
     const credentials: auth.UserCredential = await this.afAuth.signInWithPopup(provider);
     const newUser: User = {
       ...credentials.user,
-      isAuthorized: false,
+      isAuthorized: [false, false],
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
     const userRef: AngularFirestoreDocument<User> = this.afs.doc<User>(`users/${newUser.uid}`);

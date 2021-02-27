@@ -1,9 +1,14 @@
+export enum AUTHORISATION_LEVEL {
+    USER_LEVEL = 0,
+    DEV_LEVEL
+}
+
 export interface User {
     uid: string;
     email: string;
     displayName: string;
     photoURL: string;
-    isAuthorized: boolean;
+    isAuthorized: [boolean, boolean];
     timestamp: firebase.firestore.FieldValue;
 }
 
@@ -12,7 +17,7 @@ export const EMPTY_USER: User = {
     email: '',
     displayName: '',
     photoURL: '',
-    isAuthorized: false,
+    isAuthorized: [false, false],
     timestamp: null
 }
 

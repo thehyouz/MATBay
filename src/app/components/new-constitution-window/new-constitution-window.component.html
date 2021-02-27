@@ -4,7 +4,7 @@
         <span class="custom-br"></span>
     </div>
     <br>
-    <form [formGroup]="newConstitutionForm" *ngIf="currentUser.isAuthorized">
+    <form [formGroup]="newConstitutionForm" *ngIf="currentUser.isAuthorized[0]">
         Information Globale: <span class="warning"> * </span>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Saison </mat-label>
@@ -86,7 +86,7 @@
         {{currentStatus.message}}
     </div>
 
-    <div *ngIf="!currentUser.isAuthorized" class="title">
+    <div *ngIf="!currentUser.isAuthorized[0]" class="title">
         Vous n'êtes pas authorisé à créer de constitution.
     </div>
 
