@@ -1,0 +1,11 @@
+<br>
+<div class="title">
+    <h4> LISTE UTILISATEURS </h4>
+    <span class="custom-br"></span>
+</div>
+<br>
+<span *ngFor="let user of array(getUsers().length) ; index as i">
+    <br *ngIf="i % 4 === 0">
+    <br *ngIf="i % 4 === 0">
+    <button mat-button> <img class="picture" [src]="getUsers()[i].photoURL"> {{getUsers()[i].displayName}} </button>
+</span>
