@@ -2,7 +2,7 @@ export enum CurrentSection {
     Home,
     Constitutions,
     Profile,
-    Documentation,
+    Wiki,
     Users
 }
 

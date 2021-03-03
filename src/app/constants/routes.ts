@@ -5,6 +5,7 @@ import { CurrentConstitutionsPageComponent } from '../components/current-constit
 import { ProfilePageComponent } from '../components/profile-page/profile-page.component';
 import { UsersPageComponent } from '../components/users-page/users-page.component';
 import { WelcomePageComponent } from '../components/welcome-page/welcome-page.component';
+import { WikiPageComponent } from '../components/wiki-page/wiki-page.component';
 import { AuthGuard } from '../guards/auth.guard';
 
 export const ROUTES: Routes = [
@@ -13,5 +14,6 @@ export const ROUTES: Routes = [
     { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
     { path: 'current-constitutions', component: CurrentConstitutionsPageComponent },
     { path: 'constitutions-history', component: ConstitutionsHistoryPageComponent },
-    { path: 'users', component: UsersPageComponent }
+    { path: 'users', component: UsersPageComponent },
+    { path: 'wiki', component: WikiPageComponent }
 ];

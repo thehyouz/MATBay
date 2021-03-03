@@ -58,6 +58,7 @@ import { RankedOwnerSectionComponent } from './components/constitution-page/sect
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
 import { UsersPageComponent } from './components/users-page/users-page.component';
+import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
 
 
 const firebaseConfig = {
@@ -95,7 +96,8 @@ const firebaseConfig = {
     RankedOwnerSectionComponent,
     GradedSongWindowComponent,
     ConstitutionHistoryDetailsWindowComponent,
-    UsersPageComponent
+    UsersPageComponent,
+    WikiPageComponent
   ],
   imports: [
     BrowserModule,

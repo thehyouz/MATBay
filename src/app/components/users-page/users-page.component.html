@@ -5,17 +5,19 @@
         <span class="custom-br"></span>
     </div>
     <br>
-    <mat-grid-list cols="8" rowHeight="2:1">
+    <mat-grid-list cols="8" rowHeight="5:5">
         <mat-grid-tile *ngFor="let user of users">
-            <img class="picture" [src]="user.photoURL">
-            <div class="title">
-                {{user.displayName}}
-                <br>
-                <mat-icon *ngIf="!user.isAuthorized[0]" matTooltip="Invité" class="status">headset</mat-icon>
-                <mat-icon *ngIf="user.isAuthorized[0]" matTooltip="Personnel Autorisé" class="status">verified_user</mat-icon>
-                <mat-icon *ngIf="user.isAuthorized[1]" matTooltip="Dev" class="status">build</mat-icon>
-                <mat-icon *ngIf="canPromote(user)" (click)="promoteUser(user)" class="status2"> add</mat-icon>
-                <mat-icon *ngIf="canUnpromote(user)" (click)="unpromoteUser(user)" class="status2">clear</mat-icon>
+            <div>
+                <img class="picture" [src]="user.photoURL">
+                <div class="title">
+                    {{user.displayName}}
+                    <br>
+                    <mat-icon *ngIf="!user.isAuthorized[0]" matTooltip="Invité" class="status">headset</mat-icon>
+                    <mat-icon *ngIf="user.isAuthorized[0]" matTooltip="Personnel Autorisé" class="status">verified_user</mat-icon>
+                    <mat-icon *ngIf="user.isAuthorized[1]" matTooltip="Dev" class="status">build</mat-icon>
+                    <mat-icon *ngIf="canPromote(user)" (click)="promoteUser(user)" class="status2"> add</mat-icon>
+                    <mat-icon *ngIf="canUnpromote(user)" (click)="unpromoteUser(user)" class="status2">clear</mat-icon>
+                </div>
             </div>
         </mat-grid-tile>
     </mat-grid-list>

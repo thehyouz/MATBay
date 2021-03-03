@@ -24,8 +24,8 @@
             <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Users}">
                 <a class="nav-link waves-light" routerLink="/users" (click)="changeCurrentSection(SelectionType.Users)"> Utilisateurs </a>
             </li>
-            <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Documentation}">
-                <a class="nav-link waves-light" routerLink="/" (click)="changeCurrentSection(SelectionType.Documentation)"> Documentation</a>
+            <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Wiki}">
+                <a class="nav-link waves-light" routerLink="/wiki" (click)="changeCurrentSection(SelectionType.Wiki)"> Wiki </a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto nav-flex-icons">
