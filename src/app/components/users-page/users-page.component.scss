@@ -1,8 +1,3 @@
-button {
-    background-color: #2E2E2E;
-    color: whitesmoke;
-}
-
 .custom-br {
     width: 95%;
     height: 2px;
@@ -15,14 +10,25 @@ button {
     display: block;
     margin: 0 auto;
 
-    width: 120px;
-    height: 120px;
-    -moz-border-radius: 80px;
-    border-radius: 80px;
-    display: inline-block;
+    width: 100px;
+    height: 100px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
 }
 
 .title {
     align-items: center;
     text-align: center;
+}
+
+mat-grid-tile {
+    background: #434647;
+}
+
+.status {
+    color:cadetblue;
+}
+
+.status2 {
+    cursor: pointer;
 }

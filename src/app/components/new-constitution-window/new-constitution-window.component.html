@@ -92,7 +92,7 @@
 
     <br>
     <div class="alignmentButton">
-        <button mat-raised-button *ngIf="currentUser.isAuthorized" color="primary" (click)="createNewConstitution()"> Créer </button>
+        <button mat-raised-button *ngIf="currentUser.isAuthorized[0]" color="primary" (click)="createNewConstitution()"> Créer </button>
         <button mat-stroked-button class="close-button" (click)="closeWindow()"> Annuler </button>
     </div>
 </div>
