@@ -21,7 +21,7 @@ export interface Constitution {
 
     // userTurnID: string;
     // startDate: Date;
-    // round: number;
+    round: number;
 
     // Users
     owner: string;
@@ -46,6 +46,7 @@ export const EMPTY_CONSTITUTION: Constitution = {
     isLocked: false,
     isShowingResult: false,
     type: 0,
+    round: 0,
     owner: "",
     users: [],
     winnerUserID: '',
@@ -62,11 +63,14 @@ export interface ConstitutionArchived {
     part: number;
     name: string;
     youtubePlaylistID: string;
-    ownerName: string;
+    ownerID: string;
 
-    // usernames: string[];
+    usernames: string[];
+    songsTitle: string[];
+    songsOwner: string[];
+    songsURL: string[];
 
-    winnerName: string;
+    winnerID: string;
     winnerSongURL: string;
     winnerSongTitle: string;
     winnerSongAuthor: string;

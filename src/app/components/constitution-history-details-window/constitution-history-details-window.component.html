@@ -1,0 +1,61 @@
+<div mat-dialog-content class="content">
+    <div class="title">
+      <h3> 
+        <a *ngIf="constitution.youtubePlaylistID !== ''"
+        href="https://youtube.com/playlist?list={{constitution.youtubePlaylistID}}" target="_blank">
+          {{constitution.name}} </a>
+        <span *ngIf="constitution.youtubePlaylistID === ''"> {{constitution.name}} </span>
+      </h3>
+      <span class="custom-br"></span>
+    </div>
+    <br>
+    <div>
+        <button mat-button class="button" (click)="accordion.openAll()"> Tous afficher </button>
+        <button mat-button class="button" (click)="accordion.closeAll()"> Tous cacher </button>
+    </div>
+    <br>
+    <mat-accordion multi>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header> 
+            <mat-panel-title> Gagnant </mat-panel-title>
+        </mat-expansion-panel-header>
+        <table id="t02">
+          <tr>
+              <th> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> </th>
+              <th> <a href="{{constitution.winnerSongURL}}" target="_blank"> {{constitution.winnerSongTitle}} </a> </th>
+              <th> <img class="picture" [src]="this.returnUser(constitution.winnerID).photoURL"> {{this.returnUser(constitution.winnerID).displayName}} </th>
+              <th> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> </th>
+          </tr>
+      </table>
+      </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header> 
+              <mat-panel-title> Membres </mat-panel-title>
+          </mat-expansion-panel-header>
+          <table *ngFor="let user of users" id="t02">
+            <tr> 
+              <th> <img class="picture" [src]="user.photoURL"> {{user.displayName}} </th>
+            </tr>
+          </table>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header> 
+              <mat-panel-title> Chansons </mat-panel-title>
+          </mat-expansion-panel-header>
+          <table id="t01">
+            <tr>
+                <th> Chanson </th>
+                <th> Ajouté Par </th>
+            </tr>
+            <tr *ngFor="let button of array(constitution.songsTitle.length) ; index as i">
+              <td> <a href="{{constitution.songsURL[i]}}" target="_blank"> {{constitution.songsTitle[i]}} - {{constitution.songsAuthor[i]}} </a> </td>
+              <td> {{returnUser(constitution.songsOwner[i]).displayName}} </td>
+            </tr>
+          </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    <br>
+    <div>
+        <button mat-stroked-button class="close-button" (click)="closeWindow()"> Annuler </button>
+    </div>
+</div>

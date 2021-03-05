@@ -21,7 +21,9 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSelectModule } from "@angular/material/select";
-import { MatExpansionModule } from"@angular/material/expansion";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatProgressBarModule } from "@angular/material/progress-bar"
+import { MatGridListModule } from '@angular/material/grid-list'
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -37,6 +39,7 @@ import { NewConstitutionWindowComponent } from './components/new-constitution-wi
 import { ManageSongsWindowComponent } from './components/manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from './components/song-window/song-window.component';
 import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
+import { ConstitutionHistoryDetailsWindowComponent } from './components/constitution-history-details-window/constitution-history-details-window.component';
 
 // ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
@@ -54,6 +57,8 @@ import { RankedOwnerSectionComponent } from './components/constitution-page/sect
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
+import { UsersPageComponent } from './components/users-page/users-page.component';
+import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
 
 
 const firebaseConfig = {
@@ -89,7 +94,10 @@ const firebaseConfig = {
     RankedResultSectionComponent,
     RankedExportSectionComponent,
     RankedOwnerSectionComponent,
-    GradedSongWindowComponent
+    GradedSongWindowComponent,
+    ConstitutionHistoryDetailsWindowComponent,
+    UsersPageComponent,
+    WikiPageComponent
   ],
   imports: [
     BrowserModule,
@@ -111,6 +119,8 @@ const firebaseConfig = {
     MatTooltipModule,
     MatSelectModule,
     MatExpansionModule,
+    MatProgressBarModule,
+    MatGridListModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],

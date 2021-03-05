@@ -15,7 +15,7 @@ import { User } from 'src/app/types/user';
   styleUrls: ['./new-constitution-window.component.scss']
 })
 export class NewConstitutionWindowComponent {
-  private currentUser: User;
+  public currentUser: User;
   public currentStatus: Status;
   public formIsMissingParameters: boolean;
 
@@ -123,6 +123,7 @@ export class NewConstitutionWindowComponent {
         type: this.returnConstitutionTypeEnum(this.selectedType),
         isLocked: false,
         isShowingResult: false,
+        round: 0,
         owner: this.currentUser.uid,
         winnerUserID: '',
         numberMaxOfUser: this.newConstitutionParameter.numberMaxOfUser,
@@ -143,6 +144,7 @@ export class NewConstitutionWindowComponent {
         type: newConstitution.type,
         isLocked: newConstitution.isLocked,
         isShowingResult: newConstitution.isShowingResult,
+        round: newConstitution.round,
         owner: this.currentUser.uid,
         winnerUserID: newConstitution.winnerUserID,
         numberMaxOfUser: newConstitution.numberMaxOfUser,

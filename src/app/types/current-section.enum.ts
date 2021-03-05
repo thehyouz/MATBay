@@ -1,7 +1,9 @@
 export enum CurrentSection {
     Home,
     Constitutions,
-    Profile
+    Profile,
+    Wiki,
+    Users
 }
 
 export enum CurrentSectionConstitution {

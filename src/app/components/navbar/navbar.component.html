@@ -1,20 +1,17 @@
 <!--Navbar https://mdbootstrap.com/docs/angular/navigation/navbar/ -->
 <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark lighten-1" [containerInside]="false">
-
     <!-- Navbar brand -->
     <mdb-navbar-brand><a class="navbar-brand" routerLink="/">MATBay!</a></mdb-navbar-brand>
-
     <!-- Collapsible content -->
     <links>
-
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
             <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Home}">
                 <a class="nav-link waves-light" routerLink="/" (click)="changeCurrentSection(SelectionType.Home)"> Accueil</a>
             </li>
             <!-- Dropdown -->
-            <li class="nav-item dropdown" class="{'nav-item':true, 'active': currentSection === SelectionType.Constitutions}" dropdown>
-                <a dropdownToggle type="button" class="nav-link dropdown-toggle waves-light" (click)="changeCurrentSection(SelectionType.Constitutions)">
+            <li class="nav-item dropdown"  dropdown>
+                <a dropdownToggle type="button" class="nav-link dropdown-toggle waves-light" [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Constitutions}" (click)="changeCurrentSection(SelectionType.Constitutions)">
                     Constitutions <span class="caret"></span> </a>
                 <div *dropdownMenu class="dropdown-menu dropdown elegant-color dropdown-primary" role="menu">
                     <button mat-button class="dropdown-item waves-dark"  (click)="openDialogNewConstitution()" id="content"> Créer une Constitution </button>
@@ -24,8 +21,13 @@
                     <button mat-button class="dropdown-item waves-light"  routerLink="/constitutions-history" id="content"> Voir l'historique des Constitutions </button>
                 </div>
             </li>
+            <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Users}">
+                <a class="nav-link waves-light" routerLink="/users" (click)="changeCurrentSection(SelectionType.Users)"> Utilisateurs </a>
+            </li>
+            <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Wiki}">
+                <a class="nav-link waves-light" routerLink="/wiki" (click)="changeCurrentSection(SelectionType.Wiki)"> Wiki </a>
+            </li>
         </ul>
-
         <ul class="navbar-nav ml-auto nav-flex-icons">
             <li [ngClass]="{'nav-item': true, 'avatar': true, 'dropdown': true, 'active': currentSection === SelectionType.Profile}"
                 dropdown>
@@ -33,7 +35,6 @@
             </li>
         </ul>
     </links>
-
 </mdb-navbar>
 
 <!-- User is NOT logged in -->

@@ -6,6 +6,7 @@
 <li *ngIf="constitution.isPublic"> Public </li>
 <li *ngIf="!constitution.isPublic"> Privée </li>
 <br>
+<li> Round {{constitution.round}} </li>
 <li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
 <li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser *
   constitution.numberMaxOfUser}}</li>

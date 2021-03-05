@@ -9,7 +9,7 @@ import { VoteManagerService } from 'src/app/services/manager/vote-manager.servic
 import { Constitution, ConstitutionType } from 'src/app/types/constitution';
 import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { compareUserNameASC, User } from 'src/app/types/user';
-import { GradeVote } from 'src/app/types/vote';
+import { GradeVote, RankVote } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 import { compareSongIdASC } from 'src/app/types/song';
 
@@ -32,7 +32,7 @@ export class ConstitutionPageComponent implements OnInit {
   public isConstitutionLoading: boolean = true;
   public isUserLoading: boolean = true;
 
-  public votes: GradeVote[];
+  public votes: GradeVote[] | RankVote[];
 
   constructor(private constitutionManager: ConstitutionManagerService,
               private afs: AngularFirestore,
@@ -51,7 +51,7 @@ export class ConstitutionPageComponent implements OnInit {
       this.constitution = newList.find(x => {return x.id === this.routes.snapshot.paramMap.get('id')});
 
       this.songManager.init(this.constitution.id);
-      this.voteManager.init(this.constitution.id);
+      this.voteManager.init(this.constitution.id, this.constitution.type);
 
       // Users
       this.users = [];
