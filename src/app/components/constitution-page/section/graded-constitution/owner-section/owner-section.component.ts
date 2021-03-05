@@ -3,8 +3,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../../../../../types/user';
 import { Constitution } from 'src/app/types/constitution';
-import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
-import { MathService } from 'src/app/services/math.service';
+import { compareResultScoreDSC, GradeVote, ResultGradeVote } from 'src/app/types/vote';
+import { MathService, UserMathProfile } from 'src/app/services/math.service';
 import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
@@ -53,15 +53,28 @@ export class GradedOwnerSectionComponent {
   }
 
   calculateResults(): ResultGradeVote[] {
+    const mathProfiles: UserMathProfile[] = [];
+    for (const user of this.users) {
+      mathProfiles.push(this.math.generateUserMathProfile(user.uid, this.votes));
+    }
+
     const results: ResultGradeVote[] = [];
     for(const song of this.constitution.songs) {
-      const selectedVotes = [];
+      const selectedVotes: GradeVote[] = [];
       for(const vote of this.votes) {
+        // Add all votes for a song
         if (vote.songID === song.id) {
           selectedVotes.push(vote);
         }
       }
-      const mean = this.math.mean(extractValuesOfVotes(selectedVotes));
+
+      let score: number = 0;
+      // normal the score of each user
+      for (const vote of selectedVotes) {
+        const mathProfile = mathProfiles.find(x => x.uid === vote.userID);
+        score += this.math.standardNormalTable(mathProfile.mean, mathProfile.var, vote.grade + 1);
+      }
+
       const user = this.users.find(x => {return x.uid === song.patron});
       if (user !== undefined) {
         results.push({
@@ -69,7 +82,7 @@ export class GradedOwnerSectionComponent {
           title: song.shortTitle,
           author: song.author,
           url: song.url,
-          score: mean,
+          score: score,
           userID: user.uid
         });
       }
@@ -79,8 +92,8 @@ export class GradedOwnerSectionComponent {
 
     if (this.constitution.winnerSongID !== results[0].songID && this.constitution.winnerUserID !== results[0].userID) {
       this.afs.collection("constitutions/").doc(this.constitution.id).update({
-        winnerSongID: results[0].userID,
-        winnerUserID: results[0].songID
+        winnerSongID: results[0].songID,
+        winnerUserID: results[0].userID
       });
     }
 
