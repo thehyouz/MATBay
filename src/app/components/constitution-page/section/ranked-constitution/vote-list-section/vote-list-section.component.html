@@ -1,0 +1,23 @@
+<div *ngIf="!constitution.isLocked"> 
+    Les votes commenceront quand la constitution sera vérouillée. Le verrouillage est disponible pour le président une fois toute les chansons ajoutées. 
+</div>
+<div *ngIf="constitution.isLocked"> 
+    <table id="t01">
+       <tr>
+           <th> Rang </th>
+           <th> Chanson </th>
+           <th> URL </th>
+           <th> Score </th>
+       </tr>
+       <tr *ngFor="let rank of array(75); index as i">
+            <td> {{i+1}} </td>
+            <td> 
+                <select (change)="updateRank($event, i)" >
+                    <option *ngFor="let song of songsChoice" [value]="song" selected=""> {{song}} </option>
+                </select> 
+            </td>
+            <td> </td>
+            <td> {{returnScore(i+1)}} </td>
+       </tr>
+   </table>
+</div>

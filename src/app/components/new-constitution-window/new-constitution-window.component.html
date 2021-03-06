@@ -4,21 +4,28 @@
         <span class="custom-br"></span>
     </div>
     <br>
-    <form [formGroup]="newConstitutionForm">
+    <form [formGroup]="newConstitutionForm" *ngIf="currentUser.isAuthorized[0]">
         Information Globale: <span class="warning"> * </span>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Saison </mat-label>
-            <input matInput type="number" min = "0"  formControlName="formSeason">
+            <input matInput type="number" min = "0"  formControlName="formSeason" required> 
         </mat-form-field>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Partie </mat-label>
-            <input matInput type="number" min = "0"  formControlName="formRound">
+            <input matInput type="number" min = "0"  formControlName="formPart" required>
         </mat-form-field>
         <br>
         <mat-form-field appearance="outline" [floatLabel]="true">
             <mat-label> Nom </mat-label>
-            <input matInput type="text"  formControlName="formName">
+            <input matInput type="text"  formControlName="formName" required>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="true">
+            <mat-label> Type </mat-label>
+            <mat-select [(value)]="selectedType">
+                <mat-option *ngFor="let type of CONSTITUTION_TYPE" [value]="type"> {{type}} </mat-option>
+            </mat-select>
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
@@ -29,15 +36,35 @@
         </mat-form-field>
         <span class="custom-br"></span>
         <br>
-        Utilisateurs: <span class="warning"> * </span>
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Nombre d'utilisateurs </mat-label>
-            <input matInput type="number" formControlName="formNumberMaxOfUser">
-        </mat-form-field>
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Nombre de chansons par utilisateur </mat-label>
-            <input matInput type="number" formControlName="formNumberOfSongsPerUser">
-        </mat-form-field>
+        Utilisateurs:
+        <span *ngIf="selectedType === CONSTITUTION_TYPE[1]">
+            <br>
+            <table>
+                <tr>
+                    <th> Option </th>
+                    <th> Statut </th>
+                </tr>
+                <tr>
+                    <td> <mat-label> Nombre d'utilisateurs: </mat-label> </td>
+                    <td> <mat-label> 4 </mat-label> </td>
+                </tr>
+                <tr>
+                    <td> <mat-label> Nombre de chansons par utilisateur: </mat-label> </td>
+                    <td> <mat-label> 25 </mat-label> </td>
+                </tr>
+            </table>
+        </span>
+        <span *ngIf="selectedType !== CONSTITUTION_TYPE[1]">
+            <span class="warning"> * </span>
+            <mat-form-field appearance="outline" [floatLabel]="true">
+                <mat-label> Nombre d'utilisateurs </mat-label>
+                <input matInput type="number" formControlName="formNumberMaxOfUser" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" [floatLabel]="true">
+                <mat-label> Nombre de chansons par utilisateur </mat-label>
+                <input matInput type="number" formControlName="formNumberOfSongsPerUser" required>
+            </mat-form-field>
+        </span>
         <span class="custom-br"></span>
         <br>
         <table>
@@ -46,20 +73,12 @@
                 <th> Statut </th>
             </tr>
             <tr>
-                <td>
-                    <mat-label> La constitution est publique: </mat-label>
-                </td>
-                <td>
-                    <mat-checkbox color="primary" formControlName="formIsPublic"> </mat-checkbox>
-                </td>
+                <td> <mat-label> La constitution est publique: </mat-label> </td>
+                <td> <mat-checkbox color="primary" formControlName="formIsPublic"> </mat-checkbox> </td>
             </tr>
             <tr>
-                <td>
-                    <mat-label> Les utilisateurs sont anonymes: </mat-label>
-                </td>
-                <td>
-                    <mat-checkbox color="primary" formControlName="formIsAnonymous"> </mat-checkbox>
-                </td>
+                <td> <mat-label> Les utilisateurs sont anonymes: </mat-label> </td>
+                <td> <mat-checkbox color="primary" formControlName="formIsAnonymous"> </mat-checkbox> </td>
             </tr>
         </table>
     </form>
@@ -67,9 +86,13 @@
         {{currentStatus.message}}
     </div>
 
+    <div *ngIf="!currentUser.isAuthorized[0]" class="title">
+        Vous n'êtes pas authorisé à créer de constitution.
+    </div>
+
     <br>
     <div class="alignmentButton">
-        <button mat-raised-button color="primary" (click)="createNewConstitution()"> Créer </button>
-        <button mat-stroked-button color="warn" (click)="closeWindow()"> Annuler </button>
+        <button mat-raised-button *ngIf="currentUser.isAuthorized[0]" color="primary" (click)="createNewConstitution()"> Créer </button>
+        <button mat-stroked-button class="close-button" (click)="closeWindow()"> Annuler </button>
     </div>
 </div>

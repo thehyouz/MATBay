@@ -1,0 +1,79 @@
+<h3> Statistiques </h3>
+<span class="custom-br"></span>
+<br>
+<div>
+  <button mat-button class="button" (click)="accordion.openAll()"> Tout afficher </button>
+  <button mat-button class="button" (click)="accordion.closeAll()"> Tout cacher </button>
+</div>
+<br>
+<mat-accordion multi>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header> 
+        <mat-panel-title> General </mat-panel-title>
+    </mat-expansion-panel-header>
+    <li> Saison {{constitution.season}} - Partie {{constitution.part}} </li>
+    <li> ID : {{constitution.id}} </li>
+    <li *ngIf="constitution.isPublic"> Public </li>
+    <li *ngIf="!constitution.isPublic"> Privée </li>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header> 
+        <mat-panel-title> État </mat-panel-title>
+    </mat-expansion-panel-header>
+    Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}}
+    <mat-progress-bar mode="determinate" value="{{constitution.users.length/constitution.numberMaxOfUser*100}}"></mat-progress-bar>
+    <br>
+    Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser *
+      constitution.numberMaxOfUser}}
+    <mat-progress-bar mode="determinate" value="{{(constitution.songs.length)/ (constitution.numberOfSongsPerUser *
+      constitution.numberMaxOfUser) * 100}}"> </mat-progress-bar>
+    <br>
+    Nombre de votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser *
+      (constitution.numberMaxOfUser - 1)}}
+    <mat-progress-bar mode="determinate" value="{{votes.length / (constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)) * 100}}"></mat-progress-bar>
+  </mat-expansion-panel>
+</mat-accordion>
+<br>
+<h3> Options </h3>
+<span class="custom-br"></span>
+<br>
+<li>
+  <span *ngIf="!constitution.isLocked">
+    <button mat-raised-button [disabled]="!canLockSongList()" color="primary" class="nav-link waves-light"
+      (click)="changeLockStatus(true)"> Vérouiller {{constitution.name}} </button>
+    - Empêcher la modification de la liste de chansons.
+  </span>
+  <span *ngIf="constitution.isLocked">
+    <button mat-raised-button color="primary" [disabled]="!canLockSongList()" class="nav-link waves-light"
+      (click)="changeLockStatus(false)"> Dévérouiller {{constitution.name}} </button>
+    - Permet la modification de la liste de chansons.
+  </span>
+  <span *ngIf="!canLockSongList()" class="warning"> (Il manque des chansons) </span>
+</li>
+<br>
+<li>
+  <span *ngIf="!constitution.isShowingResult">
+    <button mat-raised-button [disabled]="!canPublishResults()" color="primary" class="nav-link waves-light"
+      (click)="changeResultsStatus(true)"> Publier les résultats </button>
+    - Afficher les résultats de la Constitution.
+  </span>
+  <span *ngIf="constitution.isShowingResult">
+    <button mat-raised-button [disabled]="!canPublishResults()" color="primary" class="nav-link waves-light"
+      (click)="changeResultsStatus(false)"> Cacher les résultats </button>
+    - Cacher les résultats de la Constitution.
+  </span>
+  <span *ngIf="!canPublishResults()" class="warning"> (Toutes les chansons doivent être votés) </span>
+</li>
+<br>
+<li>
+  <button mat-raised-button [disabled]="!canFinishConstitution()" color="primary" class="nav-link waves-light"
+    (click)="finishConstitution()"> Terminer {{constitution.name}} </button>
+  - Archiver la Constiution dans l'historique des Constitutions. Elle sera supprimée.
+  <span *ngIf="!canFinishConstitution()" class="warning"> (Les résultats doivent être publiés) </span>
+</li>
+<br>
+<li>
+  <button mat-raised-button color="primary" class="nav-link waves-light" (click)="deleteConstitution()"> Supprimer
+    {{constitution.name}} </button>
+  - Attention : les données seront perdus à jamais.
+</li>

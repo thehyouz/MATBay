@@ -1,0 +1,34 @@
+.custom-br {
+    width: 95%;
+    height: 2px;
+    background-color: #434647;
+    margin:auto; 
+    display:table;
+}
+
+.picture {
+    display: block;
+    margin: 0 auto;
+
+    width: 100px;
+    height: 100px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+}
+
+.title {
+    align-items: center;
+    text-align: center;
+}
+
+mat-grid-list {
+    background: #2E2E2E;
+}
+
+.status {
+    color:cadetblue;
+}
+
+.status2 {
+    cursor: pointer;
+}

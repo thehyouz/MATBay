@@ -1,0 +1,29 @@
+<h3> Statistiques </h3>
+<span class="custom-br"></span>
+<br>
+<li> Saison {{constitution.season}} - Partie {{constitution.part}} </li>
+<li> ID : {{constitution.id}} </li>
+<li *ngIf="constitution.isPublic"> Public </li>
+<li *ngIf="!constitution.isPublic"> Privée </li>
+<br>
+<li> Round {{constitution.round}} </li>
+<li> Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}} </li>
+<li> Nombre de chansons : {{constitution.songs.length}}/{{constitution.numberOfSongsPerUser *
+  constitution.numberMaxOfUser}}</li>
+  <br>
+<h3> Options </h3>
+<span class="custom-br"></span>
+<br>
+<li>
+    <span *ngIf="!constitution.isLocked">
+      <button mat-raised-button [disabled]="!canLockSongList()" color="primary" class="nav-link waves-light"
+        (click)="changeLockStatus(true)"> Vérouiller {{constitution.name}} </button>
+      - Empêcher la modification de la liste de chansons.
+    </span>
+    <span *ngIf="constitution.isLocked">
+      <button mat-raised-button color="primary" [disabled]="!canLockSongList()" class="nav-link waves-light"
+        (click)="changeLockStatus(false)"> Dévérouiller {{constitution.name}} </button>
+      - Permet la modification de la liste de chansons.
+    </span>
+    <span *ngIf="!canLockSongList()" class="warning"> (Il manque des chansons) </span>
+</li>

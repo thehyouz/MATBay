@@ -20,13 +20,16 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSortModule } from "@angular/material/sort";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
- 
+import { MatSelectModule } from "@angular/material/select";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatProgressBarModule } from "@angular/material/progress-bar"
+import { MatGridListModule } from '@angular/material/grid-list'
+
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 // Component
 import { AppComponent } from './app.component';
-import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -35,15 +38,27 @@ import { ConstitutionsHistoryPageComponent } from './components/constitutions-hi
 import { NewConstitutionWindowComponent } from './components/new-constitution-window/new-constitution-window.component';
 import { ManageSongsWindowComponent } from './components/manage-songs-window/manage-songs-window.component';
 import { SongWindowComponent } from './components/song-window/song-window.component';
-import { ExportSectionComponent } from './components/constitution-page/export-section/export-section.component';
-import { SongListSectionComponent } from './components/constitution-page/song-list-section/song-list-section.component';
-import { VoteListSectionComponent } from './components/constitution-page/vote-list-section/vote-list-section.component';
 import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
+import { ConstitutionHistoryDetailsWindowComponent } from './components/constitution-history-details-window/constitution-history-details-window.component';
+
+// ConstitutionPage
+import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
+import { SongListSectionComponent } from './components/constitution-page/section/song-list-section/song-list-section.component';
+import { GradedExportSectionComponent } from './components/constitution-page/section/graded-constitution/export-section/export-section.component';
+import { GradedVoteListSectionComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/vote-list-section.component';
+import { GradedSongWindowComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/song-window/song-window.component';
+import { GradedOwnerSectionComponent } from './components/constitution-page/section/graded-constitution/owner-section/owner-section.component';
+import { GradedResultSectionComponent } from './components/constitution-page/section/graded-constitution/result-section/result-section.component';
+import { RankedVoteListSectionComponent } from './components/constitution-page/section/ranked-constitution/vote-list-section/vote-list-section.component'
+import { RankedResultSectionComponent } from './components/constitution-page/section/ranked-constitution/result-section/result-section.component';
+import { RankedExportSectionComponent } from './components/constitution-page/section/ranked-constitution/export-section/export-section.component';
+import { RankedOwnerSectionComponent } from './components/constitution-page/section/ranked-constitution/owner-section/owner-section.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
 import { RouterModule } from '@angular/router';
-import { ResultSectionComponent } from './components/constitution-page/result-section/result-section.component';
+import { UsersPageComponent } from './components/users-page/users-page.component';
+import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
 
 
 const firebaseConfig = {
@@ -66,14 +81,23 @@ const firebaseConfig = {
     CurrentConstitutionsPageComponent,
     ConstitutionsHistoryPageComponent,
     NewConstitutionWindowComponent,
-    ConstitutionPageComponent,
-    ManageSongsWindowComponent,
     SongWindowComponent,
-    ExportSectionComponent,
-    SongListSectionComponent,
-    VoteListSectionComponent,
+    ManageSongsWindowComponent,
+    GradedExportSectionComponent,
+    GradedVoteListSectionComponent,
     JoinConstitutionWindowComponent,
-    ResultSectionComponent
+    ConstitutionPageComponent,
+    GradedResultSectionComponent,
+    SongListSectionComponent,
+    GradedOwnerSectionComponent,
+    RankedVoteListSectionComponent,
+    RankedResultSectionComponent,
+    RankedExportSectionComponent,
+    RankedOwnerSectionComponent,
+    GradedSongWindowComponent,
+    ConstitutionHistoryDetailsWindowComponent,
+    UsersPageComponent,
+    WikiPageComponent
   ],
   imports: [
     BrowserModule,
@@ -93,11 +117,15 @@ const firebaseConfig = {
     MatSortModule,
     MatIconModule,
     MatTooltipModule,
+    MatSelectModule,
+    MatExpansionModule,
+    MatProgressBarModule,
+    MatGridListModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],
   providers: [ConstitutionManagerService],
-  entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent, JoinConstitutionWindowComponent],
+  entryComponents: [NewConstitutionWindowComponent, ManageSongsWindowComponent, SongWindowComponent, GradedSongWindowComponent, JoinConstitutionWindowComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

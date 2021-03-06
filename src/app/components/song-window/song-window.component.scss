@@ -15,8 +15,19 @@
     text-align: center;
 }
 
-.vote-button {
+.previous-button {
     background-color: #2E2E2E;
     color: whitesmoke;
-    text-align: center;
+}
+
+.next-button {
+    background-color: #2E2E2E;
+    color: whitesmoke;
+    float: right;
+}
+
+.close-button {
+    color:red;
+    background-color: #2E2E2E;
+    float: left;
 }

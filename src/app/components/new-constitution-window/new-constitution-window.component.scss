@@ -12,7 +12,6 @@ button {
     color: whitesmoke;
     text-align: left;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    width: 95%;
 }
 
 .custom-br {
@@ -53,13 +52,30 @@ mat-form-field {
     .mat-input-element {
         caret-color: whitesmoke!important;
     }
+
+    .mat-select-value {
+        color: whitesmoke;
+    }
+    .mat-select-arrow-wrapper {
+        color: whitesmoke;
+        background-color: whitesmoke;
+    }
     
     mat-form-field {
         .mat-hint, input, ::placeholder, .mat-form-field-label {
-            color: whitesmoke;
+            color: whitesmoke;   
         }
     }
 }
+
+mat-select {
+    color: whitesmoke;
+} 
+
+mat-select-value {
+    color: whitesmoke !important;
+}
+
 
 table {
     margin-left: auto;
@@ -83,4 +99,9 @@ th {
 
 .warning {
     color: red
+}
+
+.close-button {
+    color:red;
+    background-color: #2E2E2E;
 }

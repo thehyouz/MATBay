@@ -1,25 +1,24 @@
-// https://stackblitz.com/edit/httpsstackoverflowcomquestions51806464how-to-create-and-downloa?file=src%2Fapp%2Fapp.component.ts
-
 import { Component, Input } from '@angular/core';
+import { User } from 'firebase';
 import { of } from 'rxjs';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
-import { User } from 'src/app/types/user';
 
 const BASIC_TXT_HEADER: string = " ID |        Titre       |       Auteur       |     Ajouté Par     |\n";
 const TXT_SEPARATOR: string = "==================================================================== \n"
 
 @Component({
-  selector: 'app-export-section',
+  selector: 'ranked-export-section',
   templateUrl: './export-section.component.html',
   styleUrls: ['./export-section.component.scss']
 })
-export class ExportSectionComponent {
+export class RankedExportSectionComponent {
+
   @Input() constitution: Constitution;
   @Input() users: User[];
 
-  EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
-  selectedExportFormat: string;
+  public EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
+  public selectedExportFormat: string;
 
   private setting = {
     element: {
@@ -94,7 +93,7 @@ export class ExportSectionComponent {
           text: this.convertSongArrayToString(songs)
         });
       }
-      
+
     });
   }
 

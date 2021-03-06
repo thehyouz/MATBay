@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Constitution, ConstitutionType, EMPTY_CONSTITUTION, MAX_SONG_LIMIT, MAX_USER_LIMIT, MIN_USER_LIMIT } from 'src/app/types/constitution';
 import { YOUTUBE_PLAYLIST_HEADER_LENGTH } from 'src/app/types/song-platform';
@@ -16,15 +15,17 @@ import { User } from 'src/app/types/user';
   styleUrls: ['./new-constitution-window.component.scss']
 })
 export class NewConstitutionWindowComponent {
-  private currentUser: User;
+  public currentUser: User;
   public currentStatus: Status;
   public formIsMissingParameters: boolean;
 
   public newConstitutionForm: FormGroup;
   private newConstitutionParameter: Constitution;
 
+  public CONSTITUTION_TYPE: string[] = ["Note", "Classement"];
+  public selectedType: string;
+
   constructor(private dialogRef: MatDialogRef<NewConstitutionWindowComponent>,
-              private constitutionManager: ConstitutionManagerService,
               public auth: AuthService,
               private routing: RoutingService,
               public afs: AngularFirestore) {
@@ -42,7 +43,7 @@ export class NewConstitutionWindowComponent {
 
     this.newConstitutionForm = new FormGroup({
       formSeason: new FormControl(),
-      formRound: new FormControl(),
+      formPart: new FormControl(),
       formName: new FormControl(),
       formIsPublic: new FormControl(),
       formYoutubePlaylist: new FormControl(),
@@ -50,18 +51,19 @@ export class NewConstitutionWindowComponent {
       formIsAnonymous: new FormControl(),
       formNumberMaxOfUser: new FormControl()
     });
+
+    this.selectedType = this.CONSTITUTION_TYPE[0];
   }
 
   isMissingParameters(): boolean {
     const seasonIsMissing = (this.newConstitutionParameter.season === null);
-    const roundIsMissing = (this.newConstitutionParameter.round === null);
+    const partIsMissing = (this.newConstitutionParameter.part === null);
     const nameIsMissing = (this.newConstitutionParameter.name === null);
     const numberOfSongsPerUserIsMissing = (this.newConstitutionParameter.numberOfSongsPerUser === null);
     const numberMaxOfUserIsMissing = (this.newConstitutionParameter.numberMaxOfUser === null)
 
-    return seasonIsMissing || roundIsMissing || nameIsMissing || numberOfSongsPerUserIsMissing || numberMaxOfUserIsMissing;
+    return seasonIsMissing || partIsMissing || nameIsMissing || numberOfSongsPerUserIsMissing || numberMaxOfUserIsMissing;
   }
-
 
   parametersAreValid(): boolean {
     const numberMaxOfUserIsValid = (this.newConstitutionParameter.numberMaxOfUser <= MAX_USER_LIMIT) && (this.newConstitutionParameter.numberMaxOfUser >= MIN_USER_LIMIT);
@@ -71,16 +73,32 @@ export class NewConstitutionWindowComponent {
 
   updateParameters(): void {
     this.newConstitutionParameter.season = this.newConstitutionForm.value['formSeason'];
-    this.newConstitutionParameter.round = this.newConstitutionForm.value['formRound'];
+    this.newConstitutionParameter.part = this.newConstitutionForm.value['formPart'];
     this.newConstitutionParameter.name = this.newConstitutionForm.value['formName'];
-    this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
     this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionForm.value['formYoutubePlaylist'];
     if (this.newConstitutionParameter.youtubePlaylistID !== null) {
       this.newConstitutionParameter.youtubePlaylistID = this.newConstitutionParameter.youtubePlaylistID.slice(YOUTUBE_PLAYLIST_HEADER_LENGTH);
     }
-    this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
+    this.newConstitutionParameter.isPublic = this.newConstitutionForm.value['formIsPublic'];
     this.newConstitutionParameter.isAnonymous = this.newConstitutionForm.value['formIsAnonymous'];
-    this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];
+
+    if (this.selectedType === this.CONSTITUTION_TYPE[1]) {
+      this.newConstitutionParameter.numberOfSongsPerUser = 25;
+      this.newConstitutionParameter.numberMaxOfUser = 4;
+    } else {
+      this.newConstitutionParameter.numberOfSongsPerUser = this.newConstitutionForm.value['formNumberOfSongsPerUser'];
+      this.newConstitutionParameter.numberMaxOfUser = this.newConstitutionForm.value['formNumberMaxOfUser'];
+    }
+
+  }
+
+
+  returnConstitutionTypeEnum(type: string): number {
+    switch (type) {
+      case this.CONSTITUTION_TYPE[0]: return ConstitutionType.GRADE;
+      case this.CONSTITUTION_TYPE[1]: return ConstitutionType.RANK;
+      default: return ConstitutionType.GRADE;
+    }
   }
 
   async createNewConstitution(): Promise<void> {
@@ -99,12 +117,13 @@ export class NewConstitutionWindowComponent {
       let newConstitution: Constitution = {
         id: newConstitutionID,
         season:  this.newConstitutionParameter.season,
-        round: this.newConstitutionParameter.round,
+        part: this.newConstitutionParameter.part,
         name: this.newConstitutionParameter.name,
         isPublic: this.newConstitutionParameter.isPublic? this.newConstitutionParameter.isPublic : false,
-        type: ConstitutionType.GRADE,
+        type: this.returnConstitutionTypeEnum(this.selectedType),
         isLocked: false,
         isShowingResult: false,
+        round: 0,
         owner: this.currentUser.uid,
         winnerUserID: '',
         numberMaxOfUser: this.newConstitutionParameter.numberMaxOfUser,
@@ -119,19 +138,20 @@ export class NewConstitutionWindowComponent {
       this.afs.collection('constitutions/').doc(newConstitutionID).set({
         id: newConstitution.id,
         season:  newConstitution.season,
-        round: newConstitution.round,
+        part: newConstitution.part,
         name: newConstitution.name,
         isPublic: newConstitution.isPublic? newConstitution.isPublic : false,
         type: newConstitution.type,
         isLocked: newConstitution.isLocked,
         isShowingResult: newConstitution.isShowingResult,
+        round: newConstitution.round,
         owner: this.currentUser.uid,
-        winnerUserIndex: -1,
+        winnerUserID: newConstitution.winnerUserID,
         numberMaxOfUser: newConstitution.numberMaxOfUser,
         users: [this.currentUser.uid],
         isAnonymous: newConstitution.isAnonymous? newConstitution.isAnonymous : false,
         songs: [],
-        winnerSongIndex: -1,
+        winnerSongID: newConstitution.winnerSongID,
         youtubePlaylistID: newConstitution.youtubePlaylistID? newConstitution.youtubePlaylistID : "",
         numberOfSongsPerUser: newConstitution.numberOfSongsPerUser
       });

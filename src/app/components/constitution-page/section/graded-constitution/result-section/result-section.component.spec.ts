@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResultSectionComponent } from './result-section.component';
+import { GradedResultSectionComponent } from './result-section.component';
 
 describe('ResultSectionComponent', () => {
-  let component: ResultSectionComponent;
-  let fixture: ComponentFixture<ResultSectionComponent>;
+  let component: GradedResultSectionComponent;
+  let fixture: ComponentFixture<GradedResultSectionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResultSectionComponent ]
+      declarations: [ GradedResultSectionComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResultSectionComponent);
+    fixture = TestBed.createComponent(GradedResultSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
