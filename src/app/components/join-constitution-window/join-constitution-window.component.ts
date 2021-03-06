@@ -53,10 +53,12 @@ export class JoinConstitutionWindowComponent {
               this.afs.collection('constitutions').doc(id).update({
                 users: newUsers
               });
+              this.router.navigate(['current-constitutions/' + id]);
+              this.closeWindow();
+            } else {
+              this.currentStatus.error = true;
+              this.currentStatus.message = "Erreur : Vous avez déjà rejoint cette constitution."
             }
-            this.router.navigate(['current-constitutions/' + id]);
-            this.closeWindow();
-
           } else {
             this.currentStatus.error = true;
             this.currentStatus.message = "Erreur : La constitution est complète."

@@ -148,7 +148,7 @@ export class ConstitutionPageComponent implements OnInit {
     if (this.constitution.owner === this.currentUser.uid) return;
 
     const index = this.constitution.users.findIndex(x => x === this.currentUser.uid);
-    this.constitution.users.splice(index);
+    this.constitution.users.splice(index, 1);
 
     this.afs.collection("constitutions/").doc(this.constitution.id).update({
       users: this.constitution.users
