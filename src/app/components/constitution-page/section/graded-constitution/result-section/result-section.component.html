@@ -2,7 +2,8 @@
     <h4> Mes Résultats </h4>
     <span class="custom-br"></span>
     <br>
-    <li> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
+    <li *ngIf="constitution.songs.length === 0"> Moyenne de mes votes : </li>
+    <li *ngIf="constitution.songs.length !== 0"> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
     <li> Moyenne de mes chansons : 
         <span *ngIf="constitution.isShowingResult"> {{userMeanSongs(currentUser.uid).toFixed(2)}} </span>
         <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
@@ -12,8 +13,8 @@
     <span class="custom-br"></span>
     <br>
     <div>
-        <button mat-button class="button" (click)="accordion.openAll()"> Tous afficher </button>
-        <button mat-button class="button" (click)="accordion.closeAll()"> Tous cacher </button>
+        <button mat-button class="button" (click)="accordion.openAll()"> Tout afficher </button>
+        <button mat-button class="button" (click)="accordion.closeAll()"> Tout cacher </button>
     </div>
     <br>
     <mat-accordion multi>

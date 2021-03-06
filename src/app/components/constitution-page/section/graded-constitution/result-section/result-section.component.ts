@@ -113,6 +113,10 @@ export class GradedResultSectionComponent implements OnInit {
   }
 
   calculateResults(): ResultGradeVote[] {
+    if (this.constitution.songs.length === 0) {
+      return [];
+    }
+
     const mathProfiles: UserMathProfile[] = [];
     for (const user of this.users) {
       mathProfiles.push(this.math.generateUserMathProfile(user.uid, this.votes));

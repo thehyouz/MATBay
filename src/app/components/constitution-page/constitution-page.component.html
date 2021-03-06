@@ -18,7 +18,7 @@
     {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
     <br>
     <br>
-    <div>
+    <div *ngIf="returnOwner() !== undefined" >
       <span class="owner"> [Président] </span>
       <img class="picture" [src]="returnOwner().photoURL" [alt]="returnOwner().displayName">
       {{returnOwner().displayName}}
@@ -67,7 +67,7 @@
           </li>
           <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Result}">
             <button mat-button class="nav-link waves-light" (click)="changeCurrentSection(SelectionType.Result)">
-              <mat-icon>equalizer</mat-icon> Resultats
+              <mat-icon>equalizer</mat-icon> Résultats
             </button>
           </li>
           <li [ngClass]="{'nav-item': true, 'active': currentSection === SelectionType.Export}">
