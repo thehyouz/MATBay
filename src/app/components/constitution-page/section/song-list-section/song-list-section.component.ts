@@ -1,47 +1,21 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, Input } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { SongWindowComponent } from '../../../song-window/song-window.component';
-import { Observable } from 'rxjs';
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete'
-import { map, startWith } from 'rxjs/operators';
-import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'song-list-section',
   templateUrl: './song-list-section.component.html',
   styleUrls: ['./song-list-section.component.scss']
 })
-export class SongListSectionComponent implements OnInit {
+export class SongListSectionComponent {
   @Input() constitution: Constitution;
   @Input() users: User[];
 
-  visible = true;
-  selectable = true;
-  removable = true;
-  filterCtrl = new FormControl();
-  filteredFilters: Observable<string[]>;
-  filters: string[] = [];
-  allFilters: string[] = [];
-
-  @ViewChild('filterInput') filterInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
-
-  ngOnInit() {
-    for (const user of this.users) {
-      this.allFilters.push(user.displayName);
-    }
-  }
-
-  constructor(private dialog: MatDialog) {
-    this.filteredFilters = this.filterCtrl.valueChanges.pipe(
-      startWith(null),
-      map((filter: string | null) => filter ? this._filter(filter) : this.allFilters.slice()));
-  }
+  constructor(private dialog: MatDialog) {}
 
   openDialogSong(song: Song): void {
     const dialogConfig = new MatDialogConfig;
@@ -85,43 +59,6 @@ export class SongListSectionComponent implements OnInit {
     const user = this.users.find(x => x.uid === uid);
     if (user !== undefined) { return user.displayName; }
     return "";
-  }
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      this.filters.push(value.trim());
-      console.log(value.trim())
-      this.allFilters.splice(this.allFilters.findIndex(x => x === value.trim()), 1);
-    }
-
-    if (input) {
-      input.value = '';
-    }
-
-    // this.filterCtrl.setValue(null);
-  }
-
-  remove(filter: string): void {
-    const index = this.filters.indexOf(filter);
-
-    if (index >= 0) {
-      this.filters.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.filters.push(event.option.viewValue);
-    this.filterInput.nativeElement.value = '';
-    this.filterCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allFilters.filter(filter => filter.toLowerCase().indexOf(filterValue) === 0);
   }
 
 }
