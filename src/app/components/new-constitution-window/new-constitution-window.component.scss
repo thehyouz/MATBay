@@ -76,6 +76,15 @@ mat-select-value {
     color: whitesmoke !important;
 }
 
+.mat-option:hover:not(.mat-option-disabled) {
+    background: #434647;
+    color: whitesmoke;
+}
+
+mat-option {
+    background-color: #2E2E2E;
+    color: whitesmoke;
+}
 
 table {
     margin-left: auto;

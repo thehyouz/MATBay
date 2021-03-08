@@ -1,3 +1,29 @@
+<mat-form-field>
+    <mat-label>Filtres</mat-label>
+    <mat-chip-list #chipList aria-label="filter selection">
+      <mat-chip
+        *ngFor="let filter of filters"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(filter)">
+        {{filter}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Nouveau filtre..."
+        #filterInput
+        [formControl]="filterCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let filter of filteredFilters | async" [value]="filter">
+        {{filter}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+<br>
 <table matSort (matSortChange)="sortDataSong($event)" id="t01">
     <tr>
         <th mat-sort-header="id"> ID </th>
