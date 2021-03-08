@@ -4,11 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
 import { Constitution } from 'src/app/types/constitution';
-import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
 import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform';
 import { User } from 'src/app/types/user';
-import { GradeVote } from 'src/app/types/vote';
+import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
 
 @Component({
   selector: 'graded-song-window',
@@ -19,6 +18,7 @@ import { GradeVote } from 'src/app/types/vote';
 export class GradedSongWindowComponent {
   public song: Song;
   private constitution: Constitution;
+  private votes: GradeVote[];
   public safeUrl: SafeResourceUrl;
 
   private vote: GradeVote;
@@ -32,6 +32,7 @@ export class GradedSongWindowComponent {
     this.song = data.song;
     this.constitution = data.constitution;
     this.vote = data.vote;
+    this.votes = data.votes;
 
     this.safeUrl = this.makeSafeURL();
 
@@ -52,6 +53,16 @@ export class GradedSongWindowComponent {
       return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(YOUTUBE_HEADER_LENGTH));
     }
     return "";
+  }
+
+  previousSongExist(): boolean {
+    const index = this.constitution.songs.findIndex(x => x.id === this.song.id);
+    return index - 1 >= 0;
+  }
+
+  nextSongExist(): boolean {
+    const index = this.constitution.songs.findIndex(x => x.id === this.song.id);
+    return index + 1 < this.constitution.songs.length;
   }
 
   updateGrade(newGrade: number): void {
@@ -83,6 +94,21 @@ export class GradedSongWindowComponent {
         });
       }
     })
+  }
+
+  changeSong(shift: number): void {
+    const currentIndex = this.constitution.songs.findIndex(x => x.id === this.song.id);
+
+    this.song = this.constitution.songs[currentIndex + shift];
+    this.vote = this.votes.find(x => x.userID === this.currentUser.uid && x.songID === this.song.id);
+    if (this.vote === undefined) {
+      this.vote = EMPTY_GRADE_VOTE;
+    }
+
+    if (this.vote.songID === -1) {
+      this.vote.grade = -1;
+    }
+    this.safeUrl = this.makeSafeURL();
   }
 
   isSelected(number: number): boolean {

@@ -33,6 +33,7 @@ export class GradedVoteListSectionComponent  {
       constitution: this.constitution,
       currentSection: this.currentSection,
       vote: vote,
+      votes: this.votes
     }
 
     dialogConfig.hasBackdrop = true;

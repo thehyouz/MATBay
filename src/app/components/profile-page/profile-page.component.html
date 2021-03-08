@@ -23,7 +23,7 @@
         </form>
         <button mat-raised-button (click)="testUpdate()"> Actualiser </button>
 
-        <span *ngIf="currentUser.isAuthorized[0]"> Vous faites partie du personnel authorisé </span>
+        <span *ngIf="currentUser.isAuthorized[0]"> Vous faites partie du personnel autorisé </span>
         <span *ngIf="!currentUser.isAuthorized[0]"> Vous êtes un invité </span>
         <span *ngIf="currentUser.isAuthorized[1]"> et de l'équipe de developpement </span>
     </div>
