@@ -5,7 +5,7 @@
         <th mat-sort-header="author"> URL </th>
         <th mat-sort-header="grade"> Note </th>
     </tr>
-    <tr *ngFor="let song of constitution.songs">
+    <tr *ngFor="let song of getUserSongToVote()">
         <td> {{song.id}} </td>
         <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)"> {{song.shortTitle}} </button> </td>
         <td> 

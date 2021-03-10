@@ -56,13 +56,13 @@ export class GradedSongWindowComponent {
   }
 
   previousSongExist(): boolean {
-    const index = this.constitution.songs.findIndex(x => x.id === this.song.id);
+    const index = this.getUserSongToVote().findIndex(x => x.id === this.song.id);
     return index - 1 >= 0;
   }
 
   nextSongExist(): boolean {
-    const index = this.constitution.songs.findIndex(x => x.id === this.song.id);
-    return index + 1 < this.constitution.songs.length;
+    const index = this.getUserSongToVote().findIndex(x => x.id === this.song.id);
+    return index + 1 < this.getUserSongToVote().length;
   }
 
   updateGrade(newGrade: number): void {
@@ -97,9 +97,9 @@ export class GradedSongWindowComponent {
   }
 
   changeSong(shift: number): void {
-    const currentIndex = this.constitution.songs.findIndex(x => x.id === this.song.id);
+    const currentIndex = this.getUserSongToVote().findIndex(x => x.id === this.song.id);
 
-    this.song = this.constitution.songs[currentIndex + shift];
+    this.song = this.getUserSongToVote()[currentIndex + shift];
     this.vote = this.votes.find(x => x.userID === this.currentUser.uid && x.songID === this.song.id);
     if (this.vote === undefined) {
       this.vote = EMPTY_GRADE_VOTE;
@@ -119,4 +119,13 @@ export class GradedSongWindowComponent {
     this.dialogRef.close();
   }
 
+  getUserSongToVote(): Song[] {
+    const songs: Song[] = []
+    for (const song of this.constitution.songs) {
+      if (song.patron !== this.currentUser.uid) {
+        songs.push(song);
+      }
+    }
+    return songs;
+  }
 }

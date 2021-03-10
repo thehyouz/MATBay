@@ -81,4 +81,14 @@ export class GradedVoteListSectionComponent  {
     return "";
   }
 
+  getUserSongToVote(): Song[] {
+    const songs: Song[] = []
+    for (const song of this.constitution.songs) {
+      if (song.patron !== this.currentUser.uid) {
+        songs.push(song);
+      }
+    }
+    return songs;
+  }
+
 }
