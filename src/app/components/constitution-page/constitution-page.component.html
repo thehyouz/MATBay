@@ -36,7 +36,7 @@
     <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
     <br>
     <br>
-    <button mat-raised-button color="primary"> Sélection Aléatoire </button>
+    <button mat-raised-button color="primary" (click)="openDialogRandomSong()"> Sélection Aléatoire </button>
     <br>
     <br>
     <button mat-stroked-button [disabled]="currentUser.uid === constitution.owner" color="warn"

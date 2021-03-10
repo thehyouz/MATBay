@@ -23,7 +23,7 @@ export class MathService {
     }
 
     const mean = this.mean(selectedVotesGrade);
-    return {uid: uid, mean: mean, var: this.var(mean, selectedVotesGrade) };
+    return {uid: uid, mean: mean, var: this.var(mean, selectedVotesGrade)};
   }
 
   mean(values: number[]): number {
@@ -37,6 +37,10 @@ export class MathService {
   standardNormalTable(mean: number, variance: number, value: number): number {
     if (value == mean) { return 0; }
     return (value - mean)/Math.sqrt(variance);
+  }
+
+  random(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1 )) + min;
   }
 
 }

@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 // Fire
 import { AngularFireModule } from '@angular/fire';
@@ -41,6 +42,9 @@ import { ManageSongsWindowComponent } from './components/manage-songs-window/man
 import { SongWindowComponent } from './components/song-window/song-window.component';
 import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
 import { ConstitutionHistoryDetailsWindowComponent } from './components/constitution-history-details-window/constitution-history-details-window.component';
+import { UsersPageComponent } from './components/users-page/users-page.component';
+import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
+import { RandomSongWindowComponent } from './components/random-song-window/random-song-window.component';
 
 // ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
@@ -57,9 +61,6 @@ import { RankedOwnerSectionComponent } from './components/constitution-page/sect
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
-import { RouterModule } from '@angular/router';
-import { UsersPageComponent } from './components/users-page/users-page.component';
-import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
 
 
 const firebaseConfig = {
@@ -98,7 +99,8 @@ const firebaseConfig = {
     GradedSongWindowComponent,
     ConstitutionHistoryDetailsWindowComponent,
     UsersPageComponent,
-    WikiPageComponent
+    WikiPageComponent,
+    RandomSongWindowComponent
   ],
   imports: [
     BrowserModule,

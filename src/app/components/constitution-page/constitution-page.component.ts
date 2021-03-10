@@ -12,6 +12,7 @@ import { compareUserNameASC, User } from 'src/app/types/user';
 import { GradeVote, RankVote } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 import { compareSongIdASC } from 'src/app/types/song';
+import { RandomSongWindowComponent } from '../random-song-window/random-song-window.component';
 
 @Component({
   selector: 'app-constitution-page',
@@ -104,6 +105,17 @@ export class ConstitutionPageComponent implements OnInit {
     dialogConfig.height = '45%';
 
     this.dialog.open(ManageSongsWindowComponent, dialogConfig);
+  }
+
+  openDialogRandomSong(): void {
+    const dialogConfig = new MatDialogConfig;
+    dialogConfig.data = {
+      constitution: this.constitution,
+    }
+
+    dialogConfig.hasBackdrop = true;
+
+    this.dialog.open(RandomSongWindowComponent, dialogConfig);
   }
 
   returnOwner(): User {
