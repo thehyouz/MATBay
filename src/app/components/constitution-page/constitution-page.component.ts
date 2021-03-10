@@ -98,12 +98,10 @@ export class ConstitutionPageComponent implements OnInit {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
       constitution: this.constitution,
-      votes: this.votes
     }
 
     dialogConfig.hasBackdrop = true;
-    dialogConfig.maxWidth = '60%';
-    dialogConfig.maxHeight = '70%';
+    dialogConfig.height = '45%';
 
     this.dialog.open(ManageSongsWindowComponent, dialogConfig);
   }

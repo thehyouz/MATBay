@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
-import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform';
+import { SongPlatform, YOUTUBE_VIDEO_ID_LENGHT } from 'src/app/types/song-platform';
 
 @Component({
   selector: 'app-song-window',
@@ -31,7 +31,7 @@ export class SongWindowComponent {
 
   makeSafeURL(): SafeResourceUrl {
     if (this.song.platform == SongPlatform.Youtube) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(YOUTUBE_HEADER_LENGTH));
+      return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(-YOUTUBE_VIDEO_ID_LENGHT));
     }
     return "";
   }
