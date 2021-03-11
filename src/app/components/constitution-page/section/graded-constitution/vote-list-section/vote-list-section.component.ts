@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { Constitution } from 'src/app/types/constitution';
@@ -20,6 +21,8 @@ export class GradedVoteListSectionComponent  {
   @Input() currentUser: User;
   @Input() currentSection: CurrentSectionConstitution;
 
+  private hideVotedSongs: boolean = false;
+
   constructor(private dialog: MatDialog) { }
 
   openDialogSong(song: Song): void {
@@ -30,6 +33,7 @@ export class GradedVoteListSectionComponent  {
 
     dialogConfig.data = {
       song: song,
+      hideVotedSongs: this.hideVotedSongs,
       constitution: this.constitution,
       currentSection: this.currentSection,
       vote: vote,
@@ -41,6 +45,10 @@ export class GradedVoteListSectionComponent  {
     dialogConfig.maxHeight = '60%';
 
     this.dialog.open(GradedSongWindowComponent, dialogConfig);
+  }
+
+  onChange(event: MatCheckboxChange){
+    this.hideVotedSongs = event.checked;
   }
 
   sortDataSong(sort: Sort) {
@@ -85,7 +93,13 @@ export class GradedVoteListSectionComponent  {
     const songs: Song[] = []
     for (const song of this.constitution.songs) {
       if (song.patron !== this.currentUser.uid) {
-        songs.push(song);
+        if (this.hideVotedSongs) {
+          if (this.returnVote(song) === -1) {
+            songs.push(song);
+          }
+        } else {
+          songs.push(song);
+        }
       }
     }
     return songs;

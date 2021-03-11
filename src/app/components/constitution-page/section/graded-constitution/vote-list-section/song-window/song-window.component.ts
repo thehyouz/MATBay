@@ -21,6 +21,8 @@ export class GradedSongWindowComponent {
   private votes: GradeVote[];
   public safeUrl: SafeResourceUrl;
 
+  private hideVotedSongs = false;
+
   private vote: GradeVote;
   public currentUser: User;
 
@@ -33,6 +35,7 @@ export class GradedSongWindowComponent {
     this.constitution = data.constitution;
     this.vote = data.vote;
     this.votes = data.votes;
+    this.hideVotedSongs = data.hideVotedSongs;
 
     this.safeUrl = this.makeSafeURL();
 
@@ -88,6 +91,8 @@ export class GradedSongWindowComponent {
           grade: this.vote.grade
         });
 
+        this.votes.push(this.vote);
+
       } else {
         this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(this.vote.id).update({
           grade: newGrade
@@ -101,6 +106,7 @@ export class GradedSongWindowComponent {
 
     this.song = this.getUserSongToVote()[currentIndex + shift];
     this.vote = this.votes.find(x => x.userID === this.currentUser.uid && x.songID === this.song.id);
+    
     if (this.vote === undefined) {
       this.vote = EMPTY_GRADE_VOTE;
     }
@@ -119,11 +125,25 @@ export class GradedSongWindowComponent {
     this.dialogRef.close();
   }
 
+  returnVote(song: Song): number {
+    const vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
+    if (vote !== undefined) {
+      return vote.grade;
+    }
+    return -1;
+  }
+
   getUserSongToVote(): Song[] {
     const songs: Song[] = []
     for (const song of this.constitution.songs) {
       if (song.patron !== this.currentUser.uid) {
-        songs.push(song);
+        if (this.hideVotedSongs) {
+          if (this.returnVote(song) === -1) {
+            songs.push(song);
+          }
+        } else {
+          songs.push(song);
+        }
       }
     }
     return songs;

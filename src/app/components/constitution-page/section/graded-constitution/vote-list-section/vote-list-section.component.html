@@ -1,3 +1,6 @@
+<mat-checkbox color="primary" (change)="onChange($event)"> Cacher les chansons déjà votés </mat-checkbox>
+<span class="custom-br"></span>
+<br>
 <table matSort (matSortChange)="sortDataSong($event)" id="t01">
      <tr>
         <th mat-sort-header="id"> ID </th>
