@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConstitutionManagerService } from 'src/app/services/manager/constitution-manager.service';
 import { SongListManagerService } from 'src/app/services/manager/song-list-manager.service';
@@ -13,6 +13,7 @@ import { GradeVote, RankVote } from 'src/app/types/vote';
 import { ManageSongsWindowComponent } from '../manage-songs-window/manage-songs-window.component';
 import { compareSongIdASC } from 'src/app/types/song';
 import { RandomSongWindowComponent } from '../random-song-window/random-song-window.component';
+import { LeaveConstitutionWindowComponent } from '../leave-constitution-window/leave-constitution-window.component';
 
 @Component({
   selector: 'app-constitution-page',
@@ -39,7 +40,6 @@ export class ConstitutionPageComponent implements OnInit {
               private afs: AngularFirestore,
               private auth: AuthService,
               private dialog: MatDialog,
-              private router: Router,
               private routes: ActivatedRoute,
               private songManager: SongListManagerService,
               private voteManager: VoteManagerService
@@ -118,6 +118,17 @@ export class ConstitutionPageComponent implements OnInit {
     this.dialog.open(RandomSongWindowComponent, dialogConfig);
   }
 
+  leaveConstitution(): void {
+    const dialogConfig = new MatDialogConfig;
+    dialogConfig.data = {
+      constitution: this.constitution,
+      votes: this.votes,
+      currentUser: this.currentUser
+    }
+
+    this.dialog.open(LeaveConstitutionWindowComponent, dialogConfig);
+  }
+
   returnOwner(): User {
     const user = this.users.find(x => x.uid === this.constitution.owner);
     if (user !== undefined) {
@@ -153,35 +164,4 @@ export class ConstitutionPageComponent implements OnInit {
 
     return isCorrectSection && isOwner;
   }
-
-  leaveConstitution(): void {
-    if (this.constitution.owner === this.currentUser.uid) return;
-
-    const index = this.constitution.users.findIndex(x => x === this.currentUser.uid);
-    this.constitution.users.splice(index, 1);
-
-    this.afs.collection("constitutions/").doc(this.constitution.id).update({
-      users: this.constitution.users
-    });
-
-    for (const song of this.constitution.songs) {
-      if (song.patron === this.currentUser.uid) {
-        this.afs.collection("constitutions/").doc(this.constitution.id).collection("/songs").doc(song.id.toString()).delete();
-        for (const vote of this.votes) {
-          if (vote.songID === song.id) {
-            this.afs.collection("constitutions/").doc(this.constitution.id).collection("/votes").doc(vote.id).delete();
-          }
-        }
-      }
-    }
-
-    for (const vote of this.votes) {
-      if (vote.userID === this.currentUser.uid) {
-        this.afs.collection("constitutions/").doc(this.constitution.id).collection("/votes").doc(vote.id).delete();
-      }
-    }
-
-    this.router.navigate(['current-constitutions']);
-  }
-
 }

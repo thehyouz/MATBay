@@ -12,8 +12,7 @@
     </h4>
     <span class="custom-br"></span>
     <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
-    <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
-    <div *ngIf="constitution.songs?.length > 1"> {{constitution.songs.length}} chansons </div>
+    <div *ngIf="constitution.songs?.length !== 0"> {{constitution.songs.length}} / {{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser}} chansons </div>
     Vous avez:
     {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
     <br>

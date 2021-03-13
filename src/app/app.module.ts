@@ -45,6 +45,7 @@ import { ConstitutionHistoryDetailsWindowComponent } from './components/constitu
 import { UsersPageComponent } from './components/users-page/users-page.component';
 import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
 import { RandomSongWindowComponent } from './components/random-song-window/random-song-window.component';
+import { LeaveConstitutionWindowComponent } from './components/leave-constitution-window/leave-constitution-window.component';
 
 // ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
@@ -100,7 +101,8 @@ const firebaseConfig = {
     ConstitutionHistoryDetailsWindowComponent,
     UsersPageComponent,
     WikiPageComponent,
-    RandomSongWindowComponent
+    RandomSongWindowComponent,
+    LeaveConstitutionWindowComponent
   ],
   imports: [
     BrowserModule,
