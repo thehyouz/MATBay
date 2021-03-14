@@ -39,6 +39,28 @@
             <h4> RETIRER UNE CHANSON </h4>
             <span class="custom-br"></span>
             <br>
+            <table id="t01">
+                <tr>
+                    <th> ID </th>
+                    <th> Info </th>
+                    <th> Action </th>
+                </tr>
+                <tr *ngFor="let song of getUserSongs()">
+                    <td> {{song.id}} </td>
+                    <td > <a href="{{song.url}}" target="_blank"> {{song.shortTitle}} </a> </td>
+                    <td> <button mat-raised-button class="alignmentButton" (click)="deleteSongClick(song)"> <mat-icon>delete</mat-icon> </button> </td>
+                </tr>
+            </table>
+            <br>
+            <button mat-stroked-button class="close-button" (click)="closeWindow()"> Annuler </button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Retirer (Old)">
+        <br>
+        <div class="title">
+            <h4> RETIRER UNE CHANSON </h4>
+            <span class="custom-br"></span>
+            <br>
             <form [formGroup]="deleteSongForm">
                 <mat-form-field appearance="outline" [floatLabel]="true">
                     <mat-label> Index de la chanson à retirer </mat-label>
