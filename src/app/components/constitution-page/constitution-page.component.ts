@@ -45,8 +45,7 @@ export class ConstitutionPageComponent implements OnInit {
               private voteManager: VoteManagerService
   ) {}
 
-  ngOnInit()
-  {
+  ngOnInit() {
     this.constitutionManager.constitutions.subscribe(newList => {
       if (newList === null) return;
       this.constitution = newList.find(x => {return x.id === this.routes.snapshot.paramMap.get('id')});

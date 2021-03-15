@@ -1,9 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SongListManagerService } from 'src/app/services/manager/song-list-manager.service';
 import { Constitution } from 'src/app/types/constitution';
-import { EMPTY_SONG, Song } from 'src/app/types/song';
+import { compareSongIdASC, EMPTY_SONG, Song } from 'src/app/types/song';
 import { SongPlatform } from 'src/app/types/song-platform';
 import { Status } from 'src/app/types/status';
 import { User } from 'src/app/types/user';
@@ -14,27 +15,35 @@ import { GradeVote } from 'src/app/types/vote';
   templateUrl: './manage-songs-window.component.html',
   styleUrls: ['./manage-songs-window.component.scss']
 })
-export class ManageSongsWindowComponent {
+export class ManageSongsWindowComponent implements OnInit {
   public currentStatusAdd: Status;
   public currentStatusDelete: Status;
   private currentUser: User;
   private constitution: Constitution;
 
   public newSongForm: FormGroup;
-  public deleteSongForm: FormGroup;
   private newSongParameter: Song;
 
   private votes: GradeVote[];
 
+  ngOnInit() {    
+    this.songManager.init(this.constitution.id);
+    this.constitution.songs = this.songManager.songList.getValue();
+
+    this.songManager.songList.subscribe(newSongs => {
+      this.constitution.songs = [];
+      newSongs.forEach(async song => {
+        this.constitution.songs.push(song);
+      });
+      this.constitution.songs.sort(compareSongIdASC);
+    });
+  }
+
   constructor(private dialogRef: MatDialogRef<ManageSongsWindowComponent>,
               @Inject(MAT_DIALOG_DATA) data,
-              public afs: AngularFirestore) {
+              public afs: AngularFirestore,
+              private songManager: SongListManagerService) {
     this.currentStatusAdd = {
-      error: false,
-      hidden: true,
-      message: ""
-    }
-    this.currentStatusDelete = {
       error: false,
       hidden: true,
       message: ""
@@ -50,10 +59,6 @@ export class ManageSongsWindowComponent {
       formAuthor: new FormControl(),
       formUrl: new FormControl()
     });
-
-    this.deleteSongForm = new FormGroup({
-      formSongConstitutionNumber: new FormControl(),
-    })
   }
 
   isMissingParameters(): boolean {
@@ -136,37 +141,6 @@ export class ManageSongsWindowComponent {
     } else {
       this.currentStatusAdd.error = true;
       this.currentStatusAdd.message = "Erreur : La constitution est verrouillée, vous ne pouvez pas ajouter de chansons";
-    }
-  }
-
-  deleteSong(): void {
-    if (!this.constitution.isLocked) {
-      const constitutionNumber = this.deleteSongForm.value['formSongConstitutionNumber'];
-      if (constitutionNumber !== null) {
-        const index = this.constitution.songs.findIndex(x => x.id == constitutionNumber);
-        if (index === -1) {
-          this.currentStatusDelete.error = true;
-          this.currentStatusDelete.message = "Erreur : La chanson n'existe pas";
-        }
-        else if (this.constitution.songs[index].patron === this.currentUser.uid) {
-          this.afs.collection('constitutions').doc(this.constitution.id).collection('/songs').doc(this.constitution.songs[index].id.toString()).delete();
-          for (const vote of this.votes) {
-            if (vote.songID === constitutionNumber) {
-              this.afs.collection('constitutions').doc(this.constitution.id).collection('/votes').doc(vote.id).delete();
-            }
-          }        
-          this.closeWindow();
-        } else {
-          this.currentStatusDelete.error = true;
-          this.currentStatusDelete.message = "Erreur : La chanson ne vous appartient pas";
-        }
-      } else {
-        this.currentStatusDelete.error = true;
-        this.currentStatusDelete.message = "Erreur : Paramètre manquant";
-      }
-    } else {
-      this.currentStatusDelete.error = true;
-      this.currentStatusDelete.message = "Erreur : La constitution est verrouillée, vous ne pouvez pas retirer de chansons";
     }
   }
 

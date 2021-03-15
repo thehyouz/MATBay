@@ -2,11 +2,12 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatAccordion } from '@angular/material/expansion';
 import { Sort } from '@angular/material/sort';
-import { MathService, UserMathProfile } from 'src/app/services/math.service';
+import { GradedConstitutionService } from 'src/app/services/constitution/graded-constitution.service';
+import { MathService } from 'src/app/services/math.service';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
-import { compareResultScoreDSC, extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
+import { extractValuesOfVotes, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 
 @Component({
   selector: 'graded-result-section',
@@ -25,12 +26,14 @@ export class GradedResultSectionComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
   ngOnInit() {
-    this.results = this.calculateResults();
+    this.gradedConstitution = new GradedConstitutionService(this.math, this.afs, this.constitution, this.users, this.votes);
+    this.results = this.gradedConstitution.calculateResults();
     this.winner = this.results[0];
   }
 
   constructor(private math: MathService,
-              private afs: AngularFirestore) {
+              private afs: AngularFirestore,
+              private gradedConstitution: GradedConstitutionService) {
   }
 
   returnGrade(user: User, song: Song): number {
@@ -83,7 +86,7 @@ export class GradedResultSectionComponent implements OnInit {
 
   sortDataResult(sort: Sort) {
     if (this.results === undefined) {
-      this.results = this.calculateResults();
+      this.results = this.gradedConstitution.calculateResults();
     }
     
     if(!sort.active || sort.direction === '') { return; }
@@ -112,56 +115,5 @@ export class GradedResultSectionComponent implements OnInit {
     return "";
   }
 
-  calculateResults(): ResultGradeVote[] {
-    if (this.constitution.songs.length === 0) {
-      return [];
-    }
-
-    const mathProfiles: UserMathProfile[] = [];
-    for (const user of this.users) {
-      mathProfiles.push(this.math.generateUserMathProfile(user.uid, this.votes));
-    }
-
-    const results: ResultGradeVote[] = [];
-    for(const song of this.constitution.songs) {
-      const selectedVotes: GradeVote[] = [];
-      for(const vote of this.votes) {
-        // Add all votes for a song
-        if (vote.songID === song.id) {
-          selectedVotes.push(vote);
-        }
-      }
-
-      let score: number = 0;
-      // normal the score of each user
-      for (const vote of selectedVotes) {
-        const mathProfile = mathProfiles.find(x => x.uid === vote.userID);
-        score += this.math.standardNormalTable(mathProfile.mean, mathProfile.var, vote.grade + 1);
-      }
-
-      const user = this.users.find(x => {return x.uid === song.patron});
-      if (user !== undefined) {
-        results.push({
-          songID: song.id,
-          title: song.shortTitle,
-          author: song.author,
-          url: song.url,
-          score: score,
-          userID: user.uid
-        });
-      }
-    }
-
-    results.sort(compareResultScoreDSC);
-
-    if (this.constitution.winnerSongID !== results[0].songID && this.constitution.winnerUserID !== results[0].userID) {
-      this.afs.collection("constitutions/").doc(this.constitution.id).update({
-        winnerSongID: results[0].songID,
-        winnerUserID: results[0].userID
-      });
-    }
-
-    return results;
-  }
 
 }
