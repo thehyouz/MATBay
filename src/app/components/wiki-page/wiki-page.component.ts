@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SECTIONS } from 'src/app/constants/sections';
 
 @Component({
   selector: 'app-wiki-page',
@@ -8,10 +9,10 @@ import { Component } from '@angular/core';
 export class WikiPageComponent {
 
   public sections: string[];
-  private selected: string;
+  public selected: string;
 
   constructor() { 
-    this.sections = ["Matbay", "Constitution Note"];
+    this.sections = SECTIONS;
     this.selected = this.sections[0];
   }
 

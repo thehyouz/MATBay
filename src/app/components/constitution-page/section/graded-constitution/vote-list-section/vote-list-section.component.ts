@@ -63,7 +63,6 @@ export class GradedVoteListSectionComponent  {
       switch (sort.active) {
         case "id": return this.compare(a.id, b.id, isAsc);
         case "title": return this.compare(a.shortTitle, b.shortTitle, isAsc);
-        case "author": return this.compare(a.author, b.author, isAsc);
         case "username": return this.compare(this.showDisplayName(a.patron), this.showDisplayName(b.patron), isAsc);
         case "grade": return this.compare(this.returnVote(a)+1, this.returnVote(b)+1, isAsc);
         default: return 0;

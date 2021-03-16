@@ -96,7 +96,7 @@ export class GradedResultSectionComponent implements OnInit {
     this.results = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case "id": return this.compare(a.songID, b.songID, isAsc);
+        case "position": return this.compare(a.position, b.position, isAsc);
         case "title": return this.compare(a.title, b.title, isAsc);
         case "author": return this.compare(a.author, b.author, isAsc);
         case "user": return this.compare(this.showDisplayName(a.userID), this.showDisplayName(b.userID), isAsc);

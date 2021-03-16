@@ -8,5 +8,13 @@
 </mat-sidenav-container>
 
 <div class="content">
-    <p>wiki-page works!</p>
+    <div class="title">
+        <h1> WIKI </h1>
+        <h2> {{selected}}</h2>
+        <span class="custom-br"></span>
+    </div>
+    <br>
+    <div *ngIf="selected === sections[0]">
+        Bienvenue sur Matbay, le site officiel des constitutions. Vous vous trouvez actuellement sur la page d'aide, le wiki.
+    </div>
 </div>

@@ -40,7 +40,7 @@
             <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
             <table matSort (matSortChange)="sortDataResult($event)" *ngIf="constitution.isShowingResult" id="t01">
                 <tr>
-                    <th mat-sort-header="id" > ID </th>
+                    <th mat-sort-header="position" > Position </th>
                     <th mat-sort-header="title"> Titre </th>
                     <th mat-sort-header="author"> Auteur </th>
                     <th> URL </th>
@@ -48,7 +48,7 @@
                     <th mat-sort-header="user"> Ajouté par </th>
                 </tr>
                 <tr *ngFor="let result of results">
-                    <td> {{result.songID}} </td>
+                    <td> {{result.position}} </td>
                     <td> {{result.title}} </td>
                     <td> {{result.author}} </td>
                     <td>

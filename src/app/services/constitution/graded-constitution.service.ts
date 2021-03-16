@@ -24,6 +24,7 @@ export class GradedConstitutionService {
     return mathProfiles;
   }
 
+
   calculateResults(): ResultGradeVote[] {
     if (this.constitution.songs.length === 0) {
       return [];
@@ -51,6 +52,7 @@ export class GradedConstitutionService {
       const user = this.users.find(x => {return x.uid === song.patron});
       if (user !== undefined) {
         results.push({
+          position: -1,
           songID: song.id,
           title: song.shortTitle,
           author: song.author,
@@ -62,6 +64,10 @@ export class GradedConstitutionService {
     }
 
     results.sort(compareResultScoreDSC);
+
+    for(const result of results) {
+      result.position = results.findIndex(x => x.songID === result.songID) + 1;
+    }
 
     if (this.constitution.winnerSongID === -1 || this.constitution.winnerUserID === '') {
       this.afs.collection("constitutions/").doc(this.constitution.id).update({

@@ -7,6 +7,7 @@ export interface GradeVote {
 }
 
 export interface ResultGradeVote {
+    position: number
     songID: number,
     title: string,
     author: string,
