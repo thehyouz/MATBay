@@ -48,7 +48,7 @@
                 <tr *ngFor="let song of getUserSongs()">
                     <td> {{song.id}} </td>
                     <td > <a href="{{song.url}}" target="_blank"> {{song.shortTitle}} </a> </td>
-                    <td> <button mat-raised-button class="alignmentButton" (click)="deleteSongClick(song)"> <mat-icon>delete</mat-icon> </button> </td>
+                    <td> <button mat-raised-button class="alignmentButton" (click)="deleteSongClick(song)" [disabled]="constitution.isLocked"> <mat-icon>delete</mat-icon> </button> </td>
                 </tr>
             </table>
             <br>

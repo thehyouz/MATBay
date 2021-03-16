@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
-import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform';
+import { SongPlatform, YOUTUBE_VIDEO_ID_LENGHT } from 'src/app/types/song-platform';
 import { User } from 'src/app/types/user';
 import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
 
@@ -53,7 +53,7 @@ export class GradedSongWindowComponent {
 
   makeSafeURL(): SafeResourceUrl {
     if (this.song.platform == SongPlatform.Youtube) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(YOUTUBE_HEADER_LENGTH));
+      return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(-YOUTUBE_VIDEO_ID_LENGHT));
     }
     return "";
   }

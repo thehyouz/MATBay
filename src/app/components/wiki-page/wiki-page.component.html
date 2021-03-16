@@ -1,5 +1,12 @@
 <mat-sidenav-container class="sidenav">
-    
+    <mat-grid-list cols="1" rowHeight="6:1">
+        <mat-grid-tile *ngFor="let section of sections">
+            <button *ngIf="isSelected(section)" mat-raised-button class="section" color="primary"> {{section}} </button>
+            <button *ngIf="!isSelected(section)" mat-raised-button class="button" (click)="selectSection(section)"> {{section}} </button>
+        </mat-grid-tile>
+    </mat-grid-list>
 </mat-sidenav-container>
 
-<p>wiki-page works!</p>
+<div class="content">
+    <p>wiki-page works!</p>
+</div>

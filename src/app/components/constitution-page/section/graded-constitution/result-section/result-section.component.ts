@@ -23,6 +23,8 @@ export class GradedResultSectionComponent implements OnInit {
   public results: ResultGradeVote[];
   public winner: ResultGradeVote;
 
+  private gradedConstitution: GradedConstitutionService
+
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
   ngOnInit() {
@@ -32,8 +34,7 @@ export class GradedResultSectionComponent implements OnInit {
   }
 
   constructor(private math: MathService,
-              private afs: AngularFirestore,
-              private gradedConstitution: GradedConstitutionService) {
+              private afs: AngularFirestore) {
   }
 
   returnGrade(user: User, song: Song): number {
