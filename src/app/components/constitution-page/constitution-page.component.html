@@ -98,7 +98,7 @@
 
     <!-- Owner Info -->
     <graded-owner-section *ngIf="currentSection === SelectionType.Owner && constitution.type === constitutionType.GRADE"
-      [constitution]="constitution" [users]="users" [votes]="votes" [currentUser]="currentUser">
+      [constitution]="constitution" [users]="users" [votes]="votes">
     </graded-owner-section>
 
     <ranked-owner-section *ngIf="currentSection === SelectionType.Owner && constitution.type === constitutionType.RANK"
@@ -114,13 +114,9 @@
     </ranked-result-section>
 
     <!-- Export Option -->
-    <graded-export-section *ngIf="currentSection === SelectionType.Export && constitution.type === constitutionType.GRADE" 
+    <export-section *ngIf="currentSection === SelectionType.Export && constitution.type === constitutionType.GRADE" 
       [constitution]="constitution" [users]="users">
-    </graded-export-section>
-
-    <ranked-export-section *ngIf="currentSection === SelectionType.Export && constitution.type === constitutionType.RANK"
-      [constitution]="constitution" [users]="users">
-    </ranked-export-section>
+    </export-section>
 
   </div>
 </div>

@@ -50,14 +50,13 @@ import { LeaveConstitutionWindowComponent } from './components/leave-constitutio
 // ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
 import { SongListSectionComponent } from './components/constitution-page/section/song-list-section/song-list-section.component';
-import { GradedExportSectionComponent } from './components/constitution-page/section/graded-constitution/export-section/export-section.component';
+import { GradedExportSectionComponent } from './components/constitution-page/section/export-section/export-section.component';
 import { GradedVoteListSectionComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/vote-list-section.component';
 import { GradedSongWindowComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/song-window/song-window.component';
 import { GradedOwnerSectionComponent } from './components/constitution-page/section/graded-constitution/owner-section/owner-section.component';
 import { GradedResultSectionComponent } from './components/constitution-page/section/graded-constitution/result-section/result-section.component';
 import { RankedVoteListSectionComponent } from './components/constitution-page/section/ranked-constitution/vote-list-section/vote-list-section.component'
 import { RankedResultSectionComponent } from './components/constitution-page/section/ranked-constitution/result-section/result-section.component';
-import { RankedExportSectionComponent } from './components/constitution-page/section/ranked-constitution/export-section/export-section.component';
 import { RankedOwnerSectionComponent } from './components/constitution-page/section/ranked-constitution/owner-section/owner-section.component';
 
 // Service
@@ -95,7 +94,6 @@ const firebaseConfig = {
     GradedOwnerSectionComponent,
     RankedVoteListSectionComponent,
     RankedResultSectionComponent,
-    RankedExportSectionComponent,
     RankedOwnerSectionComponent,
     GradedSongWindowComponent,
     ConstitutionHistoryDetailsWindowComponent,

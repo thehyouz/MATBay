@@ -18,7 +18,6 @@ export class GradedOwnerSectionComponent implements OnInit {
   @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
-  @Input() currentUser: User;
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
