@@ -7,6 +7,7 @@ import { GradeVote } from 'src/app/types/vote';
 import { MathService } from 'src/app/services/math.service';
 import { MatAccordion } from '@angular/material/expansion';
 import { GradedConstitutionService } from 'src/app/services/constitution/graded-constitution.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'graded-owner-section',
@@ -14,16 +15,20 @@ import { GradedConstitutionService } from 'src/app/services/constitution/graded-
   styleUrls: ['./owner-section.component.scss']
 })
 export class GradedOwnerSectionComponent implements OnInit {
-
   @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
+  public constitutionForm: FormGroup;
   private gradedConstitution: GradedConstitutionService;
 
   ngOnInit() {
+    this.constitutionForm = this.fb.group({
+      name: [this.constitution.name, Validators.required],
+      youtubePlaylist: [this.constitution.youtubePlaylistID, Validators.required]
+    })
     this.gradedConstitution = new GradedConstitutionService(this.math, this.afs, this.constitution, this.users, this.votes);
   }
 
@@ -31,7 +36,17 @@ export class GradedOwnerSectionComponent implements OnInit {
     private afs: AngularFirestore,
     private router: Router,
     private math: MathService,
-  ) { }
+    private fb: FormBuilder
+  ) {}
+
+  updateConstitution(): void {
+    this.constitution.name = this.constitutionForm.get('name').value;
+    this.constitution.youtubePlaylistID = this.constitutionForm.get('youtubePlaylist').value;
+    this.afs.collection("constitutions/").doc(this.constitution.id).update({
+      name: this.constitution.name,
+      youtubePlaylistID: this.constitution.youtubePlaylistID
+    });
+  }
 
   canLockSongList(): boolean {
     return this.constitution.songs.length === this.constitution.numberMaxOfUser * this.constitution.numberOfSongsPerUser;
