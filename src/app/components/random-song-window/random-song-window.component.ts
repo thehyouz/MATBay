@@ -12,7 +12,6 @@ import { SongPlatform, YOUTUBE_VIDEO_ID_LENGHT } from 'src/app/types/song-platfo
   styleUrls: ['./random-song-window.component.scss']
 })
 export class RandomSongWindowComponent  {
-
   public song: Song;
   private constitution: Constitution;
   public safeUrl: SafeResourceUrl;
@@ -22,9 +21,7 @@ export class RandomSongWindowComponent  {
               private sanitizer: DomSanitizer,
               private math: MathService) {
     this.constitution = data.constitution;
-
-    this.chooseRandomSong();
-
+    this.chooseRandomSong()
     this.safeUrl = this.makeSafeURL();
   }
 

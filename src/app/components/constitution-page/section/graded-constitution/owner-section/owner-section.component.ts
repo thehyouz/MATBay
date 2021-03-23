@@ -74,11 +74,6 @@ export class GradedOwnerSectionComponent implements OnInit {
   }
 
   finishConstitution(): void {
-    if (this.constitution.winnerUserID === '' || this.constitution.winnerSongID === -1) {
-      this.gradedConstitution = new GradedConstitutionService(this.math, this.afs, this.constitution, this.users, this.votes);
-      this.gradedConstitution.calculateResults();
-    }
-
     let winnerSong = this.constitution.songs.find(x => x.id === this.constitution.winnerSongID);
     let winnerUser = this.users.find(x => x.uid === this.constitution.winnerUserID);
 
@@ -91,6 +86,8 @@ export class GradedOwnerSectionComponent implements OnInit {
     let songsAuthor: string[] = [];
     let songsOwner: string[] = [];
     let songsURL: string[] = [];
+
+    this.constitution.songs.sort(this.gradedConstitution.sortByResults)
 
     for(const song of this.constitution.songs) {
       songsTitle.push(song.shortTitle);

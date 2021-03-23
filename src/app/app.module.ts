@@ -46,11 +46,11 @@ import { UsersPageComponent } from './components/users-page/users-page.component
 import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
 import { RandomSongWindowComponent } from './components/random-song-window/random-song-window.component';
 import { LeaveConstitutionWindowComponent } from './components/leave-constitution-window/leave-constitution-window.component';
+import { ExportSectionComponent } from './components/constitution-page/section/export-section/export-section.component';
 
 // ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
 import { SongListSectionComponent } from './components/constitution-page/section/song-list-section/song-list-section.component';
-import { GradedExportSectionComponent } from './components/constitution-page/section/export-section/export-section.component';
 import { GradedVoteListSectionComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/vote-list-section.component';
 import { GradedSongWindowComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/song-window/song-window.component';
 import { GradedOwnerSectionComponent } from './components/constitution-page/section/graded-constitution/owner-section/owner-section.component';
@@ -61,7 +61,6 @@ import { RankedOwnerSectionComponent } from './components/constitution-page/sect
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -85,7 +84,7 @@ const firebaseConfig = {
     NewConstitutionWindowComponent,
     SongWindowComponent,
     ManageSongsWindowComponent,
-    GradedExportSectionComponent,
+    ExportSectionComponent,
     GradedVoteListSectionComponent,
     JoinConstitutionWindowComponent,
     ConstitutionPageComponent,

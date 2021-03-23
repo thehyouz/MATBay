@@ -2,7 +2,7 @@
     <h4> Mes Résultats </h4>
     <span class="custom-br"></span>
     <br>
-    <li *ngIf="constitution.songs.length === 0"> Moyenne de mes votes : </li>
+    <li *ngIf="constitution.songs.length === 0"> Moyenne de mes votes : <span class="warning"> Coming Soon </span></li>
     <li *ngIf="constitution.songs.length !== 0"> Moyenne de mes votes : {{userMeanVotes(currentUser.uid).toFixed(2)}} </li>
     <li> Moyenne de mes chansons : 
         <span *ngIf="constitution.isShowingResult"> {{userMeanSongs(currentUser.uid).toFixed(2)}} </span>

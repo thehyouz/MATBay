@@ -29,7 +29,7 @@ export class GradedResultSectionComponent implements OnInit {
 
   ngOnInit() {
     this.gradedConstitution = new GradedConstitutionService(this.math, this.afs, this.constitution, this.users, this.votes);
-    this.results = this.gradedConstitution.calculateResults();
+    this.results = this.gradedConstitution.results;
     this.winner = this.results[0];
   }
 
@@ -87,7 +87,7 @@ export class GradedResultSectionComponent implements OnInit {
 
   sortDataResult(sort: Sort) {
     if (this.results === undefined) {
-      this.results = this.gradedConstitution.calculateResults();
+      this.results = this.gradedConstitution.results;
     }
     
     if(!sort.active || sort.direction === '') { return; }

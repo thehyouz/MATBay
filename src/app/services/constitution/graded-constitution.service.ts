@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Constitution } from 'src/app/types/constitution';
+import { Song } from 'src/app/types/song';
 import { User } from 'src/app/types/user';
 import { compareResultScoreDSC, GradeVote, ResultGradeVote } from 'src/app/types/vote';
 import { MathService, UserMathProfile } from '../math.service';
@@ -10,13 +11,17 @@ import { MathService, UserMathProfile } from '../math.service';
 })
 export class GradedConstitutionService {
 
+  public results: ResultGradeVote[];
+
   constructor(private math: MathService,
               private afs: AngularFirestore,
               private constitution: Constitution,
               private users: User[],
-              private votes: GradeVote[]) { }
+              private votes: GradeVote[]) {
+                this.results = this.calculateResults();
+              }
 
-  generateUsersMathProfile(): UserMathProfile[] {
+  private generateUsersMathProfile(): UserMathProfile[] {
     const mathProfiles: UserMathProfile[] = [];
     for (const user of this.users) {
       mathProfiles.push(this.math.generateUserMathProfile(user.uid, this.votes));
@@ -25,7 +30,7 @@ export class GradedConstitutionService {
   }
 
 
-  calculateResults(): ResultGradeVote[] {
+  private calculateResults(): ResultGradeVote[] {
     if (this.constitution.songs.length === 0) {
       return [];
     }
@@ -77,5 +82,13 @@ export class GradedConstitutionService {
     }
 
     return results;
+  }
+
+  sortByResults(song1: Song, song2: Song): number {
+    const rank1 = this.results.findIndex(x => x.songID === song1.id);
+    const rank2 = this.results.findIndex(x => x.songID === song2.id);
+    if (rank1 > rank2) { return 1; }
+    if (rank1 < rank2) { return -1; }
+    return 0;
   }
 }
