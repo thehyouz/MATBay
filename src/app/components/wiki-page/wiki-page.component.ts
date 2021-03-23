@@ -24,4 +24,14 @@ export class WikiPageComponent {
     this.selected = section;
   }
 
+  previousSectionExist(): boolean {
+    const index = this.sections.findIndex(x => x === this.selected);
+    return index - 1 >= 0;
+  }
+
+  nextSectionExist(): boolean {
+    const index = this.sections.findIndex(x => x === this.selected);
+    return index + 1 < this.sections.length;
+  }
+
 }

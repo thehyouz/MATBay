@@ -16,5 +16,37 @@
     <br>
     <div *ngIf="selected === sections[0]">
         Bienvenue sur Matbay, le site officiel des constitutions. Vous vous trouvez actuellement sur la page d'aide, le wiki.
+        <br>
+        <br>
+        <b> Nouveau sur le site? Commencez par : </b> <button mat-raised-button color="primary" (click)="selectSection('Pour bien commencer')"> Pour bien commencer </button>
+        <br>
+        <br>
+        Explications sur les différents types de constitutions :
+        <li> <button mat-raised-button color="primary" (click)="selectSection('I- Graded Constitution')"> Graded Constitution </button> </li>
+    </div>
+    <div *ngIf="selected === sections[1]">
+        Merci de votre intérêt pour Matbay. Afin de rendre l'utilisation du site plus agréable quelques notions sont à apprendre et gestes à faire :
+        <br>
+        <br>
+        <b> 1- Personnaliser son profile (Pseudo & URL d'image de profile) </b> <button mat-raised-button color="primary" routerLink="/profile"> Voir mon profile </button>
+        <br>
+        <br>
+        <b> 2- Une constitution, c'est quoi ? Quelques définitions : </b>
+        <br>
+        <br>
+        <table id="t01">
+            <tr>
+                <th> Mots Clés </th>
+                <th> Definitions </th>
+            </tr>
+            <tr>
+                <td> Constitution </td>
+                <td> Ensemble de chansons et de règles permettant de classer ces chansons. Le nombre de participants et de chansons ou la nature des votes varient en fonction de la constitution.</td>
+            </tr>
+            <tr>
+                <td> Président </td>
+                <td> </td>
+            </tr>
+        </table>
     </div>
 </div>

@@ -15,7 +15,7 @@ const TXT_SEPARATOR: string = "=================================================
   templateUrl: './export-section.component.html',
   styleUrls: ['./export-section.component.scss']
 })
-export class GradedExportSectionComponent implements OnInit {
+export class ExportSectionComponent implements OnInit {
   @Input() constitution: Constitution;
   @Input() users: User[];
 
