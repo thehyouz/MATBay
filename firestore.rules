@@ -9,7 +9,7 @@ service cloud.firestore {
       allow write: if
       	resource == null ||
       	isConnected() &&
-        belongsTo(userid) &&
+        // belongsTo(userid) &&
         isNotTimeLimited();
     }
     match /constitutions {
@@ -50,3 +50,4 @@ function belongsTo(userId) {
 function isNotTimeLimited() {
 	return request.time >= resource.data.timestamp + duration.value(1, 'm');
 }
+
