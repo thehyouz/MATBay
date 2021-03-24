@@ -3,44 +3,56 @@
     <span class="custom-br"></span>
 </div>
 <br>
-<div class="title">
-    <h4> AJOUTER UNE CHANSON </h4>
-    <span class="custom-br"></span>
-    <br>
-    <form [formGroup]="newSongForm">
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Titre </mat-label>
-            <input matInput type="text" formControlName="formShortTitle" required>
-        </mat-form-field>
+<mat-tab-group backgroundColor="primary">
+    <mat-tab label="Ajouter">
         <br>
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Auteur </mat-label>
-            <input matInput type="text" formControlName="formAuthor" required>
-        </mat-form-field>
+        <div class="title">
+            <h4> AJOUTER UNE CHANSON </h4>
+            <span class="custom-br"></span>
+            <br>
+            <form [formGroup]="newSongForm">
+                <mat-form-field appearance="outline" [floatLabel]="true">
+                    <mat-label> Titre </mat-label>
+                    <input matInput type="text" formControlName="formShortTitle" required>
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="outline" [floatLabel]="true">
+                    <mat-label> Auteur </mat-label>
+                    <input matInput type="text" formControlName="formAuthor" required>
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="outline" [floatLabel]="true">
+                    <mat-label> URL </mat-label>
+                    <input matInput type="text" formControlName="formUrl" required>
+                </mat-form-field>
+            </form>
+            <div class="error" *ngIf="currentStatusAdd.error">
+                {{currentStatusAdd.message}}
+            </div>
+            <button mat-raised-button class="alignmentButton" (click)="addSong()"> Ajouter la chanson </button>
+            <button mat-stroked-button class="close-button" (click)="closeWindow()"> Annuler </button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Retirer">
         <br>
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> URL </mat-label>
-            <input matInput type="text" formControlName="formUrl" required>
-        </mat-form-field>
-    </form>
-    <div class="error" *ngIf="currentStatusAdd.error">
-        {{currentStatusAdd.message}}
-    </div>
-    <button mat-raised-button class="alignmentButton" (click)="addSong()"> Ajouter la chanson </button>
-</div>
-<br>
-<div class="title">
-    <h4> RETIRER UNE CHANSON </h4>
-    <span class="custom-br"></span>
-    <br>
-    <form [formGroup]="deleteSongForm">
-        <mat-form-field appearance="outline" [floatLabel]="true">
-            <mat-label> Index de la chanson à retirer </mat-label>
-            <input matInput type="number" formControlName="formSongConstitutionNumber" required>
-        </mat-form-field>
-    </form>
-    <div class="error" *ngIf="currentStatusDelete.error">
-        {{currentStatusDelete.message}}
-    </div>
-    <button mat-raised-button class="alignmentButton" (click)="deleteSong()"> Retirer la chanson </button>
-</div>
+        <div class="title">
+            <h4> RETIRER UNE CHANSON </h4>
+            <span class="custom-br"></span>
+            <br>
+            <table id="t01">
+                <tr>
+                    <th> ID </th>
+                    <th> Info </th>
+                    <th> Action </th>
+                </tr>
+                <tr *ngFor="let song of getUserSongs()">
+                    <td> {{song.id}} </td>
+                    <td > <a href="{{song.url}}" target="_blank"> {{song.shortTitle}} </a> </td>
+                    <td> <button mat-raised-button class="alignmentButton" (click)="deleteSongClick(song)" [disabled]="constitution.isLocked"> <mat-icon>delete</mat-icon> </button> </td>
+                </tr>
+            </table>
+            <br>
+            <button mat-stroked-button class="close-button" (click)="closeWindow()"> Annuler </button>
+        </div>
+    </mat-tab>
+</mat-tab-group>

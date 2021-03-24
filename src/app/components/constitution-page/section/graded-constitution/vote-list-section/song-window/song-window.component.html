@@ -5,11 +5,14 @@
     <span class="custom-br"></span>
 </div>
 <br>
-<div class="alignment">
+<div>
     <iframe width="720" height="480" frameborder="0"
     [src]="safeUrl"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
+    <br>
+    <button mat-button class="previous-button" [disabled]="!previousSongExist()" (click)="changeSong(-1)"> <mat-icon>keyboard_arrow_left</mat-icon> </button>
+    <button mat-button class="next-button" [disabled]="!nextSongExist()" (click)="changeSong(1)"> <mat-icon>keyboard_arrow_right</mat-icon> </button>
 </div>
 <div *ngIf="song.patron !== currentUser.uid" class="alignment">
     <br>

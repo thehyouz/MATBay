@@ -1,31 +1,52 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../../../../../types/user';
 import { Constitution } from 'src/app/types/constitution';
-import { compareResultScoreDSC, GradeVote, ResultGradeVote } from 'src/app/types/vote';
-import { MathService, UserMathProfile } from 'src/app/services/math.service';
+import { GradeVote } from 'src/app/types/vote';
+import { MathService } from 'src/app/services/math.service';
 import { MatAccordion } from '@angular/material/expansion';
+import { GradedConstitutionService } from 'src/app/services/constitution/graded-constitution.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'graded-owner-section',
   templateUrl: './owner-section.component.html',
   styleUrls: ['./owner-section.component.scss']
 })
-export class GradedOwnerSectionComponent {
-
+export class GradedOwnerSectionComponent implements OnInit {
   @Input() constitution: Constitution;
   @Input() users: User[];
   @Input() votes: GradeVote[];
-  @Input() currentUser: User;
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
+
+  public constitutionForm: FormGroup;
+  private gradedConstitution: GradedConstitutionService;
+
+  ngOnInit() {
+    this.constitutionForm = this.fb.group({
+      name: [this.constitution.name, Validators.required],
+      youtubePlaylist: [this.constitution.youtubePlaylistID, Validators.required]
+    })
+    this.gradedConstitution = new GradedConstitutionService(this.math, this.afs, this.constitution, this.users, this.votes);
+  }
 
   constructor(
     private afs: AngularFirestore,
     private router: Router,
-    private math: MathService
-  ) { }
+    private math: MathService,
+    private fb: FormBuilder
+  ) {}
+
+  updateConstitution(): void {
+    this.constitution.name = this.constitutionForm.get('name').value;
+    this.constitution.youtubePlaylistID = this.constitutionForm.get('youtubePlaylist').value;
+    this.afs.collection("constitutions/").doc(this.constitution.id).update({
+      name: this.constitution.name,
+      youtubePlaylistID: this.constitution.youtubePlaylistID
+    });
+  }
 
   canLockSongList(): boolean {
     return this.constitution.songs.length === this.constitution.numberMaxOfUser * this.constitution.numberOfSongsPerUser;
@@ -52,59 +73,7 @@ export class GradedOwnerSectionComponent {
     });
   }
 
-  calculateResults(): ResultGradeVote[] {
-    const mathProfiles: UserMathProfile[] = [];
-    for (const user of this.users) {
-      mathProfiles.push(this.math.generateUserMathProfile(user.uid, this.votes));
-    }
-
-    const results: ResultGradeVote[] = [];
-    for(const song of this.constitution.songs) {
-      const selectedVotes: GradeVote[] = [];
-      for(const vote of this.votes) {
-        // Add all votes for a song
-        if (vote.songID === song.id) {
-          selectedVotes.push(vote);
-        }
-      }
-
-      let score: number = 0;
-      // normal the score of each user
-      for (const vote of selectedVotes) {
-        const mathProfile = mathProfiles.find(x => x.uid === vote.userID);
-        score += this.math.standardNormalTable(mathProfile.mean, mathProfile.var, vote.grade + 1);
-      }
-
-      const user = this.users.find(x => {return x.uid === song.patron});
-      if (user !== undefined) {
-        results.push({
-          songID: song.id,
-          title: song.shortTitle,
-          author: song.author,
-          url: song.url,
-          score: score,
-          userID: user.uid
-        });
-      }
-    }
-
-    results.sort(compareResultScoreDSC);
-
-    if (this.constitution.winnerSongID !== results[0].songID && this.constitution.winnerUserID !== results[0].userID) {
-      this.afs.collection("constitutions/").doc(this.constitution.id).update({
-        winnerSongID: results[0].songID,
-        winnerUserID: results[0].userID
-      });
-    }
-
-    return results;
-  }
-
   finishConstitution(): void {
-    if (this.constitution.winnerUserID === '' || this.constitution.winnerSongID === -1) {
-      this.calculateResults();
-    }
-
     let winnerSong = this.constitution.songs.find(x => x.id === this.constitution.winnerSongID);
     let winnerUser = this.users.find(x => x.uid === this.constitution.winnerUserID);
 
@@ -117,6 +86,8 @@ export class GradedOwnerSectionComponent {
     let songsAuthor: string[] = [];
     let songsOwner: string[] = [];
     let songsURL: string[] = [];
+
+    this.constitution.songs.sort(this.gradedConstitution.sortByResults)
 
     for(const song of this.constitution.songs) {
       songsTitle.push(song.shortTitle);

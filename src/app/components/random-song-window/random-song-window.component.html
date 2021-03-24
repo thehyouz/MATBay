@@ -3,18 +3,17 @@
         <h3> {{song.shortTitle}} - {{song.author}} </h3>
     </a>
     <span class="custom-br"></span>
-</div>
-<br>
-<div>
+    <br>
     <iframe width="720" height="480" frameborder="0"
-        [src]="safeUrl"
+        [src]="safeUrl" 
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
     <br>
-    <button mat-button class="previous-button" [disabled]="!previousSongExist()" (click)="changeSong(-1)"> <mat-icon>keyboard_arrow_left</mat-icon> </button>
-    <button mat-button class="next-button" [disabled]="!nextSongExist()" (click)="changeSong(1)"> <mat-icon>keyboard_arrow_right</mat-icon> </button>
+    <button mat-button class="button" (click)="chooseRandomSong()"> <mat-icon>replay</mat-icon> </button>
 </div>
 <br>
 <div>
     <button mat-stroked-button class="close-button" (click)="closeWindow()"> Annuler </button>
 </div>
+
+

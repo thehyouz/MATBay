@@ -12,8 +12,7 @@
     </h4>
     <span class="custom-br"></span>
     <div *ngIf="constitution.songs?.length == 0"> Aucune chanson </div>
-    <div *ngIf="constitution.songs?.length == 1"> {{constitution.songs.length}} chanson </div>
-    <div *ngIf="constitution.songs?.length > 1"> {{constitution.songs.length}} chansons </div>
+    <div *ngIf="constitution.songs?.length !== 0"> {{constitution.songs.length}} / {{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser}} chansons </div>
     Vous avez:
     {{numberOfSongsOfUser(currentUser.uid)}} / {{constitution.numberOfSongsPerUser}} chansons
     <br>
@@ -34,6 +33,9 @@
     <span class="custom-br"></span>
     <br>
     <button mat-raised-button color="primary" (click)="openDialogManageSongs()"> Gérer mes chansons </button>
+    <br>
+    <br>
+    <button mat-raised-button color="primary" (click)="openDialogRandomSong()" [disabled]="constitution.songs.length === 0"> Sélection Aléatoire </button>
     <br>
     <br>
     <button mat-stroked-button [disabled]="currentUser.uid === constitution.owner" color="warn"
@@ -96,7 +98,7 @@
 
     <!-- Owner Info -->
     <graded-owner-section *ngIf="currentSection === SelectionType.Owner && constitution.type === constitutionType.GRADE"
-      [constitution]="constitution" [users]="users" [votes]="votes" [currentUser]="currentUser">
+      [constitution]="constitution" [users]="users" [votes]="votes">
     </graded-owner-section>
 
     <ranked-owner-section *ngIf="currentSection === SelectionType.Owner && constitution.type === constitutionType.RANK"
@@ -112,13 +114,9 @@
     </ranked-result-section>
 
     <!-- Export Option -->
-    <graded-export-section *ngIf="currentSection === SelectionType.Export && constitution.type === constitutionType.GRADE" 
+    <export-section *ngIf="currentSection === SelectionType.Export && constitution.type === constitutionType.GRADE" 
       [constitution]="constitution" [users]="users">
-    </graded-export-section>
-
-    <ranked-export-section *ngIf="currentSection === SelectionType.Export && constitution.type === constitutionType.RANK"
-      [constitution]="constitution" [users]="users">
-    </ranked-export-section>
+    </export-section>
 
   </div>
 </div>
