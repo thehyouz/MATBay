@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { Constitution } from 'src/app/types/constitution';
@@ -20,6 +21,8 @@ export class GradedVoteListSectionComponent  {
   @Input() currentUser: User;
   @Input() currentSection: CurrentSectionConstitution;
 
+  private hideVotedSongs: boolean = false;
+
   constructor(private dialog: MatDialog) { }
 
   openDialogSong(song: Song): void {
@@ -30,9 +33,11 @@ export class GradedVoteListSectionComponent  {
 
     dialogConfig.data = {
       song: song,
+      hideVotedSongs: this.hideVotedSongs,
       constitution: this.constitution,
       currentSection: this.currentSection,
       vote: vote,
+      votes: this.votes
     }
 
     dialogConfig.hasBackdrop = true;
@@ -40,6 +45,10 @@ export class GradedVoteListSectionComponent  {
     dialogConfig.maxHeight = '60%';
 
     this.dialog.open(GradedSongWindowComponent, dialogConfig);
+  }
+
+  onChange(event: MatCheckboxChange){
+    this.hideVotedSongs = event.checked;
   }
 
   sortDataSong(sort: Sort) {
@@ -54,7 +63,6 @@ export class GradedVoteListSectionComponent  {
       switch (sort.active) {
         case "id": return this.compare(a.id, b.id, isAsc);
         case "title": return this.compare(a.shortTitle, b.shortTitle, isAsc);
-        case "author": return this.compare(a.author, b.author, isAsc);
         case "username": return this.compare(this.showDisplayName(a.patron), this.showDisplayName(b.patron), isAsc);
         case "grade": return this.compare(this.returnVote(a)+1, this.returnVote(b)+1, isAsc);
         default: return 0;
@@ -78,6 +86,22 @@ export class GradedVoteListSectionComponent  {
     const user = this.users.find(x => x.uid === uid);
     if (user !== undefined) { return user.displayName; }
     return "";
+  }
+
+  getUserSongToVote(): Song[] {
+    const songs: Song[] = []
+    for (const song of this.constitution.songs) {
+      if (song.patron !== this.currentUser.uid) {
+        if (this.hideVotedSongs) {
+          if (this.returnVote(song) === -1) {
+            songs.push(song);
+          }
+        } else {
+          songs.push(song);
+        }
+      }
+    }
+    return songs;
   }
 
 }

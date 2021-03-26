@@ -1,23 +1,28 @@
-import { Component, Input } from '@angular/core';
-import { User } from 'firebase';
+// https://stackblitz.com/edit/httpsstackoverflowcomquestions51806464how-to-create-and-downloa?file=src%2Fapp%2Fapp.component.ts
+
+import { Component, Input, OnInit } from '@angular/core';
 import { of } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { Constitution } from 'src/app/types/constitution';
 import { Song } from 'src/app/types/song';
+import { AUTHORISATION_LEVEL, User } from 'src/app/types/user';
 
 const BASIC_TXT_HEADER: string = " ID |        Titre       |       Auteur       |     Ajouté Par     |\n";
 const TXT_SEPARATOR: string = "==================================================================== \n"
 
 @Component({
-  selector: 'ranked-export-section',
+  selector: 'export-section',
   templateUrl: './export-section.component.html',
   styleUrls: ['./export-section.component.scss']
 })
-export class RankedExportSectionComponent {
-
+export class ExportSectionComponent implements OnInit {
   @Input() constitution: Constitution;
   @Input() users: User[];
 
-  public EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets", "Objet JSON"];
+  private currentUser: User;
+  public isUserLoading: boolean = true;
+
+  public EXPORT_FORMAT: string[] = ["Liste des chansons", "Google Sheets"];
   public selectedExportFormat: string;
 
   private setting = {
@@ -26,7 +31,19 @@ export class RankedExportSectionComponent {
     }
   }
 
-  constructor() {
+  ngOnInit() {
+    this.auth.user$.subscribe(newUser => {
+      this.currentUser = newUser;
+      if (newUser) {
+        this.isUserLoading = false;
+        if (this.currentUser.isAuthorized[AUTHORISATION_LEVEL.DEV_LEVEL]) {
+          this.EXPORT_FORMAT.push("Objet JSON");
+        }
+      }
+    });
+  }
+
+  constructor(private auth: AuthService,) {
     this.selectedExportFormat = this.EXPORT_FORMAT[0];
   }
 
@@ -77,7 +94,7 @@ export class RankedExportSectionComponent {
           break;
         case "Objet JSON":
           this.dyanmicDownloadByHtmlTag({
-            fileName: this.constitution.name,
+            fileName: this.constitution.name + ".json",
             text: JSON.stringify(songs, null, 2)
           });
           break;

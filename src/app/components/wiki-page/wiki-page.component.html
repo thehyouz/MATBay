@@ -1,5 +1,112 @@
 <mat-sidenav-container class="sidenav">
-    
+    <mat-grid-list cols="1" rowHeight="6:1">
+        <mat-grid-tile *ngFor="let section of sections">
+            <button *ngIf="isSelected(section)" mat-raised-button class="section" color="primary"> {{section}} </button>
+            <button *ngIf="!isSelected(section)" mat-raised-button class="button" (click)="selectSection(section)"> {{section}} </button>
+        </mat-grid-tile>
+    </mat-grid-list>
 </mat-sidenav-container>
 
-<p>wiki-page works!</p>
+<div class="content">
+    <div class="title">
+        <h1> WIKI </h1>
+        <h2> {{selected}}</h2>
+        <span class="custom-br"></span>
+    </div>
+    <br>
+    <div *ngIf="selected === sections[0]">
+        Bienvenue sur Matbay, le site officiel des constitutions. Vous vous trouvez actuellement sur la page d'aide, le wiki.
+        <br>
+        <br>
+        <b> Nouveau sur le site? Commencez par : </b> <button mat-raised-button color="primary" (click)="selectSection('Pour bien commencer')"> Pour bien commencer </button>
+        <br>
+        <br>
+        Explications sur les différents types de constitutions :
+        <li> <button mat-raised-button color="primary" (click)="selectSection(sections[2])"> Graded Constitution </button> </li>
+        <li> <button mat-raised-button color="primary" (click)="selectSection(sections[3])"> Ranked Constitution </button> </li>
+    </div>
+    <div *ngIf="selected === sections[1]">
+        Merci de votre intérêt pour Matbay. Afin de rendre l'utilisation du site plus agréable quelques notions sont à apprendre et gestes à faire :
+        <br>
+        <br>
+        <b> 1- Personnaliser son profile (Pseudo & URL d'image de profile) </b> <button mat-raised-button color="primary" routerLink="/profile"> Voir mon profile </button>
+        <br>
+        <br>
+        <b> 2- Une constitution, c'est quoi ? Quelques définitions : </b>
+        <br>
+        <table id="t01">
+            <tr>
+                <th> Mots Clés </th>
+                <th> Definitions </th>
+            </tr>
+            <tr>
+                <td> Constitution </td>
+                <td> Ensemble de chansons et de règles permettant de classer les chansons. Le nombre de participants et de chansons ou la nature des votes varient en fonction de la constitution. Une constitution classique est composé de 100 chansons ajoutés par 4 utilisateurs.</td>
+            </tr>
+            <tr>
+                <td> Président </td>
+                <td> Le responsable de la constitution. Il doit choisir le nombre de chansons, utilisateurs ainsi que la manière de voter. Il s'occupe également de l'animation de la constitution en s'assurant que tous les membres votent correctement.</td>
+            </tr>
+        </table>
+        <br>
+        <b> 3- Règles de Bienfaisance : </b>
+            <li> I- Il ne peut avoir qu'une seule chanson gagnante par constitution. </li>
+            <li> II- Ne pas ajouter une chanson qui a déjà été ajouté dans une constitution (actuelle ou précédante). </li>
+            <li> III- Ne pas abuser des systèmes de votes pour avantager simplement ses propres chansons mais exercer un vrai jugement pour déclarer une chanson gagnante. </li>
+            <li> IV- Éviter les chansons ayant une durée supérieur à 8 minutes. </li>
+    </div>
+    <div *ngIf="selected === sections[2]">
+        <table id="t01" style="width: 30%">
+            <colgroup>
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 10%;">
+             </colgroup>
+            <tr>
+                <th> Infos </th>
+                <th> Nombres </th>
+            </tr>
+            <tr>
+                <td> Nombre d'utilisateurs </td>
+                <td> 4 à 10 </td>
+            </tr>
+            <tr>
+                <td> Nombre de chansons </td>
+                <td> 4 à 100 </td>
+            </tr>
+            <tr>
+                <td> Nombre de rounds </td>
+                <td> 1 </td>
+            </tr>
+        </table>
+        <br>
+        Les utilisateurs doivent voter chaque chanson des autres utilisateurs en choisissant une note allant de 1 à 10. 
+        Pour assurer que les votes ont tous le même poids pour tous les utilisateurs on utilise <a href="https://en.wikipedia.org/wiki/Standard_normal_table"> la Loi Normale</a> à partir de la moyene et de la variance.
+        Les scores des chansons sont donc normalisés puis additionnés déterminant par la suite la chanson gagante.
+    </div>
+    <div *ngIf="selected === sections[3]">
+        <table id="t01" style="width: 30%">
+            <colgroup>
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 10%;">
+             </colgroup>
+            <tr>
+                <th> Infos </th>
+                <th> Nombres </th>
+            </tr>
+            <tr>
+                <td> Nombre d'utilisateurs </td>
+                <td> 4 </td>
+            </tr>
+            <tr>
+                <td> Nombre de chansons </td>
+                <td> 100 </td>
+            </tr>
+            <tr>
+                <td> Nombre de rounds </td>
+                <td class="warning"> À déterminer </td>
+            </tr>
+        </table>
+        <br>
+        <span class="warning"> Coming Soon </span>
+    </div>
+</div>

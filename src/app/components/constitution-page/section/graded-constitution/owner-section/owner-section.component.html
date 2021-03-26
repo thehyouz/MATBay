@@ -18,6 +18,24 @@
   </mat-expansion-panel>
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header> 
+        <mat-panel-title> Paramètres </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="constitutionForm">
+      <br>
+      <mat-form-field appearance="outline" [floatLabel]="true">
+        <mat-label> Nom </mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" [floatLabel]="true">
+        <mat-label> Youtube Playlist ID </mat-label>
+        <input matInput formControlName="youtubePlaylist">
+      </mat-form-field>
+    </form>
+    <button mat-raised-button color="primary" class="nav-link waves-light" (click)="updateConstitution()"> Mettre à jours </button>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header> 
         <mat-panel-title> État </mat-panel-title>
     </mat-expansion-panel-header>
     Nombre de participants : {{constitution.users.length}}/{{constitution.numberMaxOfUser}}

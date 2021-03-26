@@ -58,7 +58,6 @@ export class ConstitutionsHistoryPageComponent implements OnInit {
       users: constitutionUsers
     }
     dialogConfig.hasBackdrop = true;
-    dialogConfig.width = '30%';
 
     this.dialog.open(ConstitutionHistoryDetailsWindowComponent, dialogConfig);
   }

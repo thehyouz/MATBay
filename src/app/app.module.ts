@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 // Fire
 import { AngularFireModule } from '@angular/fire';
@@ -24,6 +25,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatProgressBarModule } from "@angular/material/progress-bar"
 import { MatGridListModule } from '@angular/material/grid-list'
+import { MatTabsModule } from '@angular/material/tabs'
 
 // MDB
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -40,26 +42,25 @@ import { ManageSongsWindowComponent } from './components/manage-songs-window/man
 import { SongWindowComponent } from './components/song-window/song-window.component';
 import { JoinConstitutionWindowComponent } from './components/join-constitution-window/join-constitution-window.component';
 import { ConstitutionHistoryDetailsWindowComponent } from './components/constitution-history-details-window/constitution-history-details-window.component';
+import { UsersPageComponent } from './components/users-page/users-page.component';
+import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
+import { RandomSongWindowComponent } from './components/random-song-window/random-song-window.component';
+import { LeaveConstitutionWindowComponent } from './components/leave-constitution-window/leave-constitution-window.component';
+import { ExportSectionComponent } from './components/constitution-page/section/export-section/export-section.component';
 
 // ConstitutionPage
 import { ConstitutionPageComponent } from './components/constitution-page/constitution-page.component';
 import { SongListSectionComponent } from './components/constitution-page/section/song-list-section/song-list-section.component';
-import { GradedExportSectionComponent } from './components/constitution-page/section/graded-constitution/export-section/export-section.component';
 import { GradedVoteListSectionComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/vote-list-section.component';
 import { GradedSongWindowComponent } from './components/constitution-page/section/graded-constitution/vote-list-section/song-window/song-window.component';
 import { GradedOwnerSectionComponent } from './components/constitution-page/section/graded-constitution/owner-section/owner-section.component';
 import { GradedResultSectionComponent } from './components/constitution-page/section/graded-constitution/result-section/result-section.component';
 import { RankedVoteListSectionComponent } from './components/constitution-page/section/ranked-constitution/vote-list-section/vote-list-section.component'
 import { RankedResultSectionComponent } from './components/constitution-page/section/ranked-constitution/result-section/result-section.component';
-import { RankedExportSectionComponent } from './components/constitution-page/section/ranked-constitution/export-section/export-section.component';
 import { RankedOwnerSectionComponent } from './components/constitution-page/section/ranked-constitution/owner-section/owner-section.component';
 
 // Service
 import { ConstitutionManagerService } from './services/manager/constitution-manager.service';
-import { RouterModule } from '@angular/router';
-import { UsersPageComponent } from './components/users-page/users-page.component';
-import { WikiPageComponent } from './components/wiki-page/wiki-page.component';
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBljB_Xo7WNymFihDf0GCTDpy2wFMHdCqg",
@@ -83,7 +84,7 @@ const firebaseConfig = {
     NewConstitutionWindowComponent,
     SongWindowComponent,
     ManageSongsWindowComponent,
-    GradedExportSectionComponent,
+    ExportSectionComponent,
     GradedVoteListSectionComponent,
     JoinConstitutionWindowComponent,
     ConstitutionPageComponent,
@@ -92,12 +93,13 @@ const firebaseConfig = {
     GradedOwnerSectionComponent,
     RankedVoteListSectionComponent,
     RankedResultSectionComponent,
-    RankedExportSectionComponent,
     RankedOwnerSectionComponent,
     GradedSongWindowComponent,
     ConstitutionHistoryDetailsWindowComponent,
     UsersPageComponent,
-    WikiPageComponent
+    WikiPageComponent,
+    RandomSongWindowComponent,
+    LeaveConstitutionWindowComponent
   ],
   imports: [
     BrowserModule,
@@ -121,6 +123,7 @@ const firebaseConfig = {
     MatExpansionModule,
     MatProgressBarModule,
     MatGridListModule,
+    MatTabsModule,
     MDBBootstrapModule.forRoot()
   ],
   exports: [RouterModule],

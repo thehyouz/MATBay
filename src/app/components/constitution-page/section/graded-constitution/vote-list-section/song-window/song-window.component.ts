@@ -4,11 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
 import { Constitution } from 'src/app/types/constitution';
-import { CurrentSectionConstitution } from 'src/app/types/current-section.enum';
 import { Song } from 'src/app/types/song';
-import { SongPlatform, YOUTUBE_HEADER_LENGTH } from 'src/app/types/song-platform';
+import { SongPlatform, YOUTUBE_VIDEO_ID_LENGHT } from 'src/app/types/song-platform';
 import { User } from 'src/app/types/user';
-import { GradeVote } from 'src/app/types/vote';
+import { EMPTY_GRADE_VOTE, GradeVote } from 'src/app/types/vote';
 
 @Component({
   selector: 'graded-song-window',
@@ -19,7 +18,10 @@ import { GradeVote } from 'src/app/types/vote';
 export class GradedSongWindowComponent {
   public song: Song;
   private constitution: Constitution;
+  private votes: GradeVote[];
   public safeUrl: SafeResourceUrl;
+
+  private hideVotedSongs = false;
 
   private vote: GradeVote;
   public currentUser: User;
@@ -32,6 +34,8 @@ export class GradedSongWindowComponent {
     this.song = data.song;
     this.constitution = data.constitution;
     this.vote = data.vote;
+    this.votes = data.votes;
+    this.hideVotedSongs = data.hideVotedSongs;
 
     this.safeUrl = this.makeSafeURL();
 
@@ -49,9 +53,19 @@ export class GradedSongWindowComponent {
 
   makeSafeURL(): SafeResourceUrl {
     if (this.song.platform == SongPlatform.Youtube) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(YOUTUBE_HEADER_LENGTH));
+      return this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.song.url.slice(-YOUTUBE_VIDEO_ID_LENGHT));
     }
     return "";
+  }
+
+  previousSongExist(): boolean {
+    const index = this.getUserSongToVote().findIndex(x => x.id === this.song.id);
+    return index - 1 >= 0;
+  }
+
+  nextSongExist(): boolean {
+    const index = this.getUserSongToVote().findIndex(x => x.id === this.song.id);
+    return index + 1 < this.getUserSongToVote().length;
   }
 
   updateGrade(newGrade: number): void {
@@ -77,12 +91,30 @@ export class GradedSongWindowComponent {
           grade: this.vote.grade
         });
 
+        this.votes.push(this.vote);
+
       } else {
         this.afs.collection('constitutions').doc(this.constitution.id).collection('votes').doc(this.vote.id).update({
           grade: newGrade
         });
       }
     })
+  }
+
+  changeSong(shift: number): void {
+    const currentIndex = this.getUserSongToVote().findIndex(x => x.id === this.song.id);
+
+    this.song = this.getUserSongToVote()[currentIndex + shift];
+    this.vote = this.votes.find(x => x.userID === this.currentUser.uid && x.songID === this.song.id);
+    
+    if (this.vote === undefined) {
+      this.vote = EMPTY_GRADE_VOTE;
+    }
+
+    if (this.vote.songID === -1) {
+      this.vote.grade = -1;
+    }
+    this.safeUrl = this.makeSafeURL();
   }
 
   isSelected(number: number): boolean {
@@ -93,4 +125,27 @@ export class GradedSongWindowComponent {
     this.dialogRef.close();
   }
 
+  returnVote(song: Song): number {
+    const vote = this.votes.find(voteIterator => (voteIterator.songID === song.id) && (voteIterator.userID === this.currentUser.uid));
+    if (vote !== undefined) {
+      return vote.grade;
+    }
+    return -1;
+  }
+
+  getUserSongToVote(): Song[] {
+    const songs: Song[] = []
+    for (const song of this.constitution.songs) {
+      if (song.patron !== this.currentUser.uid) {
+        if (this.hideVotedSongs) {
+          if (this.returnVote(song) === -1) {
+            songs.push(song);
+          }
+        } else {
+          songs.push(song);
+        }
+      }
+    }
+    return songs;
+  }
 }
