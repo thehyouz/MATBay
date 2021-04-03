@@ -74,8 +74,12 @@ export class GradedOwnerSectionComponent implements OnInit {
   }
 
   finishConstitution(): void {
-    let winnerSong = this.constitution.songs.find(x => x.id === this.constitution.winnerSongID);
-    let winnerUser = this.users.find(x => x.uid === this.constitution.winnerUserID);
+    if (this.gradedConstitution.results === undefined) {
+      this.gradedConstitution = new GradedConstitutionService(this.math, this.afs, this.constitution, this.users, this.votes);
+    }
+
+    // let winnerSong = this.constitution.songs.find(x => x.id === this.constitution.winnerSongID);
+    // let winnerUser = this.users.find(x => x.uid === this.constitution.winnerUserID);
 
     let usernames: string[] = [];
     for (const user of this.users) {
@@ -87,7 +91,7 @@ export class GradedOwnerSectionComponent implements OnInit {
     let songsOwner: string[] = [];
     let songsURL: string[] = [];
 
-    this.constitution.songs.sort(this.gradedConstitution.sortByResults)
+    this.constitution.songs = this.gradedConstitution.sortByResults2(this.constitution.songs);
 
     for(const song of this.constitution.songs) {
       songsTitle.push(song.shortTitle);
@@ -103,10 +107,10 @@ export class GradedOwnerSectionComponent implements OnInit {
       ownerID: this.constitution.owner,
       youtubePlaylistID: this.constitution.youtubePlaylistID,
 
-      winnerID: winnerUser.uid,
-      winnerSongURL: winnerSong.url,
-      winnerSongTitle: winnerSong.shortTitle,
-      winnerSongAuthor: winnerSong.author,
+      winnerID: this.constitution.songs[0].patron,              // winnerUser.uid,
+      winnerSongURL: this.constitution.songs[0].url,            // winnerSong.url,
+      winnerSongTitle: this.constitution.songs[0].shortTitle,   // winnerSong.shortTitle,
+      winnerSongAuthor: this.constitution.songs[0].author,      // winnerSong.author,
 
       usernames: usernames,
       songsTitle: songsTitle,

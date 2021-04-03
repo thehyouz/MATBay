@@ -47,6 +47,16 @@ export class GradedVoteListSectionComponent  {
     this.dialog.open(GradedSongWindowComponent, dialogConfig);
   }
 
+  getNumberOfVotesOfUser(): number {
+    let count = 0;
+    for (const vote of this.votes) {
+      if (vote.userID === this.currentUser.uid) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   onChange(event: MatCheckboxChange){
     this.hideVotedSongs = event.checked;
   }

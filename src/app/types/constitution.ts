@@ -69,6 +69,7 @@ export interface ConstitutionArchived {
     songsTitle: string[];
     songsOwner: string[];
     songsURL: string[];
+    songsAuthor: string[];
 
     winnerID: string;
     winnerSongURL: string;
