@@ -22,7 +22,7 @@ export class ExportSectionComponent implements OnInit {
   private currentUser: User;
   public isUserLoading = true;
 
-  public EXPORT_FORMAT: string[] = ['Liste des chansons', 'Google Sheets', 'csv'];
+  public EXPORT_FORMAT: string[] = ['Liste des chansons', 'Google Sheets'];
   public selectedExportFormat: string;
 
   private setting = {
