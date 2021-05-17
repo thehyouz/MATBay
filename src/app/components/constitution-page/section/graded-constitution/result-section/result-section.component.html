@@ -83,6 +83,10 @@
                 <mat-panel-title> Notes des utilisateurs </mat-panel-title>
             </mat-expansion-panel-header>
             <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
+            <div>
+                <p>Z<sub>i</sub> : Score centré réduit donné par l'utilisateur à la chanson </p>
+                <p>x<sub>i</sub> : Score donné par l'utilisateur à la chanson </p>
+            </div>
             <table *ngIf="constitution.isShowingResult" id="t03">
                 <tr>
                     <th> </th>
@@ -92,7 +96,7 @@
                     <td style="background-color: #2E2E2E;"> {{song.shortTitle}}</td>
                     <td *ngFor="let user of users">
                         <span *ngIf="user.uid === song.patron"> / </span>
-                        <span *ngIf="user.uid !== song.patron"> {{returnGrade(user, song)}} </span>
+                        <span *ngIf="user.uid !== song.patron">  Z<sub>i</sub> {{standardizedScore(user, song).toFixed(2)}} <br> <div class="std">x<sub>i</sub> {{returnGrade(user, song)}}</div> </span>
                     </td>
                 </tr>
             </table>

@@ -12,6 +12,7 @@ import { MathService, UserMathProfile } from '../math.service';
 export class GradedConstitutionService {
 
   public results: ResultGradeVote[];
+  public mathProfiles: UserMathProfile[];
 
   constructor(private math: MathService,
               private afs: AngularFirestore,
@@ -26,9 +27,9 @@ export class GradedConstitutionService {
     for (const user of this.users) {
       mathProfiles.push(this.math.generateUserMathProfile(user.uid, this.votes));
     }
+    this.mathProfiles = mathProfiles;
     return mathProfiles;
   }
-
 
   private calculateResults(): ResultGradeVote[] {
     if (this.constitution.songs.length === 0) {
@@ -36,7 +37,6 @@ export class GradedConstitutionService {
     }
 
     const mathProfiles: UserMathProfile[] = this.generateUsersMathProfile();
-
     const results: ResultGradeVote[] = [];
     for(const song of this.constitution.songs) {
       const selectedVotes: GradeVote[] = [];
@@ -84,11 +84,14 @@ export class GradedConstitutionService {
     return results;
   }
 
-  sortByResults(song1: Song, song2: Song): number {
-    const rank1 = this.results.findIndex(x => x.songID === song1.id);
-    const rank2 = this.results.findIndex(x => x.songID === song2.id);
-    if (rank1 > rank2) { return 1; }
-    if (rank1 < rank2) { return -1; }
-    return 0;
+  sortByResults2(songs: Song[]): Song[] {
+    let newArray: Song[] = [];
+    for (const result of this.results) {
+      const newSong = songs.find(x => x.id === result.songID);
+      if (newSong !== undefined) {
+        newArray.push(newSong);
+      }
+    }
+    return newArray;
   }
 }

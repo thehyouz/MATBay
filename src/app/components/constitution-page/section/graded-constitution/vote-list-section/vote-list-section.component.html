@@ -1,4 +1,18 @@
-<mat-checkbox color="primary" (change)="onChange($event)"> Cacher les chansons déjà votés </mat-checkbox>
+<mat-accordion>
+    <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header> 
+            <mat-panel-title> Info </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-checkbox color="primary" (change)="onChange($event)"> Cacher les chansons déjà votés </mat-checkbox>
+        <br>
+        Nombres de mes votes : {{getNumberOfVotesOfUser()}}/{{constitution.numberOfSongsPerUser * (constitution.numberMaxOfUser -1) }}
+        <mat-progress-bar mode="determinate" value="{{getNumberOfVotesOfUser() / (constitution.numberOfSongsPerUser * (constitution.numberMaxOfUser -1)) *100}}"></mat-progress-bar>
+        Ensemble des votes : {{votes.length}}/{{constitution.numberOfSongsPerUser * constitution.numberMaxOfUser *
+            (constitution.numberMaxOfUser - 1)}}
+        <mat-progress-bar mode="determinate" value="{{votes.length / (constitution.numberOfSongsPerUser * constitution.numberMaxOfUser * (constitution.numberMaxOfUser - 1)) * 100}}"></mat-progress-bar>
+      </mat-expansion-panel>
+</mat-accordion>
+<br>
 <span class="custom-br"></span>
 <br>
 <table matSort (matSortChange)="sortDataSong($event)" id="t01">

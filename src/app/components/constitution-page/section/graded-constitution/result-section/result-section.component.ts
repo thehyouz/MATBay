@@ -48,6 +48,11 @@ export class GradedResultSectionComponent implements OnInit {
     return this.users.find(x => x.uid === uid);
   }
 
+  standardizedScore(user: User, song: Song){
+    const mathProfile = this.gradedConstitution.mathProfiles.find((mp)=>mp.uid=user.uid)
+    return (this.returnGrade(user,song)-mathProfile.mean) / mathProfile.var
+  }
+
   userMeanVotes(uid: string): number {
     const currentUserVote: GradeVote[] = [];
     for (const vote of this.votes) {

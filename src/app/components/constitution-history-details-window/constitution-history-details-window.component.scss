@@ -31,10 +31,10 @@
     display: block;
     margin: 0 auto;
 
-    width: 60px;
-    height: 60px;
-    -moz-border-radius: 30px;
-    border-radius: 30px;    
+    width: 80px;
+    height: 80px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;    
 }
 
 table {
@@ -73,5 +73,10 @@ mat-expansion-panel {
 }
 
 mat-panel-title {
+    color: whitesmoke;
+}
+
+.song-name {
+    background-color: #2E2E2E;
     color: whitesmoke;
 }
