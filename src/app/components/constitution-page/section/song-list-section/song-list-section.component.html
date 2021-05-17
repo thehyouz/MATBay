@@ -1,17 +1,15 @@
-<table matSort (matSortChange)="sortDataSong($event)" id="t01">
+<table matSort (matSortChange)="sortDataSong($event)" id="t01" mat>
     <tr>
         <th mat-sort-header="id"> ID </th>
-        <th mat-sort-header="title"> Titre </th>
-        <th mat-sort-header="author"> Auteur </th>
+        <th> Chanson </th>
         <th> URL </th>
         <th mat-sort-header="username" *ngIf="!constitution.isAnonymous"> Ajouté par </th>
     </tr>
     <tr *ngFor="let song of constitution.songs">
         <td > {{song.id}} </td>
-        <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)" matTooltip="Cliquez pour voir la chanson" [matTooltipShowDelay]="1000"> {{song.shortTitle}} </button> </td>
-        <td> {{song.author}} </td>
+        <td> <button mat-stroked-button class="song-name" (click)="openDialogSong(song)" matTooltip="Cliquez pour voir la chanson" [matTooltipShowDelay]="1000">{{song.author}} - {{song.shortTitle}} </button> </td>
         <td> 
-            <a href="{{song.url}}" target="_blank"> {{song.url}} </a>
+            <a href="{{song.url}}" target="_blank"> <mat-icon>play_arrow</mat-icon> </a>
         </td>
         <td *ngIf="!constitution.isAnonymous"> {{showDisplayName(song.patron)}} </td>
     </tr>
