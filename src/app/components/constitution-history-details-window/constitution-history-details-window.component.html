@@ -32,11 +32,17 @@
           <mat-expansion-panel-header> 
               <mat-panel-title> Membres </mat-panel-title>
           </mat-expansion-panel-header>
-          <table *ngFor="let user of users" id="t02">
-            <tr> 
-              <th> <img class="picture" [src]="user.photoURL"> {{user.displayName}} </th>
-            </tr>
-          </table>
+          <mat-grid-list cols="2" rowHeight="5:5">
+            <mat-grid-tile *ngFor="let user of users">
+                <div>
+                    <img class="picture" [src]="user.photoURL">
+                    <div class="title">
+                        {{user.displayName}}
+                        <br>
+                    </div>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
         </mat-expansion-panel>
         <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header> 
@@ -45,10 +51,12 @@
           <table id="t01">
             <tr>
                 <th> Chanson </th>
+                <th> Auteur </th>
                 <th> Ajouté Par </th>
             </tr>
             <tr *ngFor="let button of array(constitution.songsTitle.length) ; index as i">
               <td> <a href="{{constitution.songsURL[i]}}" target="_blank"> {{constitution.songsTitle[i]}} - {{constitution.songsAuthor[i]}} </a> </td>
+              <td> {{constitution.songsAuthor[i]}} </td>
               <td> {{returnUser(constitution.songsOwner[i]).displayName}} </td>
             </tr>
           </table>

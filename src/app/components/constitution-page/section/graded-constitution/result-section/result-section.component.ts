@@ -85,6 +85,15 @@ export class GradedResultSectionComponent implements OnInit {
     return this.math.mean(extractValuesOfVotes(user2Votes));
   }
 
+  userVarUser(uid1: string, uid2: string): number {
+
+    const songsOfUserA = this.constitution.songs.filter((song) => song.patron === uid1).map((song) => song.id)
+    const votesFromBToSongA = this.votes.filter((v) => songsOfUserA.includes(v.songID) && v.userID === uid2)
+    const mean = votesFromBToSongA.reduce((partialSum, vote) => partialSum + vote.grade, 0) / votesFromBToSongA.length
+    const variance = this.math.var(mean, votesFromBToSongA.map((v)=>v.grade))
+    return Math.sqrt(variance);
+  }
+
   sortDataResult(sort: Sort) {
     if (this.results === undefined) {
       this.results = this.gradedConstitution.results;

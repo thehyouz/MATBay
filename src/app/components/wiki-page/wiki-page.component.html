@@ -29,7 +29,7 @@
         Merci de votre intérêt pour Matbay. Afin de rendre l'utilisation du site plus agréable quelques notions sont à apprendre et gestes à faire :
         <br>
         <br>
-        <b> 1- Personnaliser son profile (Pseudo & URL d'image de profile) </b> <button mat-raised-button color="primary" routerLink="/profile"> Voir mon profile </button>
+        <b> 1- Personnaliser son profil (Pseudo & URL d'image de profil) </b> <button mat-raised-button color="primary" routerLink="/profile"> Voir mon profile </button>
         <br>
         <br>
         <b> 2- Une constitution, c'est quoi ? Quelques définitions : </b>
@@ -41,7 +41,7 @@
             </tr>
             <tr>
                 <td> Constitution </td>
-                <td> Ensemble de chansons et de règles permettant de classer les chansons. Le nombre de participants et de chansons ou la nature des votes varient en fonction de la constitution. Une constitution classique est composé de 100 chansons ajoutés par 4 utilisateurs.</td>
+                <td> Ensemble de chansons et de règles permettant de classer les chansons. Le nombre de participants, de chansons et la nature des votes varient en fonction de la constitution. Une constitution classique est composée de 100 chansons ajoutées par 4 utilisateurs.</td>
             </tr>
             <tr>
                 <td> Président </td>
@@ -50,10 +50,10 @@
         </table>
         <br>
         <b> 3- Règles de Bienfaisance : </b>
-            <li> I- Il ne peut avoir qu'une seule chanson gagnante par constitution. </li>
-            <li> II- Ne pas ajouter une chanson qui a déjà été ajouté dans une constitution (actuelle ou précédante). </li>
+            <li> I- Il ne peut y avoir qu'une seule chanson gagnante par constitution. </li>
+            <li> II- Ne pas ajouter une chanson qui a déjà été ajoutée dans une constitution (actuelle ou précédente). </li>
             <li> III- Ne pas abuser des systèmes de votes pour avantager simplement ses propres chansons mais exercer un vrai jugement pour déclarer une chanson gagnante. </li>
-            <li> IV- Éviter les chansons ayant une durée supérieur à 8 minutes. </li>
+            <li> IV- Éviter les chansons ayant une durée supérieure à 8 minutes. </li>
     </div>
     <div *ngIf="selected === sections[2]">
         <table id="t01" style="width: 30%">
@@ -79,9 +79,9 @@
             </tr>
         </table>
         <br>
-        Les utilisateurs doivent voter chaque chanson des autres utilisateurs en choisissant une note allant de 1 à 10. 
-        Pour assurer que les votes ont tous le même poids pour tous les utilisateurs on utilise <a href="https://en.wikipedia.org/wiki/Standard_normal_table"> la Loi Normale</a> à partir de la moyene et de la variance.
-        Les scores des chansons sont donc normalisés puis additionnés déterminant par la suite la chanson gagante.
+        Les utilisateurs doivent voter pour chaque chanson des autres utilisateurs en choisissant une note allant de 1 à 10. 
+        Pour assurer que les votes aient tous le même poids pour tous les utilisateurs on utilise <a href="https://en.wikipedia.org/wiki/Standard_normal_table"> la Loi Normale</a> à partir de la moyenne et de la variance.
+        Les scores des chansons sont donc normalisés puis additionnés, déterminant par la suite la chanson gagnante.
     </div>
     <div *ngIf="selected === sections[3]">
         <table id="t01" style="width: 30%">

@@ -66,17 +66,21 @@
             <span *ngIf="!constitution.isShowingResult" class="warning"> Coming Soon </span>
             <table *ngIf="constitution.isShowingResult" id="t03">
                 <tr>
-                    <th> </th>
+                    <th> A / B</th>
                     <th *ngFor="let user of users"> {{user.displayName}} </th>
                 </tr>
                 <tr *ngFor="let user of users">
                     <td style="background-color: #2E2E2E;"> {{user.displayName}} </td>
                     <td *ngFor="let user2 of users"> 
-                        <span *ngIf="user.uid === user2.uid"> / </span>
-                        <span *ngIf="user.uid !== user2.uid"> {{userMeanUser(user2.uid, user.uid).toFixed(2)}} </span>
+                        <span *ngIf="user.uid === user2.uid">  </span>
+                        <span *ngIf="user.uid !== user2.uid">x̄ {{userMeanUser(user2.uid, user.uid).toFixed(2)}}<br> <div class="std">σ {{userVarUser(user2.uid, user.uid).toFixed(2)}}</div> </span>
                     </td>
                 </tr>
             </table>
+            <div>
+                <p>x̄ : Moyenne des scores données par un utilisateur A aux chansons d'un utilisateur B</p>
+                <p>σ : Écart-type des scores données par un utilisateur A aux chansons d'un utilisateur B</p>
+            </div>
         </mat-expansion-panel>
         <mat-expansion-panel [expanded]="true">
             <mat-expansion-panel-header> 
