@@ -27,23 +27,14 @@
               <th> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> <mat-icon>grade</mat-icon> </th>
           </tr>
       </table>
-      </mat-expansion-panel>
-        <mat-expansion-panel [expanded]="true">
-          <mat-expansion-panel-header> 
               <mat-panel-title> Membres </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-grid-list cols="2" rowHeight="5:5">
-            <mat-grid-tile *ngFor="let user of users">
-                <div>
-                    <img class="picture" [src]="user.photoURL">
-                    <div class="title">
-                        {{user.displayName}}
-                        <br>
-                    </div>
-                </div>
-            </mat-grid-tile>
-        </mat-grid-list>
-        </mat-expansion-panel>
+          <div style="display: flex;">
+            <div *ngFor="let user of users">
+                <img class="picture" [src]="user.photoURL"/>
+                <div class="title">{{user.displayName}}</div>
+            </div>
+          </div>
+          </mat-expansion-panel>
         <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header> 
               <mat-panel-title> Chansons </mat-panel-title>

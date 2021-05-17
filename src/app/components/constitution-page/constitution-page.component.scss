@@ -30,12 +30,12 @@
 
 .picture {
     display: block;
-    margin: 0 auto;
+    margin: 1em auto 0;
 
-    width: 70px;
-    height: 70px;
-    -moz-border-radius: 35px;
-    border-radius: 35px;
+    width: 75px;
+    height: 75px;
+    -moz-border-radius: 5%;
+    border-radius: 5%;
 }
 
 .owner {
