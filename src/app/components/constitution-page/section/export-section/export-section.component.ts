@@ -22,7 +22,7 @@ export class ExportSectionComponent implements OnInit {
   private currentUser: User;
   public isUserLoading = true;
 
-  public EXPORT_FORMAT: string[] = ['Liste des chansons', 'Google Sheets', 'csv'];
+  public EXPORT_FORMAT: string[] = ['Liste des chansons', 'Google Sheets'];
   public selectedExportFormat: string;
 
   private setting = {
@@ -37,7 +37,7 @@ export class ExportSectionComponent implements OnInit {
       if (newUser) {
         this.isUserLoading = false;
         if (this.currentUser.isAuthorized[AUTHORISATION_LEVEL.DEV_LEVEL]) {
-          this.EXPORT_FORMAT.push('Objet JSON');
+          this.EXPORT_FORMAT.push('Objet JSON', 'csv');
         }
       }
     });
