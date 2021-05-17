@@ -90,7 +90,7 @@ export class GradedResultSectionComponent implements OnInit {
     const songsOfUserA = this.constitution.songs.filter((song) => song.patron === uid1).map((song) => song.id)
     const votesFromBToSongA = this.votes.filter((v) => songsOfUserA.includes(v.songID) && v.userID === uid2)
     const mean = votesFromBToSongA.reduce((partialSum, vote) => partialSum + vote.grade, 0) / votesFromBToSongA.length
-    const variance = votesFromBToSongA.reduce((partialSum, vote) => partialSum + Math.pow(vote.grade - mean, 2), 0) / votesFromBToSongA.length
+    const variance = this.math.var(mean, votesFromBToSongA.map((v)=>v.grade))
     return Math.sqrt(variance);
   }
 
