@@ -12,6 +12,7 @@ import { MathService, UserMathProfile } from '../math.service';
 export class GradedConstitutionService {
 
   public results: ResultGradeVote[];
+  public mathProfiles: UserMathProfile[];
 
   constructor(private math: MathService,
               private afs: AngularFirestore,
@@ -26,6 +27,7 @@ export class GradedConstitutionService {
     for (const user of this.users) {
       mathProfiles.push(this.math.generateUserMathProfile(user.uid, this.votes));
     }
+    this.mathProfiles = mathProfiles;
     return mathProfiles;
   }
 
@@ -35,7 +37,6 @@ export class GradedConstitutionService {
     }
 
     const mathProfiles: UserMathProfile[] = this.generateUsersMathProfile();
-
     const results: ResultGradeVote[] = [];
     for(const song of this.constitution.songs) {
       const selectedVotes: GradeVote[] = [];
